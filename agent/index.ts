@@ -9,3 +9,11 @@ Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
             args[0].add(4).readPointer().add(Offsets.HasConnectFailed).writeU8(0);
         }
     });
+
+Interceptor.attach(base.add(Offsets.MessagingReceiveMessage),
+    {
+        onLeave(retval) {
+            retval.replace(ptr(1));
+        }
+    });
+

@@ -31,5 +31,7 @@ export enum Offsets
     PayloadSize = 2 + 4,
     LogicVersionIsDev = 0xbc54cc,
     LogicVersionIsProd = 0x4aa080,
-    LogicVersionIsDeveloperBuild = 0x6c70b8
+    LogicVersionIsDeveloperBuild = 0x6c70b8,
+    MessageLength = 4 * 2 + 4 * 4 + 4,
+    ByteStream = 4 * 2
 }
