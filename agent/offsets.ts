@@ -6,7 +6,7 @@ export enum Offsets
     HasConnectFailed = 4,
     MessagingSend = 0x405448,
     MessagingSendMessage = 0x16e9e4,
-    MessagingReceiveMessage = 0x18df50,
+    MessageManagerReceiveMessage = 0x18df50,
     GetMessageTypeName = 0x18df50,
     MessageManagerInstance = 0x1677bc0,
     CreateMessageByType = 0x6eb208,
@@ -28,10 +28,12 @@ export enum Offsets
     LogicLocalizationGetString = 0x50da0c,
     StringConstructor = 0xca8264,
     Payload = 2 + 4 * 9,
-    PayloadSize = 2 + 4,
+    PayloadSize = 16 + 4,
+    PayloadPtr = 2 * 4 + 4 + 24,
     LogicVersionIsDev = 0xbc54cc,
     LogicVersionIsProd = 0x4aa080,
     LogicVersionIsDeveloperBuild = 0x6c70b8,
     MessageLength = 4 * 2 + 4 * 4 + 4,
-    ByteStream = 4 * 2
+    ByteStream = 4 * 2,
+    Version = 4,
 }

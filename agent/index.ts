@@ -1,7 +1,6 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-
-const base = Module.getBaseAddress("libg.so");
+import { base } from "./definitions.js"
 
 Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
     {
@@ -11,7 +10,7 @@ Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
         }
     });
 
-Interceptor.attach(base.add(Offsets.MessagingReceiveMessage),
+Interceptor.attach(base.add(Offsets.MessageManagerReceiveMessage),
     {
         onLeave(retval) {
             retval.replace(ptr(1));
