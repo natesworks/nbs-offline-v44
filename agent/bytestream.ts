@@ -39,7 +39,7 @@ export class ByteStream {
         return Number((BigInt(high) << 32n) | BigInt(low));
     }
 
-    readString() : string {
+    readString(): string {
         this.bitoffset = 0
         let length = this.readInt()
         let bytes = new Uint8Array(this.payload.slice(this.offset, this.offset + length))
@@ -123,81 +123,75 @@ export class ByteStream {
     }
 
     writeByte(value: number) {
-        this.payload.push(value & 0xFF)
-        this.offset++
-        this.bitoffset = 0
+        this.bitoffset = 0;
+        this.payload.push(value & 0xFF);
+        this.offset++;
     }
 
     writeShort(value: number) {
-        this.payload.push((value >> 8) & 0xFF)
-        this.payload.push(value & 0xFF)
-        this.offset += 2
-        this.bitoffset = 0
+        this.bitoffset = 0;
+        this.payload.push((value >> 8) & 0xFF);
+        this.payload.push(value & 0xFF);
+        this.offset += 2;
     }
 
     writeInt(value: number) {
-        this.payload.push((value >> 24) & 0xFF)
-        this.payload.push((value >> 16) & 0xFF)
-        this.payload.push((value >> 8) & 0xFF)
-        this.payload.push(value & 0xFF)
-        this.offset += 4
-        this.bitoffset = 0
+        this.bitoffset = 0;
+        this.payload.push((value >> 24) & 0xFF);
+        this.payload.push((value >> 16) & 0xFF);
+        this.payload.push((value >> 8) & 0xFF);
+        this.payload.push(value & 0xFF);
+        this.offset += 4;
     }
 
-    writeLong(value: number) {
-        let big = BigInt(value)
-        let high = Number((big >> 32n) & 0xFFFFFFFFn)
-        let low = Number(big & 0xFFFFFFFFn)
-        this.writeInt(high)
-        this.writeInt(low)
-        this.bitoffset = 0
+    writeLong(high: number, low: number) {
+        this.bitoffset = 0;
+        this.writeInt(high);
+        this.writeInt(low);
     }
 
     writeString(str: string) {
-        let bytes = stringToUtf8Array(str)
-        this.writeInt(bytes.length)
+        this.bitoffset = 0;
+        let bytes = stringToUtf8Array(str);
+        this.writeInt(bytes.length);
         for (let i = 0; i < bytes.length; i++)
-            this.writeByte(bytes[i])
-        this.bitoffset = 0
+            this.writeByte(bytes[i]);
     }
 
     writeVint(value: number) {
-        let val = value >>> 0
+        this.bitoffset = 0;
+        let val = value >>> 0;
         if (val < 0x40) {
-            this.writeByte(val)
+            this.writeByte(val);
         }
         else if (val < 0x2000) {
-            this.writeByte((val & 0x3F) | 0x40)
-            this.writeByte((val >> 6) | 0x80)
+            this.writeByte((val & 0x3F) | 0x40);
+            this.writeByte((val >> 6) | 0x80);
         }
         else if (val < 0x100000) {
-            this.writeByte((val & 0x3F) | 0x40)
-            this.writeByte(((val >> 6) & 0x7F) | 0x80)
-            this.writeByte((val >> 13) | 0x80)
+            this.writeByte((val & 0x3F) | 0x40);
+            this.writeByte(((val >> 6) & 0x7F) | 0x80);
+            this.writeByte((val >> 13) | 0x80);
         }
         else if (val < 0x8000000) {
-            this.writeByte((val & 0x3F) | 0x40)
-            this.writeByte(((val >> 6) & 0x7F) | 0x80)
-            this.writeByte(((val >> 13) & 0x7F) | 0x80)
-            this.writeByte((val >> 20) | 0x80)
+            this.writeByte((val & 0x3F) | 0x40);
+            this.writeByte(((val >> 6) & 0x7F) | 0x80);
+            this.writeByte(((val >> 13) & 0x7F) | 0x80);
+            this.writeByte((val >> 20) | 0x80);
         }
         else {
-            this.writeByte((val & 0x3F) | 0x40)
-            this.writeByte(((val >> 6) & 0x7F) | 0x80)
-            this.writeByte(((val >> 13) & 0x7F) | 0x80)
-            this.writeByte(((val >> 20) & 0x7F) | 0x80)
-            this.writeByte(val >> 27)
+            this.writeByte((val & 0x3F) | 0x40);
+            this.writeByte(((val >> 6) & 0x7F) | 0x80);
+            this.writeByte(((val >> 13) & 0x7F) | 0x80);
+            this.writeByte(((val >> 20) & 0x7F) | 0x80);
+            this.writeByte(val >> 27);
         }
-        this.bitoffset = 0
     }
 
-    writeVlong(value: number) {
-        let big = BigInt(value)
-        let high = Number((big >> 32n) & 0xFFFFFFFFn)
-        let low = Number(big & 0xFFFFFFFFn)
-        this.writeVint(high)
-        this.writeVint(low)
-        this.bitoffset = 0
+    writeVlong(high : number, low : number) {
+        this.bitoffset = 0;
+        this.writeVint(high);
+        this.writeVint(low);
     }
 
     writeBoolean(value: boolean) {
@@ -207,23 +201,16 @@ export class ByteStream {
         }
 
         if (value) {
-            this.payload[this.offset - 1] |= 1 << (this.bitoffset & 7)
+            this.payload[this.offset - 1] |= 1 << (this.bitoffset & 7);
         }
 
-        this.bitoffset = (this.bitoffset + 1) & 7
+        this.bitoffset = (this.bitoffset + 1) & 7;
     }
 
-    writeDataReference(value: number) {
-        if (value == 0) {
-            this.writeVint(0)
-        }
-        else {
-            let big = BigInt(value)
-            let high = Number((big >> 32n) & 0xFFFFFFFFn)
-            let low = Number(big & 0xFFFFFFFFn)
-            this.writeVint(high)
-            this.writeVint(low)
-        }
-        this.bitoffset = 0
+    writeDataReference(high: number, low: number) {
+        this.bitoffset = 0;
+        this.writeVint(high);
+        if (high != 0)
+            this.writeVint(low);
     }
 }

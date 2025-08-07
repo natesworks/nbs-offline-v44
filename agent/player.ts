@@ -2,8 +2,7 @@ import { Brawler } from "./brawler.js";
 
 export class Player {
     token = "";
-    lowID = 0;
-    highID = 1;
+    id = [0, 1];
     registered = true;
     namecolor = 0;
     thumbnail = 0;
@@ -15,8 +14,14 @@ export class Player {
     xp = 0;
     tokens = 0;
     level = 1;
+    gems = 0;
+    supportedCreator = "nbs.brawlmods.com";
+    region = "PL";
     tokenDoublers = 0;
     selectedBrawlers = [0, 1, 2];
+    ownedPins: number[] = [];
+    ownedSkins: number[] = [];
+    ownedThumbnails: number[] = [];
     ownedBrawlers: Record<number, Brawler> = {
         0: new Brawler(0, [29, 52, 122, 159, 195, 196, 320, 321, 322, 359], 1250, 1250, 11, 0, 2),
         1: new Brawler(4, [2, 103, 69, 135, 217, 303, 323, 324, 325, 326, 330, 331, 377, 544], 1250, 1250, 11, 0, 2),

@@ -5,8 +5,8 @@ import { Config } from "../../config.js";
 export class LoginOkMessage {
     static encode(player: Player): number[] {
         let stream = new ByteStream([]);
-        stream.writeLong(1);
-        stream.writeLong(1);
+        stream.writeLong(0, 1);
+        stream.writeLong(0, 1);
         stream.writeString(player.token);
         stream.writeString("");
         stream.writeString("");
