@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "module": "Node16",
     "target": "es2020",
     "lib": ["es2020"],
     "allowJs": true,
@@ -8,5 +9,5 @@
     "esModuleInterop": true,
     "moduleResolution": "node16"
   },
-  "exclude": ["_agent.js"]
+  "exclude": ["script.js"]
 }
