@@ -1,6 +1,7 @@
 import { Brawler } from "./brawler.js";
 
 export class Player {
+    name = "Natesworks";
     token = "";
     id = [0, 1];
     registered = true;

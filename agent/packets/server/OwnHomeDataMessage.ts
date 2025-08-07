@@ -269,7 +269,7 @@ export class OwnHomeDataMessage {
         stream.writeVlong(0, 0);
         stream.writeVlong(0, 0);
 
-        stream.writeString("Natesworks");
+        stream.writeString(player.name);
         stream.writeBoolean(true);
         stream.writeInt(0);
         stream.writeVint(16);

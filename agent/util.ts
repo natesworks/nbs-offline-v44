@@ -1,13 +1,11 @@
 import { base } from "./definitions.js";
 import { Offsets } from "./offsets.js";
 
-export function getMessageManagerInstance() : NativePointer
-{
+export function getMessageManagerInstance(): NativePointer {
     return base.add(Offsets.MessageManagerInstance).readPointer();
 }
 
 // cant use TextEncoder or TextDecoder in frida so skidded this thing
-
 export function utf8ArrayToString(array: Uint8Array): string {
     let out = '', i = 0, len = array.length
     while (i < len) {
