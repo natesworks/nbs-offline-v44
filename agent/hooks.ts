@@ -1,6 +1,9 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base } from "./definitions.js"
+import { base, messageManagerReceiveMessage } from "./definitions.js"
+import { Messaging } from "./messaging.js";
+import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
+import { Player } from "./player.js";
 
 Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
     {
@@ -20,6 +23,13 @@ Interceptor.attach(base.add(Offsets.MessageManagerReceiveMessage),
 Interceptor.replace(
     base.add(Offsets.MessagingSend),
     new NativeCallback(function (self, message) {
+        let type = PiranhaMessage.getMessageType(message);
+        console.log("Type:", type)
+        if (type == 10100) // client hello message
+        {
+            let player = new Player();
+            messageManagerReceiveMessage(base.add(Offsets.MessageManagerInstance), Messaging.sendOfflineMessage(20104, LoginOkMessage.encode(player)));
+        }
         PiranhaMessage.destroyMessage(message);
         return 0;
     }, "int", ["pointer", "pointer"])
