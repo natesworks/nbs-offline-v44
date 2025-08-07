@@ -11,7 +11,7 @@ export enum Offsets
     MessageManagerInstance = 0x1677bc0,
     CreateMessageByType = 0x6eb208,
     OperatorNew = 0x10a53e0,
-    GetMessageTye = 4 * 5,
+    GetMessageType = 4 * 5,
     Destruct = 4 * 7,
     LogicLaserMessageFactory = 0x10cf836,
     Decode = 4 * 3,

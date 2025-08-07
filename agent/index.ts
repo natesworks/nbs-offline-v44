@@ -1,4 +1,5 @@
 import { Offsets } from "./offsets.js";
+import { PiranhaMessage } from "./piranhamessage.js";
 
 const base = Module.getBaseAddress("libg.so");
 
@@ -17,3 +18,10 @@ Interceptor.attach(base.add(Offsets.MessagingReceiveMessage),
         }
     });
 
+Interceptor.replace(
+    base.add(Offsets.MessagingSend),
+    new NativeCallback(function (self, message) {
+        PiranhaMessage.destroyMessage(message);
+        return 0;
+    }, "int", ["pointer", "pointer"])
+);
