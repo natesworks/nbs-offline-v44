@@ -23,6 +23,10 @@ export class Player {
     ownedPins: number[] = [];
     ownedSkins: number[] = [];
     ownedThumbnails: number[] = [];
+    soloVictories = 0;
+    trioVictories = 0; // 3v3s
+    duoVictories = 0;
+    challengeWins = 0;
     ownedBrawlers: Record<number, Brawler> = {
         0: new Brawler(0, [29, 52, 122, 159, 195, 196, 320, 321, 322, 359], 1250, 1250, 11, 0, 2),
         1: new Brawler(4, [2, 103, 69, 135, 217, 303, 323, 324, 325, 326, 330, 331, 377, 544], 1250, 1250, 11, 0, 2),

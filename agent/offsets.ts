@@ -36,4 +36,5 @@ export enum Offsets
     MessageLength = PointerSize * 2 + PointerSize * 4 + PointerSize,
     ByteStream = PointerSize * 2,
     Version = PointerSize,
+    SettingsScreenConstructor = 0x4112c4
 }

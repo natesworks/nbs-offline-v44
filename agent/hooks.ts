@@ -6,12 +6,13 @@ import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
 import { LobbyInfoMessage } from "./packets/server/LobbyInfoMessage.js";
 import { getBotNames } from "./util.js";
+import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 
 let botNames: string[] = [];
 
 Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
     {
-        onEnter(args) {
+        onEnter: function (args) {
             args[0].add(4).readPointer().add(Offsets.State).writeInt(5);
             args[0].add(4).readPointer().add(Offsets.HasConnectFailed).writeU8(0);
         }
@@ -19,14 +20,14 @@ Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
 
 Interceptor.attach(base.add(Offsets.MessageManagerReceiveMessage),
     {
-        onLeave(retval) {
+        onLeave: function (retval) {
             retval.replace(ptr(1));
         }
     });
 
 Interceptor.attach(base.add(Offsets.HomePageStartGame),
     {
-        onEnter(args) {
+        onEnter: function (args) {
             args[3] = ptr(3);
             botNames = getBotNames();
         }
@@ -34,7 +35,7 @@ Interceptor.attach(base.add(Offsets.HomePageStartGame),
 
 Interceptor.attach(base.add(Offsets.LogicLocalizationGetString),
     {
-        onEnter(args) {
+        onEnter: function (args) {
             this.tid = args[0].readCString();
             if (this.tid && this.tid.startsWith("TID_BOT_")) {
                 let botIndex = parseInt(this.tid.slice(8), 10) - 1;
@@ -45,12 +46,12 @@ Interceptor.attach(base.add(Offsets.LogicLocalizationGetString),
 
 Interceptor.attach(base.add(Offsets.LogicConfDataGetIntValue),
     {
-        onEnter(args) {
+        onEnter: function (args) {
             if (args[1].equals(ptr(5)) || args[1].equals(ptr(37)))
                 this.retval = ptr(1);
         },
 
-        onLeave(retval) {
+        onLeave: function (retval) {
             if (this.retval !== undefined)
                 retval.replace(this.retval);
         }
@@ -74,6 +75,9 @@ Interceptor.replace(
         }
         else if (type == 14109) { // GoHomeFromOfflinePracticeMessage
             Messaging.sendOfflineMessage(24101, OwnHomeDataMessage.encode(player));
+        }
+        else if (type == 14113) { // GetPlayerProfileMessage
+            Messaging.sendOfflineMessage(24113, PlayerProfileMessage.encode(player));
         }
 
         PiranhaMessage.destroyMessage(message);
