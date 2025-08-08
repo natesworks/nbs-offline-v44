@@ -160,35 +160,73 @@ export class ByteStream {
 
     writeVint(value: number) {
         this.bitoffset = 0;
-        let val = value >>> 0;
-        if (val < 0x40) {
-            this.writeByte(val);
-        }
-        else if (val < 0x2000) {
-            this.writeByte((val & 0x3F) | 0x40);
-            this.writeByte((val >> 6) | 0x80);
-        }
-        else if (val < 0x100000) {
-            this.writeByte((val & 0x3F) | 0x40);
-            this.writeByte(((val >> 6) & 0x7F) | 0x80);
-            this.writeByte((val >> 13) | 0x80);
-        }
-        else if (val < 0x8000000) {
-            this.writeByte((val & 0x3F) | 0x40);
-            this.writeByte(((val >> 6) & 0x7F) | 0x80);
-            this.writeByte(((val >> 13) & 0x7F) | 0x80);
-            this.writeByte((val >> 20) | 0x80);
+        if (value < 0) {
+            if (value >= -63) {
+                this.payload.push((value & 0x3F) | 0x40);
+                this.offset += 1;
+            }
+            else if (value >= -8191) {
+                this.payload.push((value & 0x3F) | 0xC0);
+                this.payload.push((value >> 6) & 0x7F);
+                this.offset += 2;
+            }
+            else if (value >= -1048575) {
+                this.payload.push((value & 0x3F) | 0xC0);
+                this.payload.push(((value >> 6) & 0x7F) | 0x80);
+                this.payload.push((value >> 13) & 0x7F);
+                this.offset += 3;
+            }
+            else if (value >= -134217727) {
+                this.payload.push((value & 0x3F) | 0xC0);
+                this.payload.push(((value >> 6) & 0x7F) | 0x80);
+                this.payload.push(((value >> 13) & 0x7F) | 0x80);
+                this.payload.push((value >> 20) & 0x7F);
+                this.offset += 4;
+            }
+            else {
+                this.payload.push((value & 0x3F) | 0xC0);
+                this.payload.push(((value >> 6) & 0x7F) | 0x80);
+                this.payload.push(((value >> 13) & 0x7F) | 0x80);
+                this.payload.push(((value >> 20) & 0x7F) | 0x80);
+                this.payload.push((value >> 27) & 0xF);
+                this.offset += 5;
+            }
         }
         else {
-            this.writeByte((val & 0x3F) | 0x40);
-            this.writeByte(((val >> 6) & 0x7F) | 0x80);
-            this.writeByte(((val >> 13) & 0x7F) | 0x80);
-            this.writeByte(((val >> 20) & 0x7F) | 0x80);
-            this.writeByte(val >> 27);
+            if (value <= 63) {
+                this.payload.push(value & 0x3F);
+                this.offset += 1;
+            }
+            else if (value <= 8191) {
+                this.payload.push((value & 0x3F) | 0x80);
+                this.payload.push((value >> 6) & 0x7F);
+                this.offset += 2;
+            }
+            else if (value <= 1048575) {
+                this.payload.push((value & 0x3F) | 0x80);
+                this.payload.push(((value >> 6) & 0x7F) | 0x80);
+                this.payload.push((value >> 13) & 0x7F);
+                this.offset += 3;
+            }
+            else if (value <= 134217727) {
+                this.payload.push((value & 0x3F) | 0x80);
+                this.payload.push(((value >> 6) & 0x7F) | 0x80);
+                this.payload.push(((value >> 13) & 0x7F) | 0x80);
+                this.payload.push((value >> 20) & 0x7F);
+                this.offset += 4;
+            }
+            else {
+                this.payload.push((value & 0x3F) | 0x80);
+                this.payload.push(((value >> 6) & 0x7F) | 0x80);
+                this.payload.push(((value >> 13) & 0x7F) | 0x80);
+                this.payload.push(((value >> 20) & 0x7F) | 0x80);
+                this.payload.push((value >> 27) & 0xF);
+                this.offset += 5;
+            }
         }
     }
 
-    writeVlong(high : number, low : number) {
+    writeVlong(high: number, low: number) {
         this.bitoffset = 0;
         this.writeVint(high);
         this.writeVint(low);
