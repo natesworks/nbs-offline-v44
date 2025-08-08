@@ -1,13 +1,13 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, player } from "./definitions.js"
+import { base, player } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
 import { LobbyInfoMessage } from "./packets/server/LobbyInfoMessage.js";
 import { getBotNames } from "./util.js";
 
-let botNames: string[];
+let botNames: string[] = [];
 
 Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
     {
@@ -27,17 +27,21 @@ Interceptor.attach(base.add(Offsets.MessageManagerReceiveMessage),
 Interceptor.attach(base.add(Offsets.HomePageStartGame),
     {
         onEnter(args) {
-            args[3] = ptr(3); // offline battles
+            args[3] = ptr(3);
             botNames = getBotNames();
         }
-    })
+    });
 
 Interceptor.attach(base.add(Offsets.LogicLocalizationGetString),
     {
-        onLeave(retval) {
-
-        },
-    })
+        onEnter(args) {
+            this.tid = args[0].readCString();
+            if (this.tid && this.tid.startsWith("TID_BOT_")) {
+                let botIndex = parseInt(this.tid.slice(8), 10) - 1;
+                args[0].writeUtf8String(botNames[botIndex]);
+            }
+        }
+    });
 
 Interceptor.attach(base.add(Offsets.LogicConfDataGetIntValue),
     {
@@ -48,24 +52,32 @@ Interceptor.attach(base.add(Offsets.LogicConfDataGetIntValue),
 
         onLeave(retval) {
             if (this.retval !== undefined)
-                retval.replace(this.ret);
+                retval.replace(this.retval);
         }
-    })
+    });
 
 Interceptor.replace(
     base.add(Offsets.MessagingSend),
     new NativeCallback(function (self, message) {
         let type = PiranhaMessage.getMessageType(message);
+
         Messaging.sendOfflineMessage(23457, LobbyInfoMessage.encode(player));
+
         if (type == 10108)
             return 0;
-        console.log("Type:", type)
-        if (type == 10100) // client hello message
-        {
+
+        console.log("Type:", type);
+
+        if (type == 10100) { // ClientHelloMessage
             Messaging.sendOfflineMessage(20104, LoginOkMessage.encode(player));
             Messaging.sendOfflineMessage(24101, OwnHomeDataMessage.encode(player));
         }
+        else if (type == 14109) { // GoHomeFromOfflinePracticeMessage
+            Messaging.sendOfflineMessage(24101, OwnHomeDataMessage.encode(player));
+        }
+
         PiranhaMessage.destroyMessage(message);
+
         return 0;
     }, "int", ["pointer", "pointer"])
 );
