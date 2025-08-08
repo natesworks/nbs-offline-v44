@@ -1,11 +1,13 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, messageManagerReceiveMessage } from "./definitions.js"
+import { base, player } from "./definitions.js"
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
-import { Player } from "./player.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
-import { getMessageManagerInstance } from "./util.js";
+import { LobbyInfoMessage } from "./packets/server/LobbyInfoMessage.js";
+import { getBotNames } from "./util.js";
+
+let botNames: string[];
 
 Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
     {
@@ -22,16 +24,44 @@ Interceptor.attach(base.add(Offsets.MessageManagerReceiveMessage),
         }
     });
 
+Interceptor.attach(base.add(Offsets.HomePageStartGame),
+    {
+        onEnter(args) {
+            args[3] = ptr(3); // offline battles
+            botNames = getBotNames();
+        }
+    })
+
+Interceptor.attach(base.add(Offsets.LogicLocalizationGetString),
+    {
+        onLeave(retval) {
+
+        },
+    })
+
+Interceptor.attach(base.add(Offsets.LogicConfDataGetIntValue),
+    {
+        onEnter(args) {
+            if (args[1].equals(ptr(5)) || args[1].equals(ptr(37)))
+                this.retval = ptr(1);
+        },
+
+        onLeave(retval) {
+            if (this.retval !== undefined)
+                retval.replace(this.ret);
+        }
+    })
+
 Interceptor.replace(
     base.add(Offsets.MessagingSend),
     new NativeCallback(function (self, message) {
         let type = PiranhaMessage.getMessageType(message);
+        Messaging.sendOfflineMessage(23457, LobbyInfoMessage.encode(player));
         if (type == 10108)
             return 0;
         console.log("Type:", type)
         if (type == 10100) // client hello message
         {
-            let player = new Player();
             Messaging.sendOfflineMessage(20104, LoginOkMessage.encode(player));
             Messaging.sendOfflineMessage(24101, OwnHomeDataMessage.encode(player));
         }
