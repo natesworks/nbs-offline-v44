@@ -123,12 +123,14 @@ export class ByteStream {
     }
 
     writeByte(value: number) {
+        //console.log("writeByte:", value);
         this.bitoffset = 0;
         this.payload.push(value & 0xFF);
         this.offset++;
     }
 
     writeShort(value: number) {
+        //console.log("writeShort:", value);
         this.bitoffset = 0;
         this.payload.push((value >> 8) & 0xFF);
         this.payload.push(value & 0xFF);
@@ -136,6 +138,7 @@ export class ByteStream {
     }
 
     writeInt(value: number) {
+        //console.log("writeInt:", value);
         this.bitoffset = 0;
         this.payload.push((value >> 24) & 0xFF);
         this.payload.push((value >> 16) & 0xFF);
@@ -145,12 +148,14 @@ export class ByteStream {
     }
 
     writeLong(high: number, low: number) {
+        //console.log("writeLong: high:", high, "low:", low);
         this.bitoffset = 0;
         this.writeInt(high);
         this.writeInt(low);
     }
 
     writeString(str: string) {
+        //console.log("writeString:", str);
         this.bitoffset = 0;
         let bytes = stringToUtf8Array(str);
         this.writeInt(bytes.length);
@@ -159,6 +164,7 @@ export class ByteStream {
     }
 
     writeVint(value: number) {
+        //console.log("writeVint:", value);
         this.bitoffset = 0;
         if (value < 0) {
             if (value >= -63) {
@@ -227,12 +233,14 @@ export class ByteStream {
     }
 
     writeVlong(high: number, low: number) {
+        //console.log("writeVlong: high:", high, "low:", low);
         this.bitoffset = 0;
         this.writeVint(high);
         this.writeVint(low);
     }
 
     writeBoolean(value: boolean) {
+        //console.log("writeBoolean:", value);
         if (this.bitoffset == 0) {
             this.payload.push(0)
             this.offset++
@@ -246,6 +254,7 @@ export class ByteStream {
     }
 
     writeDataReference(high: number, low: number) {
+        //console.log("writeDataReference: high:", high, "low:", low);
         this.bitoffset = 0;
         this.writeVint(high);
         if (high != 0)

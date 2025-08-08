@@ -33,6 +33,20 @@ Interceptor.attach(base.add(Offsets.HomePageStartGame),
         }
     });
 
+Interceptor.attach(base.add(Offsets.LogicVersionIsDev),
+    {
+        onLeave: function (retval) {
+            retval.replace(ptr(1));
+        }
+    });
+
+Interceptor.attach(base.add(Offsets.LogicVersionIsProd),
+    {
+        onLeave: function (retval) {
+            retval.replace(ptr(0));
+        }
+    });
+
 Interceptor.attach(base.add(Offsets.LogicLocalizationGetString),
     {
         onEnter: function (args) {

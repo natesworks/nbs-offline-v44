@@ -1,5 +1,5 @@
-export enum Config {
-    Major = 44,
-    Build = 226,
-    Minor = 1
+export class Config {
+    static major = 44;
+    static build = 226;
+    static minor = 1;
 }

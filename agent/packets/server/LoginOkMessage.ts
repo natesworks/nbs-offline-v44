@@ -10,9 +10,9 @@ export class LoginOkMessage {
         stream.writeString(player.token);
         stream.writeString("");
         stream.writeString("");
-        stream.writeInt(Config.Major);
-        stream.writeInt(Config.Build);
-        stream.writeInt(Config.Minor);
+        stream.writeInt(Config.major);
+        stream.writeInt(Config.build);
+        stream.writeInt(Config.minor);
         stream.writeString("dev");
         stream.writeInt(0);
         stream.writeInt(0);

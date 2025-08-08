@@ -5,11 +5,9 @@ export function getMessageManagerInstance(): NativePointer {
     return base.add(Offsets.MessageManagerInstance).readPointer();
 }
 
-export function getBotNames() : string[] 
-{
+export function getBotNames(): string[] {
     const shuffled = [...possibleBotNames]
-    for (let i = shuffled.length - 1; i > 0; i--) 
-    {
+    for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1))
         const temp = shuffled[i]
         shuffled[i] = shuffled[j]

@@ -36,5 +36,12 @@ export enum Offsets
     MessageLength = PointerSize * 2 + PointerSize * 4 + PointerSize,
     ByteStream = PointerSize * 2,
     Version = PointerSize,
-    SettingsScreenConstructor = 0x4112c4
+    SettingsScreenConstructor = 0x4112c4,
+    CombatHUDButtonClicked = 0x281050,
+    ResourceListenerAddFile = 0x4a0f6c,
+    StageAddChild = 0x67aae0,
+    StageInstance = 0xa0306c,
+    StageRemoveChild = 0x5898c4,
+    GetTextFieldByName = 0xb27414,
+    TextFieldSetText = 0xca0e88
 }
