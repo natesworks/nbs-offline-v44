@@ -43,5 +43,7 @@ export enum Offsets
     StageInstance = 0xa0306c,
     StageRemoveChild = 0x5898c4,
     GetTextFieldByName = 0xb27414,
-    TextFieldSetText = 0xca0e88
+    TextFieldSetText = 0xca0e88,
+    EditControlsBrawler = 0x10ece36,
+    EditControlsMap = 0x12536c5
 }
