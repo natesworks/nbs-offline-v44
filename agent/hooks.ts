@@ -1,11 +1,11 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, player } from "./definitions.js";
+import { base, credits, gameGuiContainerAddGameButton, player, showFloaterTextAtDefaultPos, stringCtor } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
 import { LobbyInfoMessage } from "./packets/server/LobbyInfoMessage.js";
-import { getBotNames } from "./util.js";
+import { getBotNames, readString } from "./util.js";
 import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 
 export function installHooks() {
@@ -54,10 +54,18 @@ export function installHooks() {
         {
             onEnter: function (args) {
                 this.tid = args[0].readCString();
-                if (this.tid && this.tid.startsWith("TID_BOT_")) {
+                if (this.tid.startsWith("TID_BOT_")) {
                     let botIndex = parseInt(this.tid.slice(8), 10) - 1;
                     args[0].writeUtf8String(botNames[botIndex]);
                 }
+                else if (this.tid == "TID_ABOUT") {
+                    args[0].writeUtf8String(credits);
+                }
+                /*
+                if (this.tid == "LATENCY TESTS") {
+                    args[0].writeUtf8String("Source Code");
+                }
+                */
             }
         });
 
@@ -102,4 +110,13 @@ export function installHooks() {
             return 0;
         }, "int", ["pointer", "pointer"])
     );
+
+    Interceptor.attach(base.add(Offsets.HomePageButtonClicked),
+        {
+            onEnter(args) {
+                let button = readString(args[1].add(Offsets.ClickedButtonName));
+                console.log(button);
+                return;
+            }
+        });
 }

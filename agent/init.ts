@@ -1,5 +1,5 @@
 import { installHooks } from "./hooks.js";
-import { patchStrings } from "./stringpatches.js";
+import { applyPatches } from "./patches.js";
 
 installHooks();
-patchStrings();
+applyPatches();

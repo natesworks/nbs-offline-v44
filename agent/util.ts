@@ -17,6 +17,15 @@ export function getBotNames(): string[] {
     return shuffled.slice(0, 9)
 }
 
+export function readString(src: NativePointer) : string | null {
+    let len = src.add(4).readU32();
+    if (len < 8) {
+        return src.add(8).readCString();
+    }
+    const heapPtr = src.add(Process.pointerSize * 2).readPointer();
+    return heapPtr.readCString();
+}
+
 // cant use TextEncoder or TextDecoder in frida so skidded this thing
 export function utf8ArrayToString(array: Uint8Array): string {
     let out = '', i = 0, len = array.length
