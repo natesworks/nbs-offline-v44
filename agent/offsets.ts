@@ -51,5 +51,6 @@ export enum Offsets
     GUIShowFloaterTextAtDefaultPos = 0xb52f98,
     LatencyTestsPopupConstructor = 0x4fc8e8,
     ClickedButtonName = 288,
-    GameGUIContainerAddGameButton = 0x5a2930
+    GameGUIContainerAddGameButton = 0x5a2930,
+    IsAllianceFeatureAvailable = 0x983688
 }

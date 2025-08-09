@@ -61,6 +61,10 @@ export function installHooks() {
                 else if (this.tid == "TID_ABOUT") {
                     args[0].writeUtf8String(credits);
                 }
+                if (this.tid == "TID_CLUB_FEATURE_LOCKED_TROPHIES")
+                {
+                    args[0].writeUtf8String("Clubs not implemented");
+                }
                 /*
                 if (this.tid == "LATENCY TESTS") {
                     args[0].writeUtf8String("Source Code");
@@ -119,4 +123,11 @@ export function installHooks() {
                 return;
             }
         });
+
+    Interceptor.attach(base.add(Offsets.IsAllianceFeatureAvailable),
+        {
+            onLeave(retval) {
+                retval.replace(ptr(0));
+            }
+        })
 }
