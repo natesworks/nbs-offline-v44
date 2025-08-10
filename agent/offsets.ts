@@ -69,5 +69,10 @@ export enum Offsets {
     DropGUIContainerConstructor = 0xcd0768,
     PopupBaseConstructor = 0x224cc8,
     DebugSC = 0x127acaf,
-    HomeModeEnter = 0x798b04
+    HomeModeEnter = 0x798b04,
+    ResourceManagerGetSupercellSFW = 0x1e932c,
+    SupercellSWFCreateMovieClip = 0x64f2d8,
+    ResourceManagerGetMovieClip = 0x18ea28,
+    CustomButtonSetMovieClip = 0xba01d0,
+    MovieClipSetText = 0x5f28e4
 }

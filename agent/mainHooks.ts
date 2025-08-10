@@ -7,6 +7,7 @@ import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
 import { LobbyInfoMessage } from "./packets/server/LobbyInfoMessage.js";
 import { createStringObject, getBotNames, decodeString } from "./util.js";
 import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
+import { createDebugButton } from "./debugmenu.js";
 
 let botNames: string[] = [];
 let homePageInstance: NativePointerValue;
@@ -159,7 +160,7 @@ export function installHooks() {
             onEnter(args) {
                 console.log("GameGUIContainer::addGameButton", args[1].readCString());
             },
-        })
+        });
 
     Interceptor.attach(base.add(Offsets.GUIContainerAddButton),
         {
@@ -167,5 +168,12 @@ export function installHooks() {
                 console.log("GUIContainer::addButton", args[1].readCString());
             },
         }
-    )
+    );
+
+    Interceptor.attach(base.add(Offsets.HomeModeEnter),
+        {
+            onLeave() {
+                createDebugButton();
+            }
+        });
 }

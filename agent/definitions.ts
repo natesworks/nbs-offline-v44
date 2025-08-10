@@ -16,9 +16,16 @@ export const customButtonSetButtonListener = new NativeFunction(base.add(Offsets
 export const homePageGetButtonByName = new NativeFunction(base.add(Offsets.HomePageGetButtonByName), "int", ["pointer", "pointer"]);
 export const gameGuiContainerAddButton = new NativeFunction(base.add(Offsets.GUIContainerAddButton), "pointer", ["pointer", "pointer", "int"]);
 export const stageAddChild = new NativeFunction(base.add(Offsets.StageAddChild), 'pointer', ['pointer', 'pointer']);
-export let player = new Player();
 export const possibleBotNames = ["loky", "sahar", "oskartocwel", "mroc", "croc", "KTR", "Flickz", "Interlastic", "Mold in my balls", "tomar753", "terpy", "Hallo", "free leon", "morticlowni", "ваня кек", "smw1", "Luna", "Hyra", "Juan Carlos", "Pituś", "Blast", "JordiTheCat", "TID_BOT_69", "Switly", "Tufa", "Trypix"];
-export const addFile = new NativeFunction(base.add(Offsets.ResourceListenerAddFile), "int", ['pointer', 'pointer', 'int', 'int', 'int', 'int', 'int'])
+export const addFile = new NativeFunction(base.add(Offsets.ResourceListenerAddFile), "int", ['pointer', 'pointer', 'int', 'int', 'int', 'int', 'int']);
+export const customButtonConstructor = new NativeFunction(base.add(Offsets.CustomButtonConstructor), 'int', []);
+export const gameButtonConstructor = new NativeFunction(base.add(Offsets.GameButtonConstructor), 'void', ['pointer']);
+export const resourceManagerGetMovieClip = new NativeFunction(base.add(Offsets.ResourceManagerGetMovieClip), 'pointer', ['pointer', 'pointer', 'bool']);
+export const customButtonSetMovieClip = new NativeFunction(base.add(Offsets.CustomButtonSetMovieClip), 'pointer', ['pointer', 'pointer']);
+export const MovieClipSetText = new NativeFunction(base.add(Offsets.MovieClipSetText), 'pointer', ['pointer', 'pointer']);
+
+export let player = new Player();
+
 export const credits = `NBS Offline v2.2
 
 Made by Natesworks 

@@ -24,10 +24,10 @@ export function decodeString(src: NativePointer): string | null {
     return src.add(Process.pointerSize * 2).readUtf8String();
 }
 
-export function strPtr(text: string) {
-    const charPtr = malloc(text.length + 1);
-    (Memory as any).writeUtf8String(charPtr, text);
-    return charPtr;
+export function strPtr(message : string) {
+    var charPtr = malloc(message.length + 1);
+    (Memory as any).writeUtf8String(charPtr, message);
+    return charPtr
 }
 
 export function createStringObject(text: string) {
