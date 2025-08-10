@@ -176,4 +176,11 @@ export function installHooks() {
                 createDebugButton();
             }
         });
+
+    Interceptor.attach(base.add(Offsets.NativeFontFormatString),
+        {
+            onEnter(args) {
+                args[7] = ptr(1);
+            },
+        });
 }

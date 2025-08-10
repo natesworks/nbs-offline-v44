@@ -16,16 +16,15 @@ export function addDebugFile() {
 export function spawnItem(item: string, text: string, x: number, y: number): NativePointer {
     let mem = malloc(1024);
     gameButtonConstructor(mem);
-    let itemPtr = strPtr(item);
-    let debugSCPtr = strPtr("sc/debug.sc");
-    let movieClip = resourceManagerGetMovieClip(debugSCPtr, itemPtr, 1);
+    let movieClip = resourceManagerGetMovieClip(strPtr("sc/debug.sc"), strPtr(item), 1);
     customButtonSetMovieClip(mem, movieClip);
-    movieClipSetText(mem, createStringObject(text));
     DisplayObjectSetSetXY(mem, x, y);
+    movieClipSetText(mem, createStringObject(text));
     return mem;
 }
 
 export function createDebugButton() {
+    console.log("Creating debug button");
     let button = spawnItem("debug_button", "D", 30, 560);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), button);
 }
