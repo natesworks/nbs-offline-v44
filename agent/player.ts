@@ -5,7 +5,7 @@ export class Player {
     token = "";
     id = [0, 1];
     registered = true;
-    namecolor = 0;
+    namecolor = 9;
     thumbnail = 0;
     coins = 0;
     starpoints = 0;

@@ -183,4 +183,13 @@ export function installHooks() {
                 args[7] = ptr(1);
             },
         });
+
+    Interceptor.attach(base.add(Offsets.LogicDailyButtonGetBrawlPassSeasonData), {
+        onLeave(retval) {
+            if (!retval.isNull()) {
+                const premiumFlagPtr = retval.add(16);
+                (Memory as any).writeU8(premiumFlagPtr, 1);
+            }
+        }
+    });
 }

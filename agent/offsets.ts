@@ -76,5 +76,6 @@ export enum Offsets {
     CustomButtonSetMovieClip = 0xba01d0,
     MovieClipSetText = 0x5f28e4,
     DisplayObjectSetXY = 0x19f168,
-    NativeFontFormatString = 0x7fe2cc
+    NativeFontFormatString = 0x7fe2cc,
+    LogicDailyButtonGetBrawlPassSeasonData = 0xb6f0c0
 }
