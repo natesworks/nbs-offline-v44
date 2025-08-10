@@ -38,7 +38,7 @@ export enum Offsets {
     CombatHUDButtonClicked = 0x281050,
     ResourceListenerAddFile = 0x4a0f6c,
     StageAddChild = 0x67aae0,
-    StageInstance = 0xa0306c,
+    StageInstance = 0x1678af8,
     StageRemoveChild = 0x5898c4,
     GetTextFieldByName = 0xb27414,
     TextFieldSetText = 0xca0e88,
