@@ -74,5 +74,6 @@ export enum Offsets {
     SupercellSWFCreateMovieClip = 0x64f2d8,
     ResourceManagerGetMovieClip = 0x18ea28,
     CustomButtonSetMovieClip = 0xba01d0,
-    MovieClipSetText = 0x5f28e4
+    MovieClipSetText = 0x5f28e4,
+    DisplayObjectSetXY = 0x19f168
 }
