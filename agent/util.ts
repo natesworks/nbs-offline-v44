@@ -1,4 +1,4 @@
-import { base, possibleBotNames } from "./definitions.js";
+import { base, malloc, possibleBotNames, stringCtor } from "./definitions.js";
 import { Offsets } from "./offsets.js";
 
 export function getMessageManagerInstance(): NativePointer {
@@ -17,13 +17,23 @@ export function getBotNames(): string[] {
     return shuffled.slice(0, 9)
 }
 
-export function readString(src: NativePointer) : string | null {
-    let len = src.add(4).readU32();
-    if (len < 8) {
-        return src.add(8).readCString();
+export function decodeString(src: NativePointer): string | null {
+    if (src.add(4).readInt() >= 8) {
+        return src.add(8).readPointer().readUtf8String();
     }
-    const heapPtr = src.add(Process.pointerSize * 2).readPointer();
-    return heapPtr.readCString();
+    return src.add(Process.pointerSize * 2).readUtf8String();
+}
+
+export function strPtr(text: string) {
+    const charPtr = malloc(text.length + 1);
+    (Memory as any).writeUtf8String(charPtr, text);
+    return charPtr;
+}
+
+export function createStringObject(text: string) {
+    let ptr = malloc(128);
+    stringCtor(ptr, strPtr(text));
+    return ptr;
 }
 
 // cant use TextEncoder or TextDecoder in frida so skidded this thing

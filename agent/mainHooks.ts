@@ -1,15 +1,17 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, credits, gameGuiContainerAddGameButton, player, showFloaterTextAtDefaultPos, stringCtor } from "./definitions.js";
+import { base, credits, customButtonSetButtonListener, dropGuiContainerAddGameButton as dropGUIContainerAddGameButton, gameGuiContainerAddButton, gameGuiContainerAddGameButton, homePageGetButtonByName, player, showFloaterTextAtDefaultPos, stringCtor } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
 import { LobbyInfoMessage } from "./packets/server/LobbyInfoMessage.js";
-import { getBotNames, readString } from "./util.js";
+import { createStringObject, getBotNames, decodeString } from "./util.js";
 import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 
+let botNames: string[] = [];
+let homePageInstance: NativePointerValue;
+
 export function installHooks() {
-    let botNames: string[] = [];
 
     Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
         {
@@ -61,8 +63,7 @@ export function installHooks() {
                 else if (this.tid == "TID_ABOUT") {
                     args[0].writeUtf8String(credits);
                 }
-                if (this.tid == "TID_CLUB_FEATURE_LOCKED_TROPHIES")
-                {
+                if (this.tid == "TID_CLUB_FEATURE_LOCKED_TROPHIES") {
                     args[0].writeUtf8String("Clubs not implemented");
                 }
                 /*
@@ -118,8 +119,8 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.HomePageButtonClicked),
         {
             onEnter(args) {
-                let button = readString(args[1].add(Offsets.ClickedButtonName));
-                console.log(button);
+                let button = decodeString(args[1].add(Offsets.ClickedButtonName));
+                console.log("HomePage::buttonClicked", button);
                 return;
             }
         });
@@ -129,5 +130,42 @@ export function installHooks() {
             onLeave(retval) {
                 retval.replace(ptr(0));
             }
+        });
+
+    Interceptor.attach(base.add(Offsets.HomePageUpdate),
+        {
+            onEnter(args) {
+                homePageInstance = args[0];
+            }
+        });
+
+
+    Interceptor.attach(base.add(Offsets.HomePageGetButtonByName),
+        {
+            onEnter(args) {
+                let name = decodeString(args[1]);
+            },
         })
+
+    Interceptor.attach(base.add(Offsets.DropGUIContainerAddGameButton),
+        {
+            onEnter(args) {
+                console.log("DropGUIContainer::addGameButton", decodeString(args[2]))
+            },
+        })
+
+    Interceptor.attach(base.add(Offsets.GameGUIContainerAddGameButton),
+        {
+            onEnter(args) {
+                console.log("GameGUIContainer::addGameButton", args[1].readCString());
+            },
+        })
+
+    Interceptor.attach(base.add(Offsets.GUIContainerAddButton),
+        {
+            onEnter(args) {
+                console.log("GUIContainer::addButton", args[1].readCString());
+            },
+        }
+    )
 }

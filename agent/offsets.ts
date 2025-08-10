@@ -1,5 +1,4 @@
-export enum Offsets
-{
+export enum Offsets {
     ServerConnectionUpdate = 0x68CB24,
     ConnectingToServer = 0x14bd6e8,
     State = Process.pointerSize * 4,
@@ -52,5 +51,23 @@ export enum Offsets
     LatencyTestsPopupConstructor = 0x4fc8e8,
     ClickedButtonName = 288,
     GameGUIContainerAddGameButton = 0x5a2930,
-    IsAllianceFeatureAvailable = 0x983688
+    IsAllianceFeatureAvailable = 0x983688,
+    HomePageUpdate = 0x3dde78,
+    HomePageGetButtonByName = 0x6c9e58,
+    HomePageConstructor = 0xce5010,
+    CustomButtonSetButtonListener = 0x2a0304,
+    DropGUIContainerAddGameButton = 0x5a71f0,
+    GUIContainerAddButton = 0x5c27e0,
+    GetMovieClipByName = 0x571efc,
+    MoveClipSetChildVisible = 0x15a844,
+    GameButtonAddButtonManually = 0x4cb7d0,
+    GameButtonCreateButton = 0x530100,
+    GameButtonConstructor = 0x6f3410,
+    CustomButtonConstructor = 0x1576ec,
+    SpriteConstructor = 0x540558,
+    GUIContainerGetMovieClip = 0x4ed3f8,
+    DropGUIContainerConstructor = 0xcd0768,
+    PopupBaseConstructor = 0x224cc8,
+    DebugSC = 0x127acaf,
+    HomeModeEnter = 0x798b04
 }
