@@ -19,16 +19,7 @@ export class PlayerProfileMessage
         {
             const brawlerID = Number(_brawlerID); // for some fucking reason brawlerID is a string now???
             stream.writeDataReference(16, brawlerID);
-
-            if (brawlerData.skins.length)
-            {
-                stream.writeDataReference(29, brawlerData.skins[0]); // TODO: Sync with current skin
-            }
-            else
-            {
-                stream.writeDataReference(0, -1);
-            }
-
+            stream.writeDataReference(0, -1); // skin
             stream.writeVint(brawlerData.trophies);
             stream.writeVint(brawlerData.highestTrophies);
             stream.writeVint(brawlerData.powerlevel);

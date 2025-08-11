@@ -17,7 +17,6 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
         {
             onEnter: function (args) {
-                args[0].add(4).readPointer().add(Offsets.State).writeInt(5);
                 args[0].add(4).readPointer().add(Offsets.HasConnectFailed).writeU8(0);
             }
         });
@@ -99,6 +98,7 @@ export function installHooks() {
                 return 0;
 
             console.log("Type:", type);
+            //console.log("Length", PiranhaMessage.getMessageLength(message));
 
             if (type == 10100 || type == 10101) { // ClientHelloMessage
                 Messaging.sendOfflineMessage(20104, LoginOkMessage.encode(player));
@@ -187,8 +187,7 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.LogicDailyButtonGetBrawlPassSeasonData), {
         onLeave(retval) {
             if (!retval.isNull()) {
-                const premiumFlagPtr = retval.add(16);
-                (Memory as any).writeU8(premiumFlagPtr, 1);
+                (Memory as any).writeU8(retval.add(Offsets.BrawlPassPremiumFlag), 1);
             }
         }
     });
