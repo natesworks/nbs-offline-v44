@@ -176,7 +176,7 @@ export class OwnHomeDataMessage {
             stream.writeVint(-1);
             stream.writeVint(eventIndex);         // EventType
             stream.writeVint(0);                  // EventsBeginCountdown
-            stream.writeVint(51208);              // Timer
+            stream.writeVint(86400);              // Timer
             stream.writeVint(0);                  // tokens reward for new event
             stream.writeDataReference(15, mapID); // MapID
             stream.writeVint(-1);                 // GameModeVariation
