@@ -95,11 +95,11 @@ export class Player {
         this.gems = config.gems;
         this.level = config.experienceLevel;
         this.xp = config.experience;
-        this.namecolor = config.starpoints;
-        this.thumbnail = config.starpoints;
+        this.namecolor = config.namecolor;
+        this.thumbnail = config.thumbnail;
         this.trophyRoadTier = config.trophyRoadTier;
-        this.tokens = config.starpoints;
-        this.tokenDoublers = config.starpoints;
+        this.tokens = config.tokens;
+        this.tokenDoublers = config.tokenDoublers;
         this.trioVictories = config.trioWins;
         this.soloVictories = config.soloWins;
         this.duoVictories = config.duoWins;

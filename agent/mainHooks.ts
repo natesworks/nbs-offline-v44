@@ -131,7 +131,7 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.IsAllianceFeatureAvailable),
         {
             onLeave(retval) {
-                retval.replace(ptr(0));
+                retval.replace(ptr(Number(config.enableClubs)));
             }
         });
 
@@ -189,7 +189,7 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.LogicDailyButtonGetBrawlPassSeasonData), {
         onLeave(retval) {
             if (!retval.isNull()) {
-                (Memory as any).writeU8(retval.add(Offsets.BrawlPassPremiumFlag), 1);
+                (Memory as any).writeU8(retval.add(Offsets.BrawlPassPremiumFlag), Number(config.brawlPassPremium));
             }
         }
     });
