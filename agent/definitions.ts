@@ -1,9 +1,14 @@
+import { readConfig } from "./config.js";
 import { Offsets } from "./offsets.js";
 import { Player } from "./player.js";
 
 export const base = Module.getBaseAddress("libg.so");
 
 export const malloc = new NativeFunction(Module.getExportByName('libc.so', 'malloc'), 'pointer', ['uint']);
+export const open = new NativeFunction(Module.getExportByName('libc.so', "open"), "int", ["pointer", "int"]);
+export const read = new NativeFunction(Module.getExportByName('libc.so', "read"), "int", ["int", "pointer", "int"]);
+export const close = new NativeFunction(Module.getExportByName('libc.so', "close"), "int", ["int"]);
+export const O_RDONLY = 0;
 
 export const createMessageByType = new NativeFunction(base.add(Offsets.CreateMessageByType), "pointer", ["int", "int"]);
 export const operator_new = new NativeFunction(base.add(Offsets.OperatorNew), "pointer", ["int"]);
@@ -26,8 +31,9 @@ export const MovieClipSetText = new NativeFunction(base.add(Offsets.MovieClipSet
 export const DisplayObjectSetSetXY = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'pointer', ['pointer', 'int', 'int'])
 
 export let player = new Player();
+export const config = readConfig();
 
-export const credits = `NBS Offline v2.2
+export const credits = `NBS Offline v2.3 (DEV WIP)
 
 Made by Natesworks 
 Contact: contact@natesworks.com

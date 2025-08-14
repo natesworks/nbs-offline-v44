@@ -1,4 +1,5 @@
-import { base, malloc, possibleBotNames, stringCtor } from "./definitions.js";
+import { Brawler } from "./brawler.js";
+import { base, close, malloc, O_RDONLY, open, possibleBotNames, read, stringCtor } from "./definitions.js";
 import { Offsets } from "./offsets.js";
 
 export function getMessageManagerInstance(): NativePointer {
@@ -24,7 +25,7 @@ export function decodeString(src: NativePointer): string | null {
     return src.add(Process.pointerSize * 2).readUtf8String();
 }
 
-export function strPtr(message : string) {
+export function strPtr(message: string) {
     var charPtr = malloc(message.length + 1);
     (Memory as any).writeUtf8String(charPtr, message);
     return charPtr
@@ -34,6 +35,68 @@ export function createStringObject(text: string) {
     let ptr = malloc(128);
     stringCtor(ptr, strPtr(text));
     return ptr;
+}
+
+export function readFile(path: string) {
+    const p = Memory.allocUtf8String(path);
+    const fd = open(p, O_RDONLY);
+    if (fd < 0) throw new Error("open failed");
+
+    const buf = Memory.alloc(4096);
+    let out = "";
+
+    while (true) {
+        const n = read(fd, buf, 4096);
+        if (n <= 0)
+            break
+
+        const ab = (Memory as any).readByteArray(buf, n) as ArrayBuffer; // i hate typescript but i like completions sooo
+        const bytes = new Uint8Array(ab);
+
+        let chunk = "";
+        for (let i = 0; i < bytes.length; i++) {
+            chunk += String.fromCharCode(bytes[i]);
+        }
+        out += chunk;
+    }
+
+    close(fd);
+    return out;
+}
+
+export function getLibraryDir() {
+    const maps = readFile("/proc/self/maps")
+    const lines = maps.split("\n")
+    let libName = "libNBS.so" // if u renamed it then skill issue tbh
+
+    for (const line of lines) {
+        const parts = line.trim().split(/\s+/)
+        if (parts.length >= 6) {
+            const path = parts[5]
+            if (path.includes(libName)) {
+                const lastSlash = path.lastIndexOf("/")
+                return lastSlash !== -1 ? path.slice(0, lastSlash) : path
+            }
+        }
+    }
+
+    throw new Error("libNBS.so not found")
+}
+
+export function calculateTrophies(brawlerData: Record<number, Brawler>): number {
+    let trophies = 0;
+    for (const [_, brawler] of Object.entries(brawlerData as Record<string, any>)) {
+        trophies += brawler.highestTrophies;
+    }
+    return trophies;
+}
+
+export function calculateHighestTrophies(brawlerData: Record<number, Brawler>): number {
+    let trophies = 0;
+    for (const [_, brawler] of Object.entries(brawlerData as Record<string, any>)) {
+        trophies += brawler.highestTrophies;
+    }
+    return trophies;
 }
 
 // cant use TextEncoder or TextDecoder in frida so skidded this thing

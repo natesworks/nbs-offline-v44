@@ -1,4 +1,6 @@
 import { Brawler } from "./brawler.js";
+import { Config } from "./config.js";
+import { calculateHighestTrophies, calculateTrophies } from "./util.js";
 
 export class Player {
     name = "Natesworks";
@@ -87,4 +89,23 @@ export class Player {
         58: new Brawler(474, [521, 556, 557], 0, 0, 11, 0, 2),
         59: new Brawler(491, [546], 0, 0, 11, 0, 2)
     };
+
+    applyConfig(config: Config) {
+        this.coins = config.coins;
+        this.gems = config.gems;
+        this.level = config.experienceLevel;
+        this.xp = config.experience;
+        this.namecolor = config.starpoints;
+        this.thumbnail = config.starpoints;
+        this.trophyRoadTier = config.trophyRoadTier;
+        this.tokens = config.starpoints;
+        this.tokenDoublers = config.starpoints;
+        this.trioVictories = config.trioWins;
+        this.soloVictories = config.soloWins;
+        this.duoVictories = config.duoWins;
+        this.challengeWins = config.challengeWins;
+        this.selectedBrawlers = config.selectedBrawlers;
+        this.trophies = calculateTrophies(config.ownedBrawlers);
+        this.highestTrophies = calculateHighestTrophies(config.ownedBrawlers);
+    }
 }
