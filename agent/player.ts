@@ -18,7 +18,7 @@ export class Player {
     tokens = 0;
     level = 1;
     gems = 0;
-    supportedCreator = "nbs.brawlmods.com";
+    supportedCreator = "Natesworks";
     region = "PL";
     tokenDoublers = 0;
     selectedBrawlers = [0, 1, 2];

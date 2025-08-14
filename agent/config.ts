@@ -20,6 +20,8 @@ export class Config {
     duoWins = 0;
     challengeWins = 0;
     selectedBrawlers = [0, 1, 2];
+    enableShop = false;
+    enableBrawlPass = false;
     lobbyinfo = "";
     ownedBrawlers: Record<number, Brawler> = [];
 }
@@ -50,7 +52,8 @@ export function readConfig() {
     config.duoWins = nbs.duoVictories;
     config.challengeWins = nbs.mostChallengeWins;
     config.lobbyinfo = nbs.lobbyinfo;
-
+    config.enableBrawlPass = nbs.enableBrawlPass;
+    config.enableShop = nbs.enableShop;
     for (const [id, brawler] of Object.entries(nbs.unlockedBrawlers as Record<string, any>)) { // why does it have to be string sob
         config.ownedBrawlers[Number(id)] = new Brawler(
             brawler.cardID,

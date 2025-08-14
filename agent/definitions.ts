@@ -33,6 +33,9 @@ export const DisplayObjectSetSetXY = new NativeFunction(base.add(Offsets.Display
 export let player = new Player();
 export const config = readConfig();
 
+export const brawlPassButtonIsDisabled = 37;
+export const shopIsDisabled = 5;
+
 export const credits = `NBS Offline v2.3 (DEV WIP)
 
 Made by Natesworks 

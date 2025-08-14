@@ -1,6 +1,6 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, credits, customButtonSetButtonListener, dropGuiContainerAddGameButton as dropGUIContainerAddGameButton, gameGuiContainerAddButton, gameGuiContainerAddGameButton, homePageGetButtonByName, player, showFloaterTextAtDefaultPos, stringCtor } from "./definitions.js";
+import { base, brawlPassButtonIsDisabled, config, credits, customButtonSetButtonListener, dropGuiContainerAddGameButton as dropGUIContainerAddGameButton, gameGuiContainerAddButton, gameGuiContainerAddGameButton, homePageGetButtonByName, player, shopIsDisabled, showFloaterTextAtDefaultPos, stringCtor } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
@@ -75,18 +75,19 @@ export function installHooks() {
             }
         });
 
-    Interceptor.attach(base.add(Offsets.LogicConfDataGetIntValue),
-        {
-            onEnter: function (args) {
-                if (args[1].equals(ptr(5)) || args[1].equals(ptr(37)))
-                    this.retval = ptr(1);
-            },
-
-            onLeave: function (retval) {
-                if (this.retval !== undefined)
-                    retval.replace(this.retval);
-            }
-        });
+    Interceptor.attach(base.add(Offsets.LogicConfDataGetIntValue), {
+        onEnter: function (args) {
+            let val = args[1];
+            if (val.equals(ptr(shopIsDisabled)))
+                this.retval = ptr(config.enableShop ? 0 : 1);
+            else if (val.equals(ptr(brawlPassButtonIsDisabled)))
+                this.retval = ptr(config.enableBrawlPass ? 0 : 1);
+        },
+        onLeave: function (retval) {
+            if (this.retval !== undefined)
+                retval.replace(this.retval);
+        }
+    });
 
     Interceptor.replace(
         base.add(Offsets.MessagingSend),
