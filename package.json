@@ -6,12 +6,12 @@
   "main": "agent/index.ts",
   "scripts": {
     "prepare": "npm run build",
-    "build": "frida-compile agent/index.ts -o _agent.js -c",
-    "watch": "frida-compile agent/index.ts -o _agent.js -w"
+    "build": "npx esbuild agent/init.ts --bundle --format=iife --platform=neutral --target=es2020 --outfile=script.js"
   },
   "devDependencies": {
     "@types/frida-gum": "^18.3.1",
     "@types/node": "^18.14.0",
+    "esbuild": "0.25.9",
     "frida-compile": "^16.1.8"
   }
 }

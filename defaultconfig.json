@@ -1,7 +1,7 @@
 {
   "interaction": {
     "type": "script",
-    "path": "libnbsoffline.s.so"
+    "path": "libloader.so"
   },
   "nbs": {
     "coins": 0,

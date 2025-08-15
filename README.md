@@ -11,6 +11,7 @@ This is an offline client for V44 (the version that added Otis).
 - Random bot names
 - A lot of random stuff
 - Edit controls brawler is now Otis
+- Configuration file
 
 **Unfinished:**
 
