@@ -1,6 +1,6 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, brawlPassButtonIsDisabled, config, credits, customButtonSetButtonListener, dropGuiContainerAddGameButton as dropGUIContainerAddGameButton, gameGuiContainerAddButton, gameGuiContainerAddGameButton, homePageGetButtonByName, player, shopIsDisabled, showFloaterTextAtDefaultPos, stringCtor } from "./definitions.js";
+import { base, brawlPassButtonIsDisabled, config, credits, friendlyGameLevelRequirement, player, shopIsDisabled } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
@@ -82,6 +82,8 @@ export function installHooks() {
                 this.retval = ptr(config.enableShop ? 0 : 1);
             else if (val.equals(ptr(brawlPassButtonIsDisabled)))
                 this.retval = ptr(config.enableBrawlPass ? 0 : 1);
+            else if (val.equals(ptr(friendlyGameLevelRequirement)))
+                this.retval = ptr(0);
         },
         onLeave: function (retval) {
             if (this.retval !== undefined)
