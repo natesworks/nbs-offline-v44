@@ -8,12 +8,12 @@ import { LobbyInfoMessage } from "./packets/server/LobbyInfoMessage.js";
 import { createStringObject, getBotNames, decodeString } from "./util.js";
 import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 import { createDebugButton } from "./debugmenu.js";
+import { TeamMessage } from "./packets/server/TeamMessage.js";
 
 let botNames: string[] = [];
 let homePageInstance: NativePointerValue;
 
 export function installHooks() {
-
     Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
         {
             onEnter: function (args) {
@@ -113,6 +113,9 @@ export function installHooks() {
             }
             else if (type == 14113) { // GetPlayerProfileMessage
                 Messaging.sendOfflineMessage(24113, PlayerProfileMessage.encode(player));
+            }
+            else if (type == 14350) { // TeamCreateMessage
+                //Messaging.sendOfflineMessage(24124, TeamMessage.encode(player));
             }
 
             PiranhaMessage.destroyMessage(message);
