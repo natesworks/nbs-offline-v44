@@ -5,4 +5,5 @@ export function applyPatches() {
     // cursed code; maybe i should've used js
     (Memory as any).writeUtf8String(base.add(Offsets.EditControlsBrawler), "Silencer\0");
     //(Memory as any).writeUtf8String(base.add(Offsets.EditControlsMap), "Tutorial\0"); crashes
+    (Memory as any).writeUtf8String(base.add(0x1335fe2), "127.0.0.1\0");
 }

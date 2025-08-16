@@ -1,5 +1,5 @@
 import { Brawler } from "./brawler.js";
-import { base, close, malloc, O_CREAT, O_RDONLY, O_TRUNC, O_WRONLY, open, possibleBotNames, read, stringCtor, write } from "./definitions.js";
+import { base, close, malloc, O_CREAT, O_RDONLY, O_RDWR, O_TRUNC, O_WRONLY, open, possibleBotNames, read, stringCtor, write } from "./definitions.js";
 import { Offsets } from "./offsets.js";
 
 export function getMessageManagerInstance(): NativePointer {
@@ -37,10 +37,14 @@ export function createStringObject(text: string) {
     return ptr;
 }
 
-export function readFile(path: string) {
+export function openFile(path: string, rw = false) {
     const p = Memory.allocUtf8String(path);
-    const fd = open(p, O_RDONLY, 0);
-    if (fd < 0) throw new Error("open failed");
+    const fd = open(p, rw ? O_RDWR : O_RDONLY, 0);
+    if (fd < 0) throw new Error("open failed"); // cant use logger or if it errors when opening log file it will break xd
+    return fd;
+}
+
+export function readFile(fd: number) {
     const buf = Memory.alloc(4096);
     let chunks: ArrayBuffer[] = [];
     while (true) {
@@ -49,7 +53,6 @@ export function readFile(path: string) {
         const chunk = buf.readByteArray(n);
         if (chunk) chunks.push(chunk);
     }
-    close(fd);
     let raw = "";
     for (const chunk of chunks) {
         raw += String.fromCharCode(...new Uint8Array(chunk));
@@ -57,10 +60,7 @@ export function readFile(path: string) {
     return raw;
 }
 
-export function writeFile(path: string, content: string) {
-    const p = Memory.allocUtf8String(path);
-    const fd = open(p, O_WRONLY | O_CREAT | O_TRUNC, 0o644);
-    if (fd < 0) throw new Error("open failed");
+export function writeFile(fd: number, content: string) {
     const {
         ptr,
         len
@@ -74,12 +74,13 @@ export function writeFile(path: string, content: string) {
         }
         total += n;
     }
-    close(fd);
     return total;
 }
 
 export function getLibraryDir() {
-    const maps = readFile("/proc/self/maps")
+    const fd = openFile("/proc/self/maps");
+    const maps = readFile(fd)
+    close(fd);
     const lines = maps.split("\n")
     let libName = "libNBS.so" // if u renamed it then skill issue tbh
 
@@ -158,7 +159,7 @@ export function stringToUtf8Array(str: string): Uint8Array {
     return new Uint8Array(utf8)
 }
 
-export function utf8ByteLength(s : string) {
+export function utf8ByteLength(s: string) {
     let bytes = 0;
     for (let i = 0; i < s.length; i++) {
         const c = s.charCodeAt(i);
@@ -172,9 +173,9 @@ export function utf8ByteLength(s : string) {
     return bytes;
 }
 
-export function utf8ToBytes(s : string) {
+export function utf8ToBytes(s: string) {
     const len = utf8ByteLength(s);
-    const buf = Memory.alloc(len);
+    const buf = malloc(len);
     let off = 0;
     for (let i = 0; i < s.length; i++) {
         let c = s.charCodeAt(i);

@@ -1,7 +1,7 @@
 import { Config, readConfig } from "./config.js";
 import { Offsets } from "./offsets.js";
 import { Player } from "./player.js";
-import { readFile } from "./util.js";
+import { openFile, readFile } from "./util.js";
 
 export const base = Module.getBaseAddress("libg.so");
 
@@ -12,8 +12,10 @@ export const write = new NativeFunction(Module.getExportByName('libc.so', "write
 export const close = new NativeFunction(Module.getExportByName('libc.so', "close"), "int", ["int"]);
 export const O_RDONLY = 0;
 export const O_WRONLY = 1;
+export const O_RDWR = 2;
 export const O_CREAT = 64;
 export const O_TRUNC = 512;
+export const O_APPEND = 1024;
 
 export const android_log_write = new NativeFunction(
     Module.findExportByName("liblog.so", "__android_log_write")!,
@@ -44,9 +46,11 @@ export const DisplayObjectSetSetXY = new NativeFunction(base.add(Offsets.Display
 export let player = new Player();
 export let config: Config;
 export let pkg: string;
+export let logFile: number;
 
 export function load() {
-    pkg = readFile("/proc/self/cmdline").split("\0")[0]
+    pkg = readFile(openFile("/proc/self/cmdline")).split("\0")[0]
+    logFile = openFile(`/data/data/${pkg}/files/log.txt`, true);
     config = readConfig();
 }
 
