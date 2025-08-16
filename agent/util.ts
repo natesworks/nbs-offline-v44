@@ -37,10 +37,10 @@ export function createStringObject(text: string) {
     return ptr;
 }
 
-export function openFile(path: string, rw = false) {
+export function openFile(path : string, rw = false) {
     const p = Memory.allocUtf8String(path);
-    const fd = open(p, rw ? O_RDWR : O_RDONLY, 0);
-    if (fd < 0) throw new Error("open failed"); // cant use logger or if it errors when opening log file it will break xd
+    const fd = open(p, rw ? O_CREAT | O_RDWR : O_RDONLY, 0o666);
+    if (fd < 0) throw new Error("open failed: " + path);
     return fd;
 }
 
