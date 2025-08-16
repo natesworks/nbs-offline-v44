@@ -6,4 +6,4 @@ import { applyPatches } from "./patches.js";
 player.applyConfig(config);
 installHooks();
 applyPatches();
-addDebugFile();
+//addDebugFile();

@@ -25,7 +25,7 @@ This is an offline client for V44 (the version that added Otis).
 
 ## Client
 
-[Download](https://content.natesworks.com/brawlmods/nbsoffline/nbsoffline-2.2.apk)
+[Download](https://content.natesworks.com/brawlmods/nbsoffline/nbsoffline.apk)
 
 ## Credits
 

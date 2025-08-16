@@ -54,10 +54,10 @@ export function readConfig() {
     config.duoWins = nbs.duoVictories;
     config.challengeWins = nbs.mostChallengeWins;
     config.lobbyinfo = nbs.lobbyinfo;
-    config.enableBrawlPass = nbs.enableBrawlPass;
-    config.enableShop = nbs.enableShop;
-    config.enableClubs = nbs.enableClubs;
-    config.brawlPassPremium = nbs.brawlPassPremium;
+    config.enableBrawlPass = nbs.enableBrawlPass == null ? false : nbs.enableBrawlPass;
+    config.enableShop = nbs.enableShop == null ? false : nbs.enableShop;
+    config.enableClubs = nbs.enableClubs == null ? false : nbs.enableClubs;
+    config.brawlPassPremium = nbs.brawlPassPremium == null ? true : nbs.brawlPassPremium;
     for (const [id, brawler] of Object.entries(nbs.unlockedBrawlers as Record<string, any>)) { // why does it have to be string sob
         config.ownedBrawlers[Number(id)] = new Brawler(
             brawler.cardID,

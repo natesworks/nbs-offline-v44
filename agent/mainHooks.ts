@@ -5,7 +5,7 @@ import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
 import { LobbyInfoMessage } from "./packets/server/LobbyInfoMessage.js";
-import { createStringObject, getBotNames, decodeString } from "./util.js";
+import { getBotNames, decodeString } from "./util.js";
 import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 import { createDebugButton } from "./debugmenu.js";
 import { TeamMessage } from "./packets/server/TeamMessage.js";
@@ -74,6 +74,8 @@ export function installHooks() {
                 */
             }
         });
+
+
 
     Interceptor.attach(base.add(Offsets.LogicConfDataGetIntValue), {
         onEnter: function (args) {
@@ -152,6 +154,7 @@ export function installHooks() {
         {
             onEnter(args) {
                 let name = decodeString(args[1]);
+                console.log("HomePage::GetButtonByName", name);
             },
         })
 
@@ -180,7 +183,7 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.HomeModeEnter),
         {
             onLeave() {
-                createDebugButton();
+                //createDebugButton();
             }
         });
 
