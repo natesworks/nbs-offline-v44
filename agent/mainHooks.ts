@@ -9,6 +9,7 @@ import { getBotNames, decodeString } from "./util.js";
 import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 import { createDebugButton } from "./debugmenu.js";
 import { TeamMessage } from "./packets/server/TeamMessage.js";
+import { Logger } from "./logger.js";
 
 let botNames: string[] = [];
 let homePageInstance: NativePointerValue;
@@ -75,8 +76,6 @@ export function installHooks() {
             }
         });
 
-
-
     Interceptor.attach(base.add(Offsets.LogicConfDataGetIntValue), {
         onEnter: function (args) {
             let val = args[1];
@@ -103,10 +102,10 @@ export function installHooks() {
             if (type == 10108)
                 return 0;
 
-            console.log("Type:", type);
-            //console.log("Length", PiranhaMessage.getMessageLength(message));
+            Logger.debug("Type:", type);
+            //Logger.debug("Length", PiranhaMessage.getMessageLength(message));
 
-            if (type == 10100 || type == 10101) { // ClientHelloMessage
+            if (type == 10100 || type == 10101) { // ClientHelloMessage; LoginMessage
                 Messaging.sendOfflineMessage(20104, LoginOkMessage.encode(player));
                 Messaging.sendOfflineMessage(24101, OwnHomeDataMessage.encode(player));
             }
@@ -130,7 +129,7 @@ export function installHooks() {
         {
             onEnter(args) {
                 let button = decodeString(args[1].add(Offsets.ClickedButtonName));
-                console.log("HomePage::buttonClicked", button);
+                Logger.debug("HomePage::buttonClicked", button);
                 return;
             }
         });
@@ -154,28 +153,28 @@ export function installHooks() {
         {
             onEnter(args) {
                 let name = decodeString(args[1]);
-                console.log("HomePage::GetButtonByName", name);
+                //Logger.debug("HomePage::GetButtonByName", name); // uncomment for 4 seconds per frame
             },
         })
 
     Interceptor.attach(base.add(Offsets.DropGUIContainerAddGameButton),
         {
             onEnter(args) {
-                console.log("DropGUIContainer::addGameButton", decodeString(args[2]))
+                Logger.debug("DropGUIContainer::addGameButton", decodeString(args[2]))
             },
         })
 
     Interceptor.attach(base.add(Offsets.GameGUIContainerAddGameButton),
         {
             onEnter(args) {
-                console.log("GameGUIContainer::addGameButton", args[1].readCString());
+                Logger.debug("GameGUIContainer::addGameButton", args[1].readCString());
             },
         });
 
     Interceptor.attach(base.add(Offsets.GUIContainerAddButton),
         {
             onEnter(args) {
-                console.log("GUIContainer::addButton", args[1].readCString());
+                Logger.debug("GUIContainer::addButton", args[1].readCString());
             },
         }
     );

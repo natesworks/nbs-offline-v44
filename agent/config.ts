@@ -1,4 +1,5 @@
 import { Brawler } from "./brawler.js";
+import { Logger } from "./logger.js";
 import { getLibraryDir, readFile } from "./util.js";
 
 export class Config {
@@ -30,8 +31,8 @@ export class Config {
 
 export function readConfig() {
     const libPath = getLibraryDir();
-    const configPath = libPath + "/libNBS.c.so";
-    console.log("Config path:", configPath);
+    const configPath = libPath + "/libNBS.c.so.bak";
+    Logger.debug("Config path:", configPath);
     const data = readFile(configPath);
     const json = JSON.parse(data);
 
@@ -69,6 +70,8 @@ export function readConfig() {
             brawler.state
         );
     }
+
+    Logger.info("Config loaded");
 
     return config;
 }

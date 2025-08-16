@@ -1,14 +1,25 @@
-import { readConfig } from "./config.js";
+import { Config, readConfig } from "./config.js";
 import { Offsets } from "./offsets.js";
 import { Player } from "./player.js";
+import { readFile } from "./util.js";
 
 export const base = Module.getBaseAddress("libg.so");
 
 export const malloc = new NativeFunction(Module.getExportByName('libc.so', 'malloc'), 'pointer', ['uint']);
-export const open = new NativeFunction(Module.getExportByName('libc.so', "open"), "int", ["pointer", "int"]);
+export const open = new NativeFunction(Module.getExportByName('libc.so', "open"), "int", ["pointer", "int", "int"]);
 export const read = new NativeFunction(Module.getExportByName('libc.so', "read"), "int", ["int", "pointer", "int"]);
+export const write = new NativeFunction(Module.getExportByName('libc.so', "write"), "int", ["int", "pointer", "int"]);
 export const close = new NativeFunction(Module.getExportByName('libc.so', "close"), "int", ["int"]);
 export const O_RDONLY = 0;
+export const O_WRONLY = 1;
+export const O_CREAT = 64;
+export const O_TRUNC = 512;
+
+export const android_log_write = new NativeFunction(
+    Module.findExportByName("liblog.so", "__android_log_write")!,
+    'int',
+    ['int', 'pointer', 'pointer']
+);
 
 export const createMessageByType = new NativeFunction(base.add(Offsets.CreateMessageByType), "pointer", ["int", "int"]);
 export const operator_new = new NativeFunction(base.add(Offsets.OperatorNew), "pointer", ["int"]);
@@ -31,7 +42,13 @@ export const MovieClipSetText = new NativeFunction(base.add(Offsets.MovieClipSet
 export const DisplayObjectSetSetXY = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'pointer', ['pointer', 'int', 'int'])
 
 export let player = new Player();
-export const config = readConfig();
+export let config: Config;
+export let pkg: string;
+
+export function load() {
+    pkg = readFile("/proc/self/cmdline").split("\0")[0]
+    config = readConfig();
+}
 
 export const brawlPassButtonIsDisabled = 37;
 export const shopIsDisabled = 5;

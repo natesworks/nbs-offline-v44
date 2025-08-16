@@ -1,5 +1,5 @@
 import { Brawler } from "./brawler.js";
-import { base, close, malloc, O_RDONLY, open, possibleBotNames, read, stringCtor } from "./definitions.js";
+import { base, close, malloc, O_CREAT, O_RDONLY, O_TRUNC, O_WRONLY, open, possibleBotNames, read, stringCtor, write } from "./definitions.js";
 import { Offsets } from "./offsets.js";
 
 export function getMessageManagerInstance(): NativePointer {
@@ -39,29 +39,43 @@ export function createStringObject(text: string) {
 
 export function readFile(path: string) {
     const p = Memory.allocUtf8String(path);
-    const fd = open(p, O_RDONLY);
+    const fd = open(p, O_RDONLY, 0);
     if (fd < 0) throw new Error("open failed");
-
     const buf = Memory.alloc(4096);
-    let out = "";
-
+    let chunks: ArrayBuffer[] = [];
     while (true) {
         const n = read(fd, buf, 4096);
-        if (n <= 0)
-            break
-
-        const ab = (Memory as any).readByteArray(buf, n) as ArrayBuffer; // i hate typescript but i like completions sooo
-        const bytes = new Uint8Array(ab);
-
-        let chunk = "";
-        for (let i = 0; i < bytes.length; i++) {
-            chunk += String.fromCharCode(bytes[i]);
-        }
-        out += chunk;
+        if (n <= 0) break;
+        const chunk = buf.readByteArray(n);
+        if (chunk) chunks.push(chunk);
     }
-
     close(fd);
-    return out;
+    let raw = "";
+    for (const chunk of chunks) {
+        raw += String.fromCharCode(...new Uint8Array(chunk));
+    }
+    return raw;
+}
+
+export function writeFile(path: string, content: string) {
+    const p = Memory.allocUtf8String(path);
+    const fd = open(p, O_WRONLY | O_CREAT | O_TRUNC, 0o644);
+    if (fd < 0) throw new Error("open failed");
+    const {
+        ptr,
+        len
+    } = utf8ToBytes(content);
+    let total = 0;
+    while (total < len) {
+        const n = write(fd, ptr.add(total), Math.min(4096, len - total));
+        if (n < 0) {
+            close(fd);
+            throw new Error("write failed");
+        }
+        total += n;
+    }
+    close(fd);
+    return total;
 }
 
 export function getLibraryDir() {
@@ -142,4 +156,49 @@ export function stringToUtf8Array(str: string): Uint8Array {
         }
     }
     return new Uint8Array(utf8)
+}
+
+export function utf8ByteLength(s : string) {
+    let bytes = 0;
+    for (let i = 0; i < s.length; i++) {
+        const c = s.charCodeAt(i);
+        if (c < 0x80) bytes += 1;
+        else if (c < 0x800) bytes += 2;
+        else if (c >= 0xD800 && c <= 0xDBFF) {
+            bytes += 4;
+            i++;
+        } else bytes += 3;
+    }
+    return bytes;
+}
+
+export function utf8ToBytes(s : string) {
+    const len = utf8ByteLength(s);
+    const buf = Memory.alloc(len);
+    let off = 0;
+    for (let i = 0; i < s.length; i++) {
+        let c = s.charCodeAt(i);
+        if (c < 0x80) {
+            buf.add(off++).writeU8(c);
+        } else if (c < 0x800) {
+            buf.add(off++).writeU8(0xC0 | (c >> 6));
+            buf.add(off++).writeU8(0x80 | (c & 0x3F));
+        } else if (c >= 0xD800 && c <= 0xDBFF) {
+            const high = c;
+            const low = s.charCodeAt(++i);
+            const cp = ((high - 0xD800) << 10) + (low - 0xDC00) + 0x10000;
+            buf.add(off++).writeU8(0xF0 | (cp >> 18));
+            buf.add(off++).writeU8(0x80 | ((cp >> 12) & 0x3F));
+            buf.add(off++).writeU8(0x80 | ((cp >> 6) & 0x3F));
+            buf.add(off++).writeU8(0x80 | (cp & 0x3F));
+        } else {
+            buf.add(off++).writeU8(0xE0 | (c >> 12));
+            buf.add(off++).writeU8(0x80 | ((c >> 6) & 0x3F));
+            buf.add(off++).writeU8(0x80 | (c & 0x3F));
+        }
+    }
+    return {
+        ptr: buf,
+        len
+    };
 }
