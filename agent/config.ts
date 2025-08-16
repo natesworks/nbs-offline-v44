@@ -31,7 +31,7 @@ export class Config {
 
 export function readConfig() {
     const libPath = getLibraryDir();
-    const configPath = libPath + "/libNBS.c.so.bak";
+    const configPath = libPath + "/libNBS.c.so";
     Logger.debug("Config path:", configPath);
     const data = readFile(openFile(configPath));
     const json = JSON.parse(data);
