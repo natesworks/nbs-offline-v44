@@ -114,6 +114,11 @@ export function calculateHighestTrophies(brawlerData: Record<number, Brawler>): 
     return trophies;
 }
 
+export function sleep(ms : number) {
+    var start = Date.now();
+    while (Date.now() - start < ms) {}
+}
+
 // cant use TextEncoder or TextDecoder in frida so skidded this thing
 export function utf8ArrayToString(array: Uint8Array): string {
     let out = '', i = 0, len = array.length

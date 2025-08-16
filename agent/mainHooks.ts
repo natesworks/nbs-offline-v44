@@ -5,7 +5,7 @@ import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
 import { LobbyInfoMessage } from "./packets/server/LobbyInfoMessage.js";
-import { getBotNames, decodeString } from "./util.js";
+import { getBotNames, decodeString, sleep } from "./util.js";
 import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 import { createDebugButton } from "./debugmenu.js";
 import { TeamMessage } from "./packets/server/TeamMessage.js";
@@ -160,7 +160,10 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.DropGUIContainerAddGameButton),
         {
             onEnter(args) {
-                Logger.debug("DropGUIContainer::addGameButton", decodeString(args[2]))
+                let button = decodeString(args[2]);
+                Logger.debug("DropGUIContainer::addGameButton", button)
+                if (button == "chat_button")
+                    sleep(1000);
             },
         })
 
