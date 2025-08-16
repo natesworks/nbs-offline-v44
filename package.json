@@ -1,7 +1,7 @@
 {
   "name": "nbsoffline-agent",
-  "version": "1.0.0",
-  "description": "Frida agent written in TypeScript",
+  "version": "2.3.1",
+  "description": "Offline V44",
   "private": true,
   "main": "agent/init.ts",
   "scripts": {
