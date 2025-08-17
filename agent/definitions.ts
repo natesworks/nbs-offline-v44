@@ -58,7 +58,7 @@ export const brawlPassButtonIsDisabled = 37;
 export const shopIsDisabled = 5;
 export const friendlyGameLevelRequirement = 3;
 
-export const credits = `NBS Offline v2.3
+export const credits = `NBS Offline v2.3.1
 
 Made by Natesworks 
 Contact: contact@natesworks.com
