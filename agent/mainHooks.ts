@@ -1,6 +1,6 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY, friendlyGameLevelRequirement, getMovieClipByName, logicCharacterServerChargeUlti, malloc, player, radioButtonCreate, shopIsDisabled, stringCtor } from "./definitions.js";
+import { base, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY, friendlyGameLevelRequirement, getMovieClipByName, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, player, radioButtonCreate, shopIsDisabled, stringCtor } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
@@ -150,7 +150,12 @@ export function installHooks() {
         onEnter(args) {
             let button = args[1].readCString();
             Logger.debug("GameGUIContainer::addGameButton", button);
-        }
+            if (button != null && hiddenButtons.includes(button)) this.hide = true;
+        },
+        onLeave(retval) {
+            if (this.hide)
+                displayObjectSetSetXY(retval, -1000, -1000);
+        },
     });
 
     Interceptor.attach(base.add(Offsets.GUIContainerAddButton), {
@@ -249,6 +254,8 @@ export function installHooks() {
             let lobbyInfo = `${info}\n${config.lobbyinfo}`
             if (text?.includes("0-1 not in Club"))
                 args[1] = createStringObject(lobbyInfo);
+            if (hiddenText.some((x) => x === text)) // .some is cool
+                args[1] = createStringObject("");
             //Logger.debug("TextField::SetText", text);
         },
     });

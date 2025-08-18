@@ -67,6 +67,8 @@ export function load() {
 export const brawlPassButtonIsDisabled = 37;
 export const shopIsDisabled = 5;
 export const friendlyGameLevelRequirement = 3;
+export const hiddenButtons = ["button_country", "button_faq", "button_language", "button_sc_id", "button_terms", "button_privacy", "button_credits", "button_parentsguide", "button_thirdparty", "button_api", "button_google_connect", "button_kakao_connect", "button_line_connect", "button_privacy_settings", "button_birthday", "button_edit_controls"];
+export const hiddenText = ["LANGUAGE", "LOCATION", "SUPERCELL ID", "PLAY WITH FRIENDS", "Google Play Sign-In"];
 
 export const credits = `NBS Offline v2.3.1
 
