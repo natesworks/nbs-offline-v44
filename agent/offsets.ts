@@ -58,7 +58,7 @@ export enum Offsets {
     CustomButtonSetButtonListener = 0x2a0304,
     DropGUIContainerAddGameButton = 0x5a71f0,
     GUIContainerAddButton = 0x5c27e0,
-    GetMovieClipByName = 0x571efc,
+    GetMovieClipByName = 0x8d24d8,
     MoveClipSetChildVisible = 0x15a844,
     GameButtonAddButtonManually = 0x4cb7d0,
     GameButtonCreateButton = 0x530100,
@@ -89,5 +89,8 @@ export enum Offsets {
     LogicCharacterDataGetUltiChargeUltiMul = 0xa12a24,
     LogicCharacterServerTick = 0x609ba4,
     LogicCharacterServerChargeUlti = 0xc60c88,
-    LogicCharacterServerHandleMoveAndAttack = 0x32b04c
+    LogicCharacterServerHandleMoveAndAttack = 0x32b04c,
+    RadioButtonCreateButton = 0xa3f840,
+    RadioButtonSetRadioButtonState = 0x5c455c,
+    MovieClipConstructor = 0x2f19a8
 }

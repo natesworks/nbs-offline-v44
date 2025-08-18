@@ -20,21 +20,23 @@ export function getBotNames(): string[] {
 }
 
 export function decodeString(src: NativePointer): string | null {
-    if (src.add(4).readInt() >= 8) {
-        return src.add(8).readPointer().readUtf8String();
+    const length = src.add(4).readInt();
+    if (length >= 8) {
+        return src.add(Process.pointerSize * 2).readPointer().readUtf8String(length);
     }
-    return src.add(Process.pointerSize * 2).readUtf8String();
+    return src.add(Process.pointerSize * 2).readUtf8String(length);
 }
 
 export function strPtr(message: string) {
-    var charPtr = malloc(message.length + 1);
+    const charPtr = malloc(message.length + 1);
     (Memory as any).writeUtf8String(charPtr, message);
-    return charPtr
+    return charPtr;
 }
 
 export function createStringObject(text: string) {
-    let ptr = malloc(128);
-    stringCtor(ptr, strPtr(text));
+    const strptr = strPtr(text);
+    const ptr = malloc(128);
+    stringCtor(ptr, strptr);
     return ptr;
 }
 

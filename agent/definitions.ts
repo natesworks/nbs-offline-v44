@@ -40,9 +40,13 @@ export const customButtonConstructor = new NativeFunction(base.add(Offsets.Custo
 export const gameButtonConstructor = new NativeFunction(base.add(Offsets.GameButtonConstructor), 'pointer', ['pointer']);
 export const resourceManagerGetMovieClip = new NativeFunction(base.add(Offsets.ResourceManagerGetMovieClip), 'pointer', ['pointer', 'pointer', 'bool']);
 export const customButtonSetMovieClip = new NativeFunction(base.add(Offsets.CustomButtonSetMovieClip), 'pointer', ['pointer', 'pointer']);
-export const MovieClipSetText = new NativeFunction(base.add(Offsets.MovieClipSetText), 'pointer', ['pointer', 'pointer']);
-export const DisplayObjectSetSetXY = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'pointer', ['pointer', 'int', 'int']);
-export const LogicCharacterServerChargeUlti = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'int', ['int', 'int', 'int', 'int', 'int']);
+export const movieClipSetText = new NativeFunction(base.add(Offsets.MovieClipSetText), 'pointer', ['pointer', 'pointer']);
+export const displayObjectSetSetXY = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'pointer', ['pointer', 'int', 'int']);
+export const logicCharacterServerChargeUlti = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'int', ['int', 'int', 'int', 'int', 'int']);
+export const radioButtonCreate = new NativeFunction(base.add(Offsets.RadioButtonCreateButton), 'pointer', ['pointer', 'pointer', 'pointer']);
+export const setRadioButtonState = new NativeFunction(base.add(Offsets.RadioButtonSetRadioButtonState), 'int', ['pointer', 'pointer', 'pointer']);
+export const getMovieClipByName = new NativeFunction(base.add(Offsets.GetMovieClipByName), 'int', ['pointer', 'pointer']);
+export const movieClipConstructor = new NativeFunction(base.add(Offsets.MovieClipConstructor), 'int', ['pointer']);
 
 export let player = new Player();
 export let config: Config;
