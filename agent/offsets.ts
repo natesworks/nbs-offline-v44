@@ -79,5 +79,6 @@ export enum Offsets {
     NativeFontFormatString = 0x7fe2cc,
     LogicDailyButtonGetBrawlPassSeasonData = 0xb6f0c0,
     BrawlPassPremiumFlag = 16, // 4 * ptr size?
-    GameBrawlStars = 0x1335fe2
+    GameBrawlStars = 0x1335fe2,
+    LogicCharacterDataIsBoss = 0x9d800c
 }

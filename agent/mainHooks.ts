@@ -203,4 +203,11 @@ export function installHooks() {
             }
         }
     });
+
+    Interceptor.attach(base.add(Offsets.LogicCharacterDataIsBoss), // if this is true bots stop moving but you can still move lol
+        {
+            onLeave(retval) {
+                retval.replace(ptr(Number(config.disableBots)));
+            },
+        })
 }

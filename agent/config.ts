@@ -28,6 +28,7 @@ export class Config {
     enableClubs = false;
     brawlPassPremium = true;
     ownedBrawlers: Record<number, Brawler> = [];
+    disableBots = false;
 }
 
 export function readConfig() {
@@ -59,6 +60,7 @@ export function readConfig() {
     config.enableShop = nbs.enableShop == null ? false : nbs.enableShop;
     config.enableClubs = nbs.enableClubs == null ? false : nbs.enableClubs;
     config.brawlPassPremium = nbs.brawlPassPremium == null ? true : nbs.brawlPassPremium;
+    config.disableBots = nbs.disableBots == null ? false : nbs.disableBots;
     for (const [id, brawler] of Object.entries(nbs.unlockedBrawlers as Record<string, any>)) { // why does it have to be string sob
         config.ownedBrawlers[Number(id)] = new Brawler(
             brawler.cardID,

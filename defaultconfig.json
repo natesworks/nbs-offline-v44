@@ -28,6 +28,7 @@
     "enableBrawlPass": false,
     "enableClubs": false,
     "brawlPassPremium": true,
+    "disableBots" : false,
     "unlockedBrawlers": {
       "0": {
         "cardID": 0,
