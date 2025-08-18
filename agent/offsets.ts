@@ -80,5 +80,6 @@ export enum Offsets {
     LogicDailyButtonGetBrawlPassSeasonData = 0xb6f0c0,
     BrawlPassPremiumFlag = 16, // 4 * ptr size?
     GameBrawlStars = 0x1335fe2,
-    LogicCharacterDataIsBoss = 0x9d800c
+    LogicCharacterDataIsBoss = 0x9d800c,
+    LogicSkillDataGetMaxCharge = 0x5f12d4
 }

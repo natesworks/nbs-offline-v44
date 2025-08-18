@@ -210,4 +210,12 @@ export function installHooks() {
                 retval.replace(ptr(Number(config.disableBots)));
             },
         })
+
+    Interceptor.attach(base.add(Offsets.LogicSkillDataGetMaxCharge),
+        {
+            onLeave(retval) {
+                if (config.infiniteAmmo)
+                    retval.replace(ptr(0));
+            },
+        })
 }
