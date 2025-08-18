@@ -105,6 +105,7 @@ export class Player {
         this.duoVictories = config.duoWins;
         this.challengeWins = config.challengeWins;
         this.selectedBrawlers = config.selectedBrawlers;
+        this.ownedBrawlers = config.ownedBrawlers;
         this.trophies = calculateTrophies(config.ownedBrawlers);
         this.highestTrophies = calculateHighestTrophies(config.ownedBrawlers);
     }
