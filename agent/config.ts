@@ -29,10 +29,10 @@ export class Config {
     brawlPassPremium = true;
     ownedBrawlers: Record<number, Brawler> = [];
     disableBots = false;
+    logToFile = false;
 }
 
 export function readConfig() {
-    Logger.debug("Config path:", configPath);
     const fd = openFile(configPath, true);
     const data = readFile(fd);
     const json = JSON.parse(data);
@@ -61,6 +61,7 @@ export function readConfig() {
     config.enableClubs = nbs.enableClubs == null ? false : nbs.enableClubs;
     config.brawlPassPremium = nbs.brawlPassPremium == null ? true : nbs.brawlPassPremium;
     config.disableBots = nbs.disableBots == null ? false : nbs.disableBots;
+    config.logToFile = nbs.logToFile == null ? false : nbs.logToFile;
     for (const [id, brawler] of Object.entries(nbs.unlockedBrawlers as Record<string, any>)) { // why does it have to be string sob
         config.ownedBrawlers[Number(id)] = new Brawler(
             brawler.cardID,
@@ -72,8 +73,6 @@ export function readConfig() {
             brawler.state
         );
     }
-
-    Logger.info("Config loaded");
 
     return config;
 }

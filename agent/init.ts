@@ -5,8 +5,11 @@ import { applyPatches } from "./patches.js";
 import { Logger } from "./logger.js";
 
 load();
-player.applyConfig(config);
+Logger.info("Configuration loaded");
 installHooks();
+Logger.info("Hooks installed");
 applyPatches();
+Logger.info("Patches applied");
+player.applyConfig(config);
 //addDebugFile();
 Logger.info("NBS Offline loaded");

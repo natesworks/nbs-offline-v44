@@ -1,4 +1,4 @@
-import { android_log_write, logFile, pkg } from "./definitions.js";
+import { android_log_write, config, logFile, pkg } from "./definitions.js";
 import { openFile, readFile, writeFile } from "./util.js";
 
 const ANDROID_LOG_INFO = 4;
@@ -32,7 +32,8 @@ export class Logger {
         const msg = Logger.format(args);
         const line = `${getTimestamp()} [INFO] ${msg}`;
         console.log(line);
-        writeFile(logFile, readFile(logFile) + line + "\n");
+        if (config.logToFile)
+            writeFile(logFile, readFile(logFile) + line + "\n");
         androidLog(ANDROID_LOG_INFO, msg);
     }
 
@@ -40,7 +41,8 @@ export class Logger {
         const msg = Logger.format(args);
         const line = `${getTimestamp()} [DEBUG] ${msg}`;
         console.log(line);
-        writeFile(logFile, readFile(logFile) + line + "\n");
+        if (config.logToFile)
+            writeFile(logFile, readFile(logFile) + line + "\n");
         androidLog(ANDROID_LOG_DEBUG, msg);
     }
 
@@ -48,7 +50,8 @@ export class Logger {
         const msg = Logger.format(args);
         const line = `${getTimestamp()} [WARN] ${msg}`;
         console.log(line);
-        writeFile(logFile, readFile(logFile) + line + "\n");
+        if (config.logToFile)
+            writeFile(logFile, readFile(logFile) + line + "\n");
         androidLog(ANDROID_LOG_WARN, msg);
     }
 
@@ -56,7 +59,8 @@ export class Logger {
         const msg = Logger.format(args);
         const line = `${getTimestamp()} [ERROR] ${msg}`;
         console.log(line);
-        writeFile(logFile, readFile(logFile) + line + "\n");
+        if (config.logToFile)
+            writeFile(logFile, readFile(logFile) + line + "\n");
         androidLog(ANDROID_LOG_ERROR, msg);
     }
 }
