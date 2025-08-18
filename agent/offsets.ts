@@ -81,5 +81,13 @@ export enum Offsets {
     BrawlPassPremiumFlag = 16, // 4 * ptr size?
     GameBrawlStars = 0x1335fe2,
     LogicCharacterDataIsBoss = 0x9d800c,
-    LogicSkillDataGetMaxCharge = 0x5f12d4
+    LogicSkillDataGetMaxCharge = 0x5f12d4,
+    LogicCharacterServerAIAddSeenEnemy = 0x311fd8,
+    LogicSkillDataCanMoveAtSameTime = 0x86b9e4,
+    LogicCharacterServerUltiUsed = 0x99b3b4,
+    LogicCharacterDataGetUltiChargeMul = 0x1704a8,
+    LogicCharacterDataGetUltiChargeUltiMul = 0xa12a24,
+    LogicCharacterServerTick = 0x609ba4,
+    LogicCharacterServerChargeUlti = 0xc60c88,
+    LogicCharacterServerHandleMoveAndAttack = 0x32b04c
 }

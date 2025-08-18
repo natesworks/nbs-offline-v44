@@ -41,7 +41,8 @@ export const gameButtonConstructor = new NativeFunction(base.add(Offsets.GameBut
 export const resourceManagerGetMovieClip = new NativeFunction(base.add(Offsets.ResourceManagerGetMovieClip), 'pointer', ['pointer', 'pointer', 'bool']);
 export const customButtonSetMovieClip = new NativeFunction(base.add(Offsets.CustomButtonSetMovieClip), 'pointer', ['pointer', 'pointer']);
 export const MovieClipSetText = new NativeFunction(base.add(Offsets.MovieClipSetText), 'pointer', ['pointer', 'pointer']);
-export const DisplayObjectSetSetXY = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'pointer', ['pointer', 'int', 'int'])
+export const DisplayObjectSetSetXY = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'pointer', ['pointer', 'int', 'int']);
+export const LogicCharacterServerChargeUlti = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'int', ['int', 'int', 'int', 'int', 'int']);
 
 export let player = new Player();
 export let config: Config;

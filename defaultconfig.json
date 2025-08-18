@@ -30,6 +30,8 @@
     "brawlPassPremium": true,
     "disableBots" : false,
     "logToFile": false,
+    "infiniteAmmo": false,
+    "infiniteSuper": false,
     "unlockedBrawlers": {
       "0": {
         "cardID": 0,

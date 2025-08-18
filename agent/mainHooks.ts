@@ -1,6 +1,6 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, brawlPassButtonIsDisabled, config, credits, friendlyGameLevelRequirement, player, shopIsDisabled } from "./definitions.js";
+import { base, brawlPassButtonIsDisabled, config, credits, friendlyGameLevelRequirement, LogicCharacterServerChargeUlti, player, shopIsDisabled } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
@@ -12,26 +12,22 @@ import { TeamMessage } from "./packets/server/TeamMessage.js";
 import { Logger } from "./logger.js";
 
 let botNames: string[] = [];
-let homePageInstance: NativePointerValue;
 
 export function installHooks() {
-    Interceptor.attach(base.add(Offsets.ServerConnectionUpdate),
-        {
-            onEnter: function (args) {
-                args[0].add(Process.pointerSize).readPointer().add(Offsets.HasConnectFailed).writeU8(0);
-                args[0].add(Process.pointerSize).readPointer().add(Offsets.State).writeInt(5);
-            }
-        });
+    Interceptor.attach(base.add(Offsets.ServerConnectionUpdate), {
+        onEnter: function (args) {
+            args[0].add(Process.pointerSize).readPointer().add(Offsets.HasConnectFailed).writeU8(0);
+            args[0].add(Process.pointerSize).readPointer().add(Offsets.State).writeInt(5);
+        }
+    });
 
-    Interceptor.attach(base.add(Offsets.MessageManagerReceiveMessage),
-        {
-            onLeave: function (retval) {
-                retval.replace(ptr(1));
-            }
-        });
+    Interceptor.attach(base.add(Offsets.MessageManagerReceiveMessage), {
+        onLeave: function (retval) {
+            retval.replace(ptr(1));
+        }
+    });
 
-    Interceptor.attach(base.add(Offsets.HomePageStartGame),
-        {
+    Interceptor.attach(base.add(Offsets.HomePageStartGame), {
             onEnter: function (args) {
                 args[3] = ptr(3);
                 botNames = getBotNames();
@@ -39,8 +35,7 @@ export function installHooks() {
         });
 
     /* to hide the debug ui; on newer versions instead just replace retval of LogicVersion::isDebugUIAvailable */
-    Interceptor.attach(base.add(Offsets.CombatHUDButtonClicked),
-        {
+    Interceptor.attach(base.add(Offsets.CombatHUDButtonClicked), {
             onEnter: function () {
                 this.isDevBuildHook = Interceptor.attach(base.add(Offsets.LogicVersionIsDeveloperBuild),
                     {
@@ -54,8 +49,7 @@ export function installHooks() {
             }
         });
 
-    Interceptor.attach(base.add(Offsets.LogicLocalizationGetString),
-        {
+    Interceptor.attach(base.add(Offsets.LogicLocalizationGetString), {
             onEnter: function (args) {
                 this.tid = args[0].readCString();
                 if (this.tid.startsWith("TID_BOT_")) {
@@ -125,8 +119,7 @@ export function installHooks() {
         }, "int", ["pointer", "pointer"])
     );
 
-    Interceptor.attach(base.add(Offsets.HomePageButtonClicked),
-        {
+    Interceptor.attach(base.add(Offsets.HomePageButtonClicked), {
             onEnter(args) {
                 let button = decodeString(args[1].add(Offsets.ClickedButtonName));
                 Logger.debug("HomePage::buttonClicked", button);
@@ -134,31 +127,20 @@ export function installHooks() {
             }
         });
 
-    Interceptor.attach(base.add(Offsets.IsAllianceFeatureAvailable),
-        {
+    Interceptor.attach(base.add(Offsets.IsAllianceFeatureAvailable),{
             onLeave(retval) {
                 retval.replace(ptr(Number(config.enableClubs)));
             }
         });
 
-    Interceptor.attach(base.add(Offsets.HomePageUpdate),
-        {
-            onEnter(args) {
-                homePageInstance = args[0];
-            }
-        });
-
-
-    Interceptor.attach(base.add(Offsets.HomePageGetButtonByName),
-        {
+    Interceptor.attach(base.add(Offsets.HomePageGetButtonByName), {
             onEnter(args) {
                 let name = decodeString(args[1]);
                 //Logger.debug("HomePage::GetButtonByName", name); // uncomment for 4 seconds per frame
             },
         })
 
-    Interceptor.attach(base.add(Offsets.DropGUIContainerAddGameButton),
-        {
+    Interceptor.attach(base.add(Offsets.DropGUIContainerAddGameButton), {
             onEnter(args) {
                 let button = decodeString(args[2]);
                 Logger.debug("DropGUIContainer::addGameButton", button)
@@ -167,30 +149,26 @@ export function installHooks() {
             },
         })
 
-    Interceptor.attach(base.add(Offsets.GameGUIContainerAddGameButton),
-        {
+    Interceptor.attach(base.add(Offsets.GameGUIContainerAddGameButton), {
             onEnter(args) {
                 Logger.debug("GameGUIContainer::addGameButton", args[1].readCString());
             },
         });
 
-    Interceptor.attach(base.add(Offsets.GUIContainerAddButton),
-        {
+    Interceptor.attach(base.add(Offsets.GUIContainerAddButton), {
             onEnter(args) {
                 Logger.debug("GUIContainer::addButton", args[1].readCString());
             },
         }
     );
 
-    Interceptor.attach(base.add(Offsets.HomeModeEnter),
-        {
+    Interceptor.attach(base.add(Offsets.HomeModeEnter), {
             onLeave() {
                 //createDebugButton();
             }
         });
 
-    Interceptor.attach(base.add(Offsets.NativeFontFormatString),
-        {
+    Interceptor.attach(base.add(Offsets.NativeFontFormatString), {
             onEnter(args) {
                 args[7] = ptr(1);
             },
@@ -204,18 +182,34 @@ export function installHooks() {
         }
     });
 
-    Interceptor.attach(base.add(Offsets.LogicCharacterDataIsBoss), // if this is true bots stop moving but you can still move lol
-        {
-            onLeave(retval) {
-                retval.replace(ptr(Number(config.disableBots)));
-            },
-        })
-
-    Interceptor.attach(base.add(Offsets.LogicSkillDataGetMaxCharge),
-        {
+    Interceptor.attach(base.add(Offsets.LogicSkillDataGetMaxCharge), {
             onLeave(retval) {
                 if (config.infiniteAmmo)
                     retval.replace(ptr(0));
             },
-        })
+        });
+
+    if (config.disableBots) {
+        Interceptor.replace(base.add(0xca8b70), new NativeCallback(function (a1) {
+            return a1;
+        }, 'int', ['int']));
+    }
+
+    Interceptor.attach(base.add(Offsets.LogicSkillDataCanMoveAtSameTime), {
+            onLeave(retval) {
+                // retval.replace(ptr(1));
+            },
+        });
+
+    Interceptor.attach(base.add(Offsets.LogicCharacterDataGetUltiChargeMul), {
+            onLeave(retval) {
+                retval.replace(ptr(6969));
+            },
+        });
+
+    Interceptor.attach(base.add(Offsets.LogicCharacterDataGetUltiChargeUltiMul), {
+            onLeave(retval) {
+                retval.replace(ptr(6969));
+            },
+        });
 }
