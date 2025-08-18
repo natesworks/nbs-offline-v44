@@ -1,7 +1,7 @@
 import { Config, readConfig } from "./config.js";
 import { Offsets } from "./offsets.js";
 import { Player } from "./player.js";
-import { openFile, readFile } from "./util.js";
+import { copyFile, getLibraryDir, openFile, readFile } from "./util.js";
 
 export const base = Module.getBaseAddress("libg.so");
 
@@ -47,10 +47,15 @@ export let player = new Player();
 export let config: Config;
 export let pkg: string;
 export let logFile: number;
+export let libPath: string;
+export let configPath: string;
 
 export function load() {
     pkg = readFile(openFile("/proc/self/cmdline")).split("\0")[0]
-    logFile = openFile(`/data/data/${pkg}/files/log.txt`, true);
+    logFile = openFile(`/storage/emulated/0/Android/data/${pkg}/log.txt`, true);
+    libPath = getLibraryDir();
+    configPath = `/storage/emulated/0/Android/data/${pkg}/config.json`;
+    copyFile(libPath + "/libNBS.c.so", configPath, false);
     config = readConfig();
 }
 

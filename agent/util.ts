@@ -1,5 +1,6 @@
 import { Brawler } from "./brawler.js";
 import { base, close, malloc, O_CREAT, O_RDONLY, O_RDWR, O_TRUNC, O_WRONLY, open, possibleBotNames, read, stringCtor, write } from "./definitions.js";
+import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 
 export function getMessageManagerInstance(): NativePointer {
@@ -37,7 +38,7 @@ export function createStringObject(text: string) {
     return ptr;
 }
 
-export function openFile(path : string, rw = false) {
+export function openFile(path: string, rw = false) {
     const p = Memory.allocUtf8String(path);
     const fd = open(p, rw ? O_CREAT | O_RDWR : O_RDONLY, 0o666);
     if (fd < 0) throw new Error("open failed: " + path);
@@ -77,6 +78,24 @@ export function writeFile(fd: number, content: string) {
     return total;
 }
 
+export function copyFile(src: string, dst: string, overwrite = true) {
+    let dstFd;
+    if (!overwrite) {
+        const p = Memory.allocUtf8String(dst);
+        dstFd = open(p, O_RDWR, 0o666);
+        if (dstFd >= 0) { // file exists/perm error
+            close(dstFd);
+            return;
+        }
+    }
+    dstFd = openFile(dst, true);
+    const srcFd = openFile(src);
+    writeFile(dstFd, readFile(srcFd));
+    close(srcFd);
+    close(dstFd);
+    return;
+}
+
 export function getLibraryDir() {
     const fd = openFile("/proc/self/maps");
     const maps = readFile(fd)
@@ -114,9 +133,9 @@ export function calculateHighestTrophies(brawlerData: Record<number, Brawler>): 
     return trophies;
 }
 
-export function sleep(ms : number) {
+export function sleep(ms: number) {
     var start = Date.now();
-    while (Date.now() - start < ms) {}
+    while (Date.now() - start < ms) { }
 }
 
 // cant use TextEncoder or TextDecoder in frida so skidded this thing
