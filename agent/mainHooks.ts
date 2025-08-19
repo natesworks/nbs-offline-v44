@@ -255,7 +255,10 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.TextFieldSetText), {
         onEnter(args) {
             let text = decodeString(args[1]);
-            let info = "<c62a0ea>N<c62a0ea>B<c62a0ea>S<c62a0ea> <c62a0ea>O<c62a0ea>f<c61a0ea>f<c62a0ea>l<c62a0ea>i<c62a0ea>n<c62a0ea>e<c62a0ea> <c62a0ea>V<c62a0ea>2<c62a0ea>.<c61a0ea>3<c62a0ea>.<c62a0ea>1</c>\nMade by Natesworks\ndsc.gg/natesworks\nnbs.brawlmods.com";
+            let version = "V2.4";
+            if (ISDEV)
+                version += ` (${COMMIT})`;
+            let info = `<c62a0ea>NBS Offfline ${version}</c>\nMade by Natesworks\ndsc.gg/natesworks`;
             let lobbyInfo = `${info}\n${config.lobbyinfo}`
             if (text?.includes("0-1 not in Club"))
                 args[1] = createStringObject(lobbyInfo);

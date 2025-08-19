@@ -1,12 +1,13 @@
 {
   "name": "nbsoffline-agent",
-  "version": "2.3.1",
+  "version": "2.4",
   "description": "Offline V44",
   "private": true,
   "main": "agent/init.ts",
   "scripts": {
     "prepare": "npm run build",
-    "build": "npx esbuild agent/init.ts --bundle --format=iife --platform=neutral --target=es2020 --outfile=script.js"
+    "build": "node scripts/build.js",
+    "build:dev": "node scripts/build-dev.js"
   },
   "devDependencies": {
     "@types/frida-gum": "^18.3.1",
