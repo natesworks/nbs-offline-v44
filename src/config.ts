@@ -9,6 +9,7 @@ export class Config {
     static major = 44;
     static build = 226;
     static minor = 1;
+    name = "Natesworks";
     coins = 0;
     gems = 0;
     starpoints = 0;
@@ -50,9 +51,9 @@ export function tryLoadDefaultConfig() {
     }
     configFd = openFile(configPath, true);
     const original = readFile(defaultConfigFd);
-    const parsed = JSON.parse(original);
-    const nbsSection = parsed.nbs;
-    const jsonStr = JSON.stringify(nbsSection, null, 2);
+    const json = JSON.parse(original);
+    const nbs = json.nbs;
+    const jsonStr = JSON.stringify(nbs, null, 2);
     writeFile(configFd, jsonStr);
     close(defaultConfigFd);
     close(configFd);
@@ -94,6 +95,7 @@ export function readConfig() {
     config.infiniteAmmo = json.infiniteAmmo == null ? false : json.infiniteAmmo;
     config.infiniteSuper = json.infiniteSuper == null ? false : json.infiniteSuper;
     config.china = json.china == null ? false : json.china;
+    config.name = json.name == null ? "Natesworks" : json.name;
     for (const [id, brawler] of Object.entries(json.unlockedBrawlers as Record<string, any>)) { // why does it have to be string sob
         config.ownedBrawlers[Number(id)] = new Brawler(
             brawler.cardID,

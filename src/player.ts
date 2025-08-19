@@ -91,6 +91,7 @@ export class Player {
     };
 
     applyConfig(config: Config) {
+        this.name = config.name;
         this.coins = config.coins;
         this.gems = config.gems;
         this.level = config.experienceLevel;

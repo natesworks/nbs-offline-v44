@@ -65,9 +65,12 @@ export let libPath: string;
 export let configPath: string;
 export let defaultConfigPath: string;
 export let dataDirectory: string;
-export let packetDumpsDirectory : string;
+export let packetDumpsDirectory: string;
+export let version = "v2.4";
 
 export function load() {
+    if (ISDEV)
+        version += ` (${COMMIT})`
     pkg = readFile(openFile("/proc/self/cmdline")).split("\0")[0];
     dataDirectory = `/storage/emulated/0/Android/data/${pkg}/files`;
     packetDumpsDirectory = `${dataDirectory}/packetdumps`
@@ -88,10 +91,9 @@ export const friendlyGameLevelRequirement = 3;
 export const hiddenButtons = ["button_country", "button_faq", "button_language", "button_sc_id", "button_terms", "button_privacy", "button_parentsguide", "button_thirdparty", "button_api", "button_google_connect", "button_kakao_connect", "button_line_connect", "button_privacy_settings", "button_birthday", "button_edit_controls"];
 export const hiddenText = ["LANGUAGE", "LOCATION", "SUPERCELL ID", "PLAY WITH FRIENDS", "Google Play Sign-In", "BLOCK FRIEND REQUESTS", "SOCIAL"];
 
-export const credits = `NBS Offline v2.3.1
+export const credits = `<c62a0ea>NBS Offline ${version}</c>
 
 Made by Natesworks 
-Contact: contact@natesworks.com
 Discord: dsc.gg/nbsoffline
 
 💙THANKS TO💙

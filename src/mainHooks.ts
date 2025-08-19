@@ -1,6 +1,6 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, brawlPassButtonIsDisabled, config, credits, customButtonConstructor, displayObjectSetSetXY, friendlyGameLevelRequirement, getMovieClipByName, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, radioButtonCreate, radioButtonCreate2, shopIsDisabled, stringCtor } from "./definitions.js";
+import { base, brawlPassButtonIsDisabled, config, credits, customButtonConstructor, displayObjectSetSetXY, friendlyGameLevelRequirement, getMovieClipByName, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, radioButtonCreate, radioButtonCreate2, shopIsDisabled, stringCtor, version } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
@@ -32,21 +32,6 @@ export function installHooks() {
         onEnter: function (args) {
             args[3] = ptr(3);
             botNames = getBotNames();
-        }
-    });
-
-    /* to hide the debug ui; on newer versions instead just replace retval of LogicVersion::isDebugUIAvailable */
-    Interceptor.attach(base.add(Offsets.CombatHUDButtonClicked), {
-        onEnter: function () {
-            this.isDevBuildHook = Interceptor.attach(base.add(Offsets.LogicVersionIsDeveloperBuild),
-                {
-                    onLeave: function (retval) {
-                        retval.replace(ptr(0));
-                    }
-                });
-        },
-        onLeave: function () {
-            this.isDevBuildHook.detach();
         }
     });
 
@@ -266,15 +251,14 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.TextFieldSetText), {
         onEnter(args) {
             let text = decodeString(args[1]);
-            let version = "V2.4";
-            if (ISDEV)
-                version += ` (${COMMIT})`;
             let info = `<c62a0ea>NBS Offfline ${version}</c>\nMade by Natesworks\ndsc.gg/natesworks`;
             let lobbyInfo = `${info}\n${config.lobbyinfo}`
             if (text?.includes("0-1 not in Club"))
                 args[1] = createStringObject(lobbyInfo);
             if (settingsOpen && hiddenText.some((x) => x === text)) // .some is cool
                 args[1] = createStringObject("");
+            if (text?.includes("input lat"))
+                args[1] = createStringObject(info);
             //Logger.debug("TextField::SetText", text);
         },
     });
