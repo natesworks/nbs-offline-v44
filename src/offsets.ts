@@ -34,7 +34,7 @@ export enum Offsets {
     MessageLength = Process.pointerSize * 2 + Process.pointerSize * 4 + Process.pointerSize,
     ByteStream = Process.pointerSize * 2,
     Version = Process.pointerSize,
-    SettingsScreenConstructor = 0x4112c4,
+    SettingsScreenConstructor = 0x6211bc,
     CombatHUDButtonClicked = 0x281050,
     ResourceListenerAddFile = 0x4a0f6c,
     StageAddChild = 0x67aae0,

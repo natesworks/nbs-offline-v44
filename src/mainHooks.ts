@@ -12,6 +12,7 @@ import { Logger } from "./logger.js";
 
 let botNames: string[] = [];
 let enableFriendRequestsPos: number[];
+let settingsOpen : boolean;
 
 export function installHooks() {
     Interceptor.attach(base.add(Offsets.ServerConnectionUpdate), {
@@ -155,8 +156,8 @@ export function installHooks() {
         onEnter(args) {
             let button = args[1].readCString();
             Logger.debug("GameGUIContainer::addGameButton", button);
-            if (button == "button_credits") this.credits = true;
-            if (button != null && hiddenButtons.includes(button)) this.hide = true;
+            if (settingsOpen == true && button == "button_credits") this.credits = true;
+            if (settingsOpen == true && button != null && hiddenButtons.includes(button)) this.hide = true;
         },
         onLeave(retval) {
             if (this.hide) displayObjectSetSetXY(retval, -1000, -1000);
@@ -252,6 +253,16 @@ export function installHooks() {
         },
     });
 
+    Interceptor.attach(base.add(Offsets.SettingsScreenConstructor),
+        {
+            onEnter() {
+                settingsOpen = true;
+            },
+            onLeave() {
+                settingsOpen = false;
+            },
+        });
+
     Interceptor.attach(base.add(Offsets.TextFieldSetText), {
         onEnter(args) {
             let text = decodeString(args[1]);
@@ -262,7 +273,7 @@ export function installHooks() {
             let lobbyInfo = `${info}\n${config.lobbyinfo}`
             if (text?.includes("0-1 not in Club"))
                 args[1] = createStringObject(lobbyInfo);
-            if (hiddenText.some((x) => x === text)) // .some is cool
+            if (settingsOpen && hiddenText.some((x) => x === text)) // .some is cool
                 args[1] = createStringObject("");
             //Logger.debug("TextField::SetText", text);
         },
