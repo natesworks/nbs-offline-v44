@@ -1,5 +1,6 @@
 import { Brawler } from "./brawler.js";
 import { base, close, malloc, O_CREAT, O_RDONLY, O_RDWR, O_TRUNC, O_WRONLY, open, possibleBotNames, read, stringCtor, write } from "./definitions.js";
+import { openFile, readFile } from "./fs.js";
 import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 
@@ -38,63 +39,6 @@ export function createStringObject(text: string) {
     const ptr = malloc(128);
     stringCtor(ptr, strptr);
     return ptr;
-}
-
-export function openFile(path: string, rw = false) {
-    const p = Memory.allocUtf8String(path);
-    const fd = open(p, rw ? O_CREAT | O_RDWR : O_RDONLY, 0o666);
-    return fd;
-}
-
-export function readFile(fd: number) {
-    const buf = Memory.alloc(4096);
-    let chunks: ArrayBuffer[] = [];
-    while (true) {
-        const n = read(fd, buf, 4096);
-        if (n <= 0) break;
-        const chunk = buf.readByteArray(n);
-        if (chunk) chunks.push(chunk);
-    }
-    let raw = "";
-    for (const chunk of chunks) {
-        raw += String.fromCharCode(...new Uint8Array(chunk));
-    }
-    return raw;
-}
-
-export function writeFile(fd: number, content: string) {
-    const {
-        ptr,
-        len
-    } = utf8ToBytes(content);
-    let total = 0;
-    while (total < len) {
-        const n = write(fd, ptr.add(total), Math.min(4096, len - total));
-        if (n < 0) {
-            close(fd);
-            throw new Error("write failed");
-        }
-        total += n;
-    }
-    return total;
-}
-
-export function copyFile(src: string, dst: string, overwrite = true) {
-    let dstFd;
-    if (!overwrite) {
-        const p = Memory.allocUtf8String(dst);
-        dstFd = open(p, O_RDWR, 0o666);
-        if (dstFd >= 0) { // file exists/perm error
-            close(dstFd);
-            return;
-        }
-    }
-    dstFd = openFile(dst, true);
-    const srcFd = openFile(src);
-    writeFile(dstFd, readFile(srcFd));
-    close(srcFd);
-    close(dstFd);
-    return;
 }
 
 export function getLibraryDir() {

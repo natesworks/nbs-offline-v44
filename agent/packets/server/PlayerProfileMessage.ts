@@ -1,6 +1,7 @@
 import { Player } from "../../player.js";
 import { ByteStream } from "../../bytestream.js";
 import { Config } from "../../config.js";
+import { dumpPacket } from "../../dumppacket.js";
 
 export class PlayerProfileMessage
 {
@@ -70,6 +71,8 @@ export class PlayerProfileMessage
         stream.writeBoolean(false);
         stream.writeDataReference(0, -1);
 
+        dumpPacket(24113, stream.payload);
+        
         return stream.payload;
     }
 }

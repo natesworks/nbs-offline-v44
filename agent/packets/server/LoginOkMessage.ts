@@ -1,6 +1,7 @@
 import { Player } from "../../player.js";
 import { ByteStream } from "../../bytestream.js";
 import { Config } from "../../config.js";
+import { dumpPacket } from "../../dumppacket.js";
 
 export class LoginOkMessage {
     static encode(player: Player): number[] {
@@ -43,6 +44,9 @@ export class LoginOkMessage {
         stream.writeString("");
         stream.writeBoolean(false);
         stream.writeBoolean(false);
+
+        dumpPacket(20104, stream.payload);
+
         return stream.payload;
     }
 }

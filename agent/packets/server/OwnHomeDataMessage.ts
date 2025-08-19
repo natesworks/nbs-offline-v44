@@ -1,6 +1,7 @@
 import { Player } from "../../player.js";
 import { ByteStream } from "../../bytestream.js";
 import { Config } from "../../config.js";
+import { dumpPacket } from "../../dumppacket.js";
 
 export class OwnHomeDataMessage {
     static encode(player: Player): number[] {
@@ -364,6 +365,8 @@ export class OwnHomeDataMessage {
         stream.writeVint(5);
         stream.writeVint(0);
         stream.writeVint(0);
+
+        dumpPacket(24101, stream.payload);
 
         return stream.payload;
     }

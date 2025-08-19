@@ -1,5 +1,5 @@
 import { android_log_write, config, logFile, pkg } from "./definitions.js";
-import { openFile, readFile, writeFile } from "./util.js";
+import { openFile, readFile, writeFile } from "./fs.js";
 
 const ANDROID_LOG_INFO = 4;
 const ANDROID_LOG_DEBUG = 3;

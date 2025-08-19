@@ -1,27 +1,34 @@
 import { Config, readConfig, tryLoadDefaultConfig } from "./config.js";
+import { openFile, readFile } from "./fs.js";
 import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 import { Player } from "./player.js";
-import { copyFile, getLibraryDir, openFile, readFile } from "./util.js";
+import { getLibraryDir } from "./util.js";
 
 export const base = Module.getBaseAddress("libg.so");
 
-export const malloc = new NativeFunction(Module.getExportByName('libc.so', 'malloc'), 'pointer', ['uint']);
-export const open = new NativeFunction(Module.getExportByName('libc.so', "open"), "int", ["pointer", "int", "int"]);
-export const read = new NativeFunction(Module.getExportByName('libc.so', "read"), "int", ["int", "pointer", "int"]);
-export const write = new NativeFunction(Module.getExportByName('libc.so', "write"), "int", ["int", "pointer", "int"]);
-export const close = new NativeFunction(Module.getExportByName('libc.so', "close"), "int", ["int"]);
+export const errno = new NativeFunction(Module.getExportByName("libc.so", "__errno"), "pointer", []);
+
+export const malloc = new NativeFunction(Module.getExportByName("libc.so", "malloc"), "pointer", ["uint"]);
+export const open = new NativeFunction(Module.getExportByName("libc.so", "open"), "int", ["pointer", "int", "int"]);
+export const read = new NativeFunction(Module.getExportByName("libc.so", "read"), "int", ["int", "pointer", "int"]);
+export const write = new NativeFunction(Module.getExportByName("libc.so", "write"), "int", ["int", "pointer", "int"]);
+export const close = new NativeFunction(Module.getExportByName("libc.so", "close"), "int", ["int"]);
+export const mkdir = new NativeFunction(Module.getExportByName("libc.so", "mkdir"), "int", ["pointer", "uint32"]); // mode_t is a typedef to uint
 export const O_RDONLY = 0;
 export const O_WRONLY = 1;
 export const O_RDWR = 2;
 export const O_CREAT = 64;
 export const O_TRUNC = 512;
 export const O_APPEND = 1024;
+export const ENOENT = 2;
+export const EEXIST = 17;
+// int mkdir(const char *pathname, mode_t mode)
 
 export const android_log_write = new NativeFunction(
     Module.findExportByName("liblog.so", "__android_log_write")!,
-    'int',
-    ['int', 'pointer', 'pointer']
+    "int",
+    ["int", "pointer", "pointer"]
 );
 
 export const createMessageByType = new NativeFunction(base.add(Offsets.CreateMessageByType), "pointer", ["int", "int"]);
@@ -34,21 +41,21 @@ export const dropGuiContainerAddGameButton = new NativeFunction(base.add(Offsets
 export const customButtonSetButtonListener = new NativeFunction(base.add(Offsets.CustomButtonSetButtonListener), "pointer", ["pointer", "pointer"]);
 export const homePageGetButtonByName = new NativeFunction(base.add(Offsets.HomePageGetButtonByName), "int", ["pointer", "pointer"]);
 export const gameGuiContainerAddButton = new NativeFunction(base.add(Offsets.GUIContainerAddButton), "pointer", ["pointer", "pointer", "int"]);
-export const stageAddChild = new NativeFunction(base.add(Offsets.StageAddChild), 'pointer', ['pointer', 'pointer']);
+export const stageAddChild = new NativeFunction(base.add(Offsets.StageAddChild), "pointer", ["pointer", "pointer"]);
 export const possibleBotNames = ["loky", "sahar", "oskartocwel", "mroc", "croc", "KTR", "Flickz", "Interlastic", "Mold in my balls", "tomar753", "terpy", "Hallo", "free leon", "morticlowni", "ваня кек", "smw1", "Luna", "Hyra", "Juan Carlos", "Pituś", "Blast", "JordiTheCat", "TID_BOT_69", "Switly", "Tufa", "Trypix"];
-export const addFile = new NativeFunction(base.add(Offsets.ResourceListenerAddFile), "int", ['pointer', 'pointer', 'int', 'int', 'int', 'int', 'int']);
-export const customButtonConstructor = new NativeFunction(base.add(Offsets.CustomButtonConstructor), 'int', []);
-export const gameButtonConstructor = new NativeFunction(base.add(Offsets.GameButtonConstructor), 'pointer', ['pointer']);
-export const resourceManagerGetMovieClip = new NativeFunction(base.add(Offsets.ResourceManagerGetMovieClip), 'pointer', ['pointer', 'pointer', 'bool']);
-export const customButtonSetMovieClip = new NativeFunction(base.add(Offsets.CustomButtonSetMovieClip), 'pointer', ['pointer', 'pointer']);
-export const movieClipSetText = new NativeFunction(base.add(Offsets.MovieClipSetText), 'pointer', ['pointer', 'pointer']);
-export const displayObjectSetSetXY = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'pointer', ['pointer', 'int', 'int']);
-export const logicCharacterServerChargeUlti = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'int', ['int', 'int', 'int', 'int', 'int']);
-export const radioButtonCreate = new NativeFunction(base.add(Offsets.RadioButtonCreateButton), 'pointer', ['pointer', 'pointer', 'pointer']);
-export const radioButtonCreate2 = new NativeFunction(base.add(Offsets.RadioButtonCreateButton), 'pointer', ['pointer', 'pointer', 'pointer']);
-export const setRadioButtonState = new NativeFunction(base.add(Offsets.RadioButtonSetRadioButtonState), 'int', ['pointer', 'pointer', 'pointer']);
-export const getMovieClipByName = new NativeFunction(base.add(Offsets.GetMovieClipByName), 'int', ['pointer', 'pointer']);
-export const movieClipConstructor = new NativeFunction(base.add(Offsets.MovieClipConstructor), 'pointer', ['pointer']);
+export const addFile = new NativeFunction(base.add(Offsets.ResourceListenerAddFile), "int", ["pointer", "pointer", "int", "int", "int", "int", "int"]);
+export const customButtonConstructor = new NativeFunction(base.add(Offsets.CustomButtonConstructor), "int", []);
+export const gameButtonConstructor = new NativeFunction(base.add(Offsets.GameButtonConstructor), "pointer", ["pointer"]);
+export const resourceManagerGetMovieClip = new NativeFunction(base.add(Offsets.ResourceManagerGetMovieClip), "pointer", ["pointer", "pointer", "bool"]);
+export const customButtonSetMovieClip = new NativeFunction(base.add(Offsets.CustomButtonSetMovieClip), "pointer", ["pointer", "pointer"]);
+export const movieClipSetText = new NativeFunction(base.add(Offsets.MovieClipSetText), "pointer", ["pointer", "pointer"]);
+export const displayObjectSetSetXY = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), "pointer", ["pointer", "int", "int"]);
+export const logicCharacterServerChargeUlti = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), "int", ["int", "int", "int", "int", "int"]);
+export const radioButtonCreate = new NativeFunction(base.add(Offsets.RadioButtonCreateButton), "pointer", ["pointer", "pointer", "pointer"]);
+export const radioButtonCreate2 = new NativeFunction(base.add(Offsets.RadioButtonCreateButton), "pointer", ["pointer", "pointer", "pointer"]);
+export const setRadioButtonState = new NativeFunction(base.add(Offsets.RadioButtonSetRadioButtonState), "int", ["pointer", "pointer", "pointer"]);
+export const getMovieClipByName = new NativeFunction(base.add(Offsets.GetMovieClipByName), "int", ["pointer", "pointer"]);
+export const movieClipConstructor = new NativeFunction(base.add(Offsets.MovieClipConstructor), "pointer", ["pointer"]);
 
 export let player = new Player();
 export let config: Config;
@@ -57,16 +64,20 @@ export let logFile: number;
 export let libPath: string;
 export let configPath: string;
 export let defaultConfigPath: string;
+export let dataDirectory: string;
+export let packetDumpsDirectory : string;
 
 export function load() {
     pkg = readFile(openFile("/proc/self/cmdline")).split("\0")[0];
-    logFile = openFile(`/storage/emulated/0/Android/data/${pkg}/files/log.txt`, true);
+    dataDirectory = `/storage/emulated/0/Android/data/${pkg}/files`;
+    packetDumpsDirectory = `${dataDirectory}/packetdumps`
+    logFile = openFile(`${dataDirectory}/log.txt`, true);
     if (logFile < 0) {
         throw new Error("Failed to open log file"); // cant check if u have log to file enabled at this point sry
     }
     libPath = getLibraryDir();
     defaultConfigPath = libPath + "/libNBS.c.so";
-    configPath = `/storage/emulated/0/Android/data/${pkg}/files/config.json`;
+    configPath = `${dataDirectory}/config.json`;
     tryLoadDefaultConfig();
     config = readConfig();
 }
@@ -87,7 +98,7 @@ Discord: dsc.gg/nbsoffline
 
 S.B:
 - Making an amazing guide on reverse engineering/making Brawl Stars Offline (peterr.dev/re/brawl-stars-offline).
-- Answering my questions when I didn't understand something.
+- Answering my questions when I didn"t understand something.
 
 xXCooBloyXx:
 - Telling me how to get some of the required offsets for sendOfflineMessage.
