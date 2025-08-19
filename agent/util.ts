@@ -43,7 +43,6 @@ export function createStringObject(text: string) {
 export function openFile(path: string, rw = false) {
     const p = Memory.allocUtf8String(path);
     const fd = open(p, rw ? O_CREAT | O_RDWR : O_RDONLY, 0o666);
-    if (fd < 0) throw new Error("open failed: " + path);
     return fd;
 }
 

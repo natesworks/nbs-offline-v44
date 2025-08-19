@@ -1,968 +1,962 @@
 {
-  "interaction": {
-    "type": "script",
-    "path": "libloader.so"
-  },
-  "nbs": {
-    "coins": 0,
-    "gems": 0,
-    "starpoints": 0,
-    "level": 0,
-    "experience": 0,
-    "namecolor": 0,
-    "thumbnail": 0,
-    "trophyRoadTier": 6969,
-    "selectedBrawlers": [
-      0,
-      1,
-      2
-    ],
-    "tokens": 0,
-    "tokenDoublers": 0,
-    "3v3Victories": 0,
-    "soloVictories": 0,
-    "duoVictories": 0,
-    "mostChallengeWins": 0,
-    "lobbyinfo": "",
-    "enableShop": false,
-    "enableBrawlPass": false,
-    "enableClubs": false,
-    "brawlPassPremium": true,
-    "disableBots" : false,
-    "logToFile": false,
-    "infiniteAmmo": false,
-    "infiniteSuper": false,
-    "china": false,
-    "unlockedBrawlers": {
-      "0": {
-        "cardID": 0,
-        "skins": [
-          29,
-          52,
-          122,
-          159,
-          195,
-          196,
-          320,
-          321,
-          322,
-          359
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "1": {
-        "cardID": 4,
-        "skins": [
-          2,
-          103,
-          69,
-          135,
-          217,
-          303,
-          323,
-          324,
-          325,
-          326,
-          330,
-          331,
-          377,
-          544
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "2": {
-        "cardID": 8,
-        "skins": [
-          25,
-          64,
-          102,
-          178,
-          218,
-          219,
-          262,
-          393,
-          477,
-          501
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "3": {
-        "cardID": 12,
-        "skins": [
-          5,
-          58,
-          72,
-          91,
-          201,
-          242,
-          400,
-          401,
-          541
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "4": {
-        "cardID": 16,
-        "skins": [
-          26,
-          68,
-          130,
-          171,
-          223,
-          224,
-          397,
-          473
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "5": {
-        "cardID": 20,
-        "skins": [
-          11,
-          96,
-          208,
-          263,
-          301,
-          302,
-          448,
-          509
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "6": {
-        "cardID": 24,
-        "skins": [
-          27,
-          59,
-          90,
-          92,
-          116,
-          220,
-          221,
-          357,
-          436
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "7": {
-        "cardID": 28,
-        "skins": [
-          44,
-          47,
-          123,
-          162,
-          174,
-          253,
-          254,
-          395
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "8": {
-        "cardID": 32,
-        "skins": [
-          15,
-          439,
-          60,
-          79,
-          148,
-          297,
-          298,
-          347
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "9": {
-        "cardID": 36,
-        "skins": [
-          56,
-          57,
-          97,
-          160,
-          236,
-          276,
-          314,
-          315,
-          316,
-          398,
-          430,
-          431,
-          462
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "10": {
-        "cardID": 40,
-        "skins": [
-          28,
-          30,
-          128,
-          183,
-          187,
-          213,
-          317,
-          318,
-          319,
-          354,
-          360,
-          438,
-          441
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "11": {
-        "cardID": 44,
-        "skins": [
-          50,
-          63,
-          75,
-          173,
-          228,
-          230,
-          227,
-          229,
-          311
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "12": {
-        "cardID": 48,
-        "skins": [
-          20,
-          49,
-          95,
-          100,
-          101,
-          248,
-          249,
-          390
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "13": {
-        "cardID": 52,
-        "skins": [
-          71,
-          140,
-          214,
-          342,
-          406,
-          407
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "14": {
-        "cardID": 56,
-        "skins": [
-          94,
-          98,
-          99,
-          163,
-          216,
-          245,
-          363,
-          364,
-          445,
-          478
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "15": {
-        "cardID": 60,
-        "skins": [
-          108,
-          120,
-          147,
-          197,
-          198,
-          234,
-          382
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "16": {
-        "cardID": 64,
-        "skins": [
-          179,
-          355,
-          411,
-          412
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "17": {
-        "cardID": 68,
-        "skins": [
-          111,
-          145,
-          259,
-          260,
-          282,
-          516
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "18": {
-        "cardID": 72,
-        "skins": [
-          70,
-          158,
-          250,
-          251,
-          264,
-          351,
-          511
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "19": {
-        "cardID": 95,
-        "skins": [
-          61,
-          88,
-          165,
-          274,
-          453,
-          454
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "20": {
-        "cardID": 100,
-        "skins": [
-          45,
-          125,
-          225,
-          226,
-          244
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "21": {
-        "cardID": 105,
-        "skins": [
-          117,
-          172,
-          304,
-          305,
-          389
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "22": {
-        "cardID": 110,
-        "skins": [
-          190,
-          243,
-          246,
-          247,
-          468
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "23": {
-        "cardID": 115,
-        "skins": [
-          110,
-          126,
-          131,
-          199,
-          200,
-          312
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "24": {
-        "cardID": 120,
-        "skins": [
-          215,
-          309,
-          446,
-          455,
-          456,
-          483
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "25": {
-        "cardID": 125,
-        "skins": [
-          93,
-          104,
-          132,
-          134,
-          267,
-          308,
-          424,
-          425,
-          507
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "26": {
-        "cardID": 130,
-        "skins": [
-          146,
-          222,
-          273,
-          345,
-          422,
-          423,
-          470
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "27": {
-        "cardID": 177,
-        "skins": [
-          109,
-          143,
-          283,
-          402,
-          403,
-          409
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "28": {
-        "cardID": 182,
-        "skins": [
-          471,
-          118,
-          210,
-          287,
-          371,
-          372
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "29": {
-        "cardID": 188,
-        "skins": [
-          139,
-          188,
-          284,
-          285,
-          290,
-          365,
-          366
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "30": {
-        "cardID": 194,
-        "skins": [
-          167,
-          185,
-          186,
-          209,
-          542
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "31": {
-        "cardID": 200,
-        "skins": [
-          152,
-          332,
-          333,
-          415,
-          479,
-          513
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "32": {
-        "cardID": 206,
-        "skins": [
-          137,
-          202,
-          232,
-          310,
-          404,
-          405
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "34": {
-        "cardID": 218,
-        "skins": [
-          176,
-          189,
-          307,
-          444,
-          449,
-          450,
-          505
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "35": {
-        "cardID": 224,
-        "skins": [
-          180,
-          241,
-          367,
-          368,
-          388
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "36": {
-        "cardID": 230,
-        "skins": [
-          194,
-          233,
-          369,
-          370
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "37": {
-        "cardID": 236,
-        "skins": [
-          177,
-          211,
-          379,
-          383,
-          488,
-          492,
-          493
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "38": {
-        "cardID": 279,
-        "skins": [
-          203,
-          292,
-          419,
-          496,
-          497
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "39": {
-        "cardID": 296,
-        "skins": [
-          212,
-          270,
-          391,
-          428,
-          429
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "40": {
-        "cardID": 303,
-        "skins": [
-          280,
-          426,
-          427
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "41": {
-        "cardID": 320,
-        "skins": [
-          237,
-          266,
-          306,
-          451,
-          452
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "42": {
-        "cardID": 327,
-        "skins": [
-          358,
-          512
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "43": {
-        "cardID": 334,
-        "skins": [
-          472,
-          281,
-          437,
-          506
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "44": {
-        "cardID": 341,
-        "skins": [
-          268,
-          286,
-          490,
-          491,
-          539
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "45": {
-        "cardID": 358,
-        "skins": [
-          277,
-          346,
-          420,
-          526,
-          527
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "46": {
-        "cardID": 365,
-        "skins": [
-          294,
-          489,
-          524,
-          525,
-          547
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "47": {
-        "cardID": 372,
-        "skins": [
-          392,
-          418
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "48": {
-        "cardID": 379,
-        "skins": [
-          482,
-          550,
-          551
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "49": {
-        "cardID": 386,
-        "skins": [
-          343,
-          386,
-          494,
-          495
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "50": {
-        "cardID": 393,
-        "skins": [
-          458
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "51": {
-        "cardID": 410,
-        "skins": [
-          381,
-          528,
-          529
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "52": {
-        "cardID": 417,
-        "skins": [
-          475,
-          517,
-          532,
-          533
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "53": {
-        "cardID": 427,
-        "skins": [
-          433,
-          510,
-          530,
-          531
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "54": {
-        "cardID": 434,
-        "skins": [
-          460,
-          548,
-          558,
-          559
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "56": {
-        "cardID": 448,
-        "skins": [
-          484,
-          552,
-          553
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "57": {
-        "cardID": 466,
-        "skins": [
-          536,
-          554,
-          555
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "58": {
-        "cardID": 474,
-        "skins": [
-          521,
-          556,
-          557
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      },
-      "59": {
-        "cardID": 491,
-        "skins": [
-          546
-        ],
-        "trophies": 1250,
-        "highestTrophies": 1250,
-        "powerlevel": 11,
-        "powerpoints": 0,
-        "state": 2
-      }
+  "coins": 0,
+  "gems": 0,
+  "starpoints": 0,
+  "level": 0,
+  "experience": 0,
+  "namecolor": 0,
+  "thumbnail": 0,
+  "trophyRoadTier": 6969,
+  "selectedBrawlers": [
+    0,
+    1,
+    2
+  ],
+  "tokens": 0,
+  "tokenDoublers": 0,
+  "3v3Victories": 0,
+  "soloVictories": 0,
+  "duoVictories": 0,
+  "mostChallengeWins": 0,
+  "lobbyinfo": "",
+  "enableShop": false,
+  "enableBrawlPass": false,
+  "enableClubs": false,
+  "brawlPassPremium": true,
+  "disableBots": false,
+  "logToFile": false,
+  "infiniteAmmo": false,
+  "infiniteSuper": false,
+  "china": false,
+  "unlockedBrawlers": {
+    "0": {
+      "cardID": 0,
+      "skins": [
+        29,
+        52,
+        122,
+        159,
+        195,
+        196,
+        320,
+        321,
+        322,
+        359
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "1": {
+      "cardID": 4,
+      "skins": [
+        2,
+        103,
+        69,
+        135,
+        217,
+        303,
+        323,
+        324,
+        325,
+        326,
+        330,
+        331,
+        377,
+        544
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "2": {
+      "cardID": 8,
+      "skins": [
+        25,
+        64,
+        102,
+        178,
+        218,
+        219,
+        262,
+        393,
+        477,
+        501
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "3": {
+      "cardID": 12,
+      "skins": [
+        5,
+        58,
+        72,
+        91,
+        201,
+        242,
+        400,
+        401,
+        541
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "4": {
+      "cardID": 16,
+      "skins": [
+        26,
+        68,
+        130,
+        171,
+        223,
+        224,
+        397,
+        473
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "5": {
+      "cardID": 20,
+      "skins": [
+        11,
+        96,
+        208,
+        263,
+        301,
+        302,
+        448,
+        509
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "6": {
+      "cardID": 24,
+      "skins": [
+        27,
+        59,
+        90,
+        92,
+        116,
+        220,
+        221,
+        357,
+        436
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "7": {
+      "cardID": 28,
+      "skins": [
+        44,
+        47,
+        123,
+        162,
+        174,
+        253,
+        254,
+        395
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "8": {
+      "cardID": 32,
+      "skins": [
+        15,
+        439,
+        60,
+        79,
+        148,
+        297,
+        298,
+        347
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "9": {
+      "cardID": 36,
+      "skins": [
+        56,
+        57,
+        97,
+        160,
+        236,
+        276,
+        314,
+        315,
+        316,
+        398,
+        430,
+        431,
+        462
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "10": {
+      "cardID": 40,
+      "skins": [
+        28,
+        30,
+        128,
+        183,
+        187,
+        213,
+        317,
+        318,
+        319,
+        354,
+        360,
+        438,
+        441
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "11": {
+      "cardID": 44,
+      "skins": [
+        50,
+        63,
+        75,
+        173,
+        228,
+        230,
+        227,
+        229,
+        311
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "12": {
+      "cardID": 48,
+      "skins": [
+        20,
+        49,
+        95,
+        100,
+        101,
+        248,
+        249,
+        390
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "13": {
+      "cardID": 52,
+      "skins": [
+        71,
+        140,
+        214,
+        342,
+        406,
+        407
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "14": {
+      "cardID": 56,
+      "skins": [
+        94,
+        98,
+        99,
+        163,
+        216,
+        245,
+        363,
+        364,
+        445,
+        478
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "15": {
+      "cardID": 60,
+      "skins": [
+        108,
+        120,
+        147,
+        197,
+        198,
+        234,
+        382
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "16": {
+      "cardID": 64,
+      "skins": [
+        179,
+        355,
+        411,
+        412
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "17": {
+      "cardID": 68,
+      "skins": [
+        111,
+        145,
+        259,
+        260,
+        282,
+        516
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "18": {
+      "cardID": 72,
+      "skins": [
+        70,
+        158,
+        250,
+        251,
+        264,
+        351,
+        511
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "19": {
+      "cardID": 95,
+      "skins": [
+        61,
+        88,
+        165,
+        274,
+        453,
+        454
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "20": {
+      "cardID": 100,
+      "skins": [
+        45,
+        125,
+        225,
+        226,
+        244
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "21": {
+      "cardID": 105,
+      "skins": [
+        117,
+        172,
+        304,
+        305,
+        389
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "22": {
+      "cardID": 110,
+      "skins": [
+        190,
+        243,
+        246,
+        247,
+        468
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "23": {
+      "cardID": 115,
+      "skins": [
+        110,
+        126,
+        131,
+        199,
+        200,
+        312
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "24": {
+      "cardID": 120,
+      "skins": [
+        215,
+        309,
+        446,
+        455,
+        456,
+        483
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "25": {
+      "cardID": 125,
+      "skins": [
+        93,
+        104,
+        132,
+        134,
+        267,
+        308,
+        424,
+        425,
+        507
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "26": {
+      "cardID": 130,
+      "skins": [
+        146,
+        222,
+        273,
+        345,
+        422,
+        423,
+        470
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "27": {
+      "cardID": 177,
+      "skins": [
+        109,
+        143,
+        283,
+        402,
+        403,
+        409
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "28": {
+      "cardID": 182,
+      "skins": [
+        471,
+        118,
+        210,
+        287,
+        371,
+        372
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "29": {
+      "cardID": 188,
+      "skins": [
+        139,
+        188,
+        284,
+        285,
+        290,
+        365,
+        366
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "30": {
+      "cardID": 194,
+      "skins": [
+        167,
+        185,
+        186,
+        209,
+        542
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "31": {
+      "cardID": 200,
+      "skins": [
+        152,
+        332,
+        333,
+        415,
+        479,
+        513
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "32": {
+      "cardID": 206,
+      "skins": [
+        137,
+        202,
+        232,
+        310,
+        404,
+        405
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "34": {
+      "cardID": 218,
+      "skins": [
+        176,
+        189,
+        307,
+        444,
+        449,
+        450,
+        505
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "35": {
+      "cardID": 224,
+      "skins": [
+        180,
+        241,
+        367,
+        368,
+        388
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "36": {
+      "cardID": 230,
+      "skins": [
+        194,
+        233,
+        369,
+        370
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "37": {
+      "cardID": 236,
+      "skins": [
+        177,
+        211,
+        379,
+        383,
+        488,
+        492,
+        493
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "38": {
+      "cardID": 279,
+      "skins": [
+        203,
+        292,
+        419,
+        496,
+        497
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "39": {
+      "cardID": 296,
+      "skins": [
+        212,
+        270,
+        391,
+        428,
+        429
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "40": {
+      "cardID": 303,
+      "skins": [
+        280,
+        426,
+        427
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "41": {
+      "cardID": 320,
+      "skins": [
+        237,
+        266,
+        306,
+        451,
+        452
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "42": {
+      "cardID": 327,
+      "skins": [
+        358,
+        512
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "43": {
+      "cardID": 334,
+      "skins": [
+        472,
+        281,
+        437,
+        506
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "44": {
+      "cardID": 341,
+      "skins": [
+        268,
+        286,
+        490,
+        491,
+        539
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "45": {
+      "cardID": 358,
+      "skins": [
+        277,
+        346,
+        420,
+        526,
+        527
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "46": {
+      "cardID": 365,
+      "skins": [
+        294,
+        489,
+        524,
+        525,
+        547
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "47": {
+      "cardID": 372,
+      "skins": [
+        392,
+        418
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "48": {
+      "cardID": 379,
+      "skins": [
+        482,
+        550,
+        551
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "49": {
+      "cardID": 386,
+      "skins": [
+        343,
+        386,
+        494,
+        495
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "50": {
+      "cardID": 393,
+      "skins": [
+        458
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "51": {
+      "cardID": 410,
+      "skins": [
+        381,
+        528,
+        529
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "52": {
+      "cardID": 417,
+      "skins": [
+        475,
+        517,
+        532,
+        533
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "53": {
+      "cardID": 427,
+      "skins": [
+        433,
+        510,
+        530,
+        531
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "54": {
+      "cardID": 434,
+      "skins": [
+        460,
+        548,
+        558,
+        559
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "56": {
+      "cardID": 448,
+      "skins": [
+        484,
+        552,
+        553
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "57": {
+      "cardID": 466,
+      "skins": [
+        536,
+        554,
+        555
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "58": {
+      "cardID": 474,
+      "skins": [
+        521,
+        556,
+        557
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
+    },
+    "59": {
+      "cardID": 491,
+      "skins": [
+        546
+      ],
+      "trophies": 1250,
+      "highestTrophies": 1250,
+      "powerlevel": 11,
+      "powerpoints": 0,
+      "state": 2
     }
   }
 }

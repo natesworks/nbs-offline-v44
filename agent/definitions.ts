@@ -1,4 +1,5 @@
-import { Config, readConfig } from "./config.js";
+import { Config, readConfig, tryLoadDefaultConfig } from "./config.js";
+import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 import { Player } from "./player.js";
 import { copyFile, getLibraryDir, openFile, readFile } from "./util.js";
@@ -55,13 +56,18 @@ export let pkg: string;
 export let logFile: number;
 export let libPath: string;
 export let configPath: string;
+export let defaultConfigPath: string;
 
 export function load() {
-    pkg = readFile(openFile("/proc/self/cmdline")).split("\0")[0]
-    logFile = openFile(`/storage/emulated/0/Android/data/${pkg}/log.txt`, true);
+    pkg = readFile(openFile("/proc/self/cmdline")).split("\0")[0];
+    logFile = openFile(`/storage/emulated/0/Android/data/${pkg}/files/log.txt`, true);
+    if (logFile < 0) {
+        throw new Error("Failed to open log file"); // cant check if u have log to file enabled at this point sry
+    }
     libPath = getLibraryDir();
-    configPath = `/storage/emulated/0/Android/data/${pkg}/config.json`;
-    copyFile(libPath + "/libNBS.c.so", configPath, false);
+    defaultConfigPath = libPath + "/libNBS.c.so";
+    configPath = `/storage/emulated/0/Android/data/${pkg}/files/config.json`;
+    tryLoadDefaultConfig();
     config = readConfig();
 }
 
