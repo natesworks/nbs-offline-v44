@@ -4,7 +4,7 @@ const { execSync } = require('child_process');
 const commit = execSync('git rev-parse --short HEAD').toString().trim();
 
 esbuild.build({
-  entryPoints: ['agent/init.ts'],
+  entryPoints: ['src/init.ts'],
   bundle: true,
   format: 'iife',
   platform: 'neutral',
