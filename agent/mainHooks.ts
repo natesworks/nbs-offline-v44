@@ -4,13 +4,14 @@ import { base, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
-import { getBotNames, decodeString, sleep, createStringObject, strPtr } from "./util.js";
+import { getBotNames, decodeString, sleep, createStringObject, strPtr, displayObjectGetXY } from "./util.js";
 import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 import { createDebugButton } from "./debugmenu.js";
 import { TeamMessage } from "./packets/server/TeamMessage.js";
 import { Logger } from "./logger.js";
 
 let botNames: string[] = [];
+let enableFriendRequestsPos : number[];
 
 export function installHooks() {
     Interceptor.attach(base.add(Offsets.ServerConnectionUpdate), {
@@ -150,11 +151,12 @@ export function installHooks() {
         onEnter(args) {
             let button = args[1].readCString();
             Logger.debug("GameGUIContainer::addGameButton", button);
+            if (button == "button_credits") this.credits = true;
             if (button != null && hiddenButtons.includes(button)) this.hide = true;
         },
         onLeave(retval) {
-            if (this.hide)
-                displayObjectSetSetXY(retval, -1000, -1000);
+            if (this.hide) displayObjectSetSetXY(retval, -1000, -1000);
+            if (this.credits) displayObjectSetSetXY(retval, enableFriendRequestsPos[0], enableFriendRequestsPos[1])
         },
     });
 
@@ -193,7 +195,7 @@ export function installHooks() {
     });
 
     if (config.disableBots) {
-        Interceptor.replace(base.add(0xca8b70), new NativeCallback(function (a1) {
+        Interceptor.replace(base.add(Offsets.LogicCharacterServerTickAI), new NativeCallback(function (a1) {
             return a1;
         }, 'int', ['int']));
     }
@@ -231,20 +233,19 @@ export function installHooks() {
     });
     */
 
-    Interceptor.attach(base.add(Offsets.HomePageUpdate), {
-        onEnter(args) {
-            this.a1 = args[0];
-        },
-        onLeave(retval) {
-            let button_navi_shop = getMovieClipByName(this.a1.add(300).add(72), strPtr("button_navi_shop"));
-            //console.log(button_navi_shop);
-        },
-    });
-
     Interceptor.attach(base.add(Offsets.GetMovieClipByName), {
         onEnter(args) {
-            //Logger.debug(args[1].readCString()) // do not uncomment if you dont want to get insane spam and a logfile in gigabytes
-        }
+            let movieClip = args[1].readCString();
+            //Logger.debug(movieClip) // do not uncomment if you dont want to get insane spam and a logfile in gigabytes
+            if (movieClip == "button_allow_friend_requests")
+                this.allowFriendRequests = true;
+        },
+        onLeave(retval) {
+            if (this.allowFriendRequests) {
+                enableFriendRequestsPos = displayObjectGetXY(retval);
+                displayObjectSetSetXY(retval, -1000, -1000);
+            }
+        },
     });
 
     Interceptor.attach(base.add(Offsets.TextFieldSetText), {

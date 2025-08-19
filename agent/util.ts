@@ -229,3 +229,10 @@ export function utf8ToBytes(s: string) {
         len
     };
 }
+
+export function displayObjectGetXY(displayobject : NativePointer) : number[]
+{
+    let x = displayobject.add(Offsets.PosX).readPointer().toInt32();
+    let y = displayobject.add(Offsets.PosY).readPointer().toInt32();
+    return [x, y];
+}

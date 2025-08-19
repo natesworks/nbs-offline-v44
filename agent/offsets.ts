@@ -92,5 +92,8 @@ export enum Offsets {
     LogicCharacterServerHandleMoveAndAttack = 0x32b04c,
     RadioButtonCreateButton = 0xa3f840,
     RadioButtonSetRadioButtonState = 0x5c455c,
-    MovieClipConstructor = 0x2f19a8
+    MovieClipConstructor = 0x2f19a8,
+    LogicCharacterServerTickAI = 0xca8b70,
+    PosX = 28,
+    PosY = 32
 }
