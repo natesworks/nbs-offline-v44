@@ -1,6 +1,6 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY, friendlyGameLevelRequirement, getMovieClipByName, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, player, radioButtonCreate, shopIsDisabled, stringCtor } from "./definitions.js";
+import { base, brawlPassButtonIsDisabled, config, credits, customButtonConstructor, displayObjectSetSetXY, friendlyGameLevelRequirement, getMovieClipByName, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, radioButtonCreate, radioButtonCreate2, shopIsDisabled, stringCtor } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
@@ -11,7 +11,7 @@ import { TeamMessage } from "./packets/server/TeamMessage.js";
 import { Logger } from "./logger.js";
 
 let botNames: string[] = [];
-let enableFriendRequestsPos : number[];
+let enableFriendRequestsPos: number[];
 
 export function installHooks() {
     Interceptor.attach(base.add(Offsets.ServerConnectionUpdate), {
@@ -65,6 +65,8 @@ export function installHooks() {
             else if (this.tid == "TID_EDIT_CONTROLS") {
                 args[0].writeUtf8String("Settings");
             }
+            else if (this.tid == "TID_EDIT_HINT_DRAG")
+                args[0].writeUtf8String("");
         }
     });
 
@@ -119,7 +121,6 @@ export function installHooks() {
         onEnter(args) {
             let button = decodeString(args[1].add(Offsets.ClickedButtonName));
             Logger.debug("HomePage::buttonClicked", button);
-            return;
         }
     });
 
@@ -141,10 +142,13 @@ export function installHooks() {
             let button = decodeString(args[2]);
             Logger.debug("DropGUIContainer::addGameButton", button)
             if (button == "chat_button") {
-                Logger.debug("Sleeping for a lazy race condition fix");
                 sleep(1000);
             }
-        }
+            if (button != null && hiddenButtons.includes(button)) this.hide = true;
+        },
+        onLeave(retval) {
+            if (this.hide) displayObjectSetSetXY(retval, -1000, -1000);
+        },
     })
 
     Interceptor.attach(base.add(Offsets.GameGUIContainerAddGameButton), {
@@ -260,4 +264,29 @@ export function installHooks() {
             //Logger.debug("TextField::SetText", text);
         },
     });
+
+    Interceptor.attach(base.add(Offsets.StringConstructor),
+        {
+            onEnter(args) {
+                let str = args[1].readCString();
+                //Logger.debug(str);
+            },
+        });
+
+    Interceptor.attach(base.add(Offsets.RadioButtonCreateButton),
+        {
+            onEnter(args) {
+                let button = malloc(1024);
+                let clip = malloc(1024);
+                let movieClip = movieClipConstructor(clip);
+                //radioButtonCreate2(button, clip, args[3]);
+            }
+        });
+
+    Interceptor.attach(base.add(Offsets.LogicVersionIsChinaVersion),
+        {
+            onLeave(retval) {
+                retval.replace(ptr(Number(config.china)));
+            },
+        });
 }

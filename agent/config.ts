@@ -32,6 +32,7 @@ export class Config {
     logToFile = false;
     infiniteAmmo = false;
     infiniteSuper = false;
+    china = false;
 }
 
 export function readConfig() {
@@ -66,6 +67,7 @@ export function readConfig() {
     config.logToFile = nbs.logToFile == null ? false : nbs.logToFile;
     config.infiniteAmmo = nbs.infiniteAmmo == null ? false : nbs.infiniteAmmo;
     config.infiniteSuper = nbs.infiniteSuper == null ? false : nbs.infiniteSuper;
+    config.china = nbs.china == null ? false : nbs.china;
     for (const [id, brawler] of Object.entries(nbs.unlockedBrawlers as Record<string, any>)) { // why does it have to be string sob
         config.ownedBrawlers[Number(id)] = new Brawler(
             brawler.cardID,

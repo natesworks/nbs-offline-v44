@@ -44,9 +44,10 @@ export const movieClipSetText = new NativeFunction(base.add(Offsets.MovieClipSet
 export const displayObjectSetSetXY = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'pointer', ['pointer', 'int', 'int']);
 export const logicCharacterServerChargeUlti = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), 'int', ['int', 'int', 'int', 'int', 'int']);
 export const radioButtonCreate = new NativeFunction(base.add(Offsets.RadioButtonCreateButton), 'pointer', ['pointer', 'pointer', 'pointer']);
+export const radioButtonCreate2 = new NativeFunction(base.add(Offsets.RadioButtonCreateButton), 'pointer', ['pointer', 'pointer', 'pointer']);
 export const setRadioButtonState = new NativeFunction(base.add(Offsets.RadioButtonSetRadioButtonState), 'int', ['pointer', 'pointer', 'pointer']);
 export const getMovieClipByName = new NativeFunction(base.add(Offsets.GetMovieClipByName), 'int', ['pointer', 'pointer']);
-export const movieClipConstructor = new NativeFunction(base.add(Offsets.MovieClipConstructor), 'int', ['pointer']);
+export const movieClipConstructor = new NativeFunction(base.add(Offsets.MovieClipConstructor), 'pointer', ['pointer']);
 
 export let player = new Player();
 export let config: Config;
@@ -68,7 +69,7 @@ export const brawlPassButtonIsDisabled = 37;
 export const shopIsDisabled = 5;
 export const friendlyGameLevelRequirement = 3;
 export const hiddenButtons = ["button_country", "button_faq", "button_language", "button_sc_id", "button_terms", "button_privacy", "button_parentsguide", "button_thirdparty", "button_api", "button_google_connect", "button_kakao_connect", "button_line_connect", "button_privacy_settings", "button_birthday", "button_edit_controls"];
-export const hiddenText = ["LANGUAGE", "LOCATION", "SUPERCELL ID", "PLAY WITH FRIENDS", "Google Play Sign-In", "BLOCK FRIEND REQUESTS"];
+export const hiddenText = ["LANGUAGE", "LOCATION", "SUPERCELL ID", "PLAY WITH FRIENDS", "Google Play Sign-In", "BLOCK FRIEND REQUESTS", "SOCIAL"];
 
 export const credits = `NBS Offline v2.3.1
 

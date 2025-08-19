@@ -32,6 +32,7 @@
     "logToFile": false,
     "infiniteAmmo": false,
     "infiniteSuper": false,
+    "china": false,
     "unlockedBrawlers": {
       "0": {
         "cardID": 0,
