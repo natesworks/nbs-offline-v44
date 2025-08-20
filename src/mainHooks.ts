@@ -272,11 +272,11 @@ export function installHooks() {
             if (settingsOpen) {
                 if (hiddenText.some((x) => x === text)) // .some is cool
                     args[1] = createStringObject("");
-                if (text === "SUPERCELL ID")
+                else if (text === "SUPERCELL ID")
                     args[1] = createStringObject("Branch");
-                if (text === "Terms of Service")
+                else if (text === "Terms of Service")
                     args[1] = createStringObject("Beta");
-                if (text === "Privacy Policy")
+                else if (text === "Privacy Policy")
                     args[1] = createStringObject("<c00ff00>Development</c>");
             }
             if (text?.includes("input lat"))
@@ -343,7 +343,7 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.SettingsScreenIsSupercellIDEnabled),
         {
             onLeave(retval) {
-                retval.replace(ptr(0));
+                retval.replace(ptr(Number(!settingsOpen)));
             },
         });
 

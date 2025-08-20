@@ -3,6 +3,8 @@ import { openFile, readFile } from "./fs.js";
 import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 import { Player } from "./player.js";
+import { UpdaterConfig } from "./updaterconfig.js";
+import { readUpdaterConfig } from "./updaterutil.js";
 import { getLibraryDir } from "./util.js";
 
 export const base = Module.getBaseAddress("libg.so");
@@ -66,9 +68,9 @@ export const privacyURL = "http://supercell.com/en/terms-of-service/"
 
 export let player = new Player();
 export let config: Config;
+export let updaterConfig: UpdaterConfig;
 export let pkg: string;
 export let logFile: number;
-export let updaterConfigFile : number;
 export let libPath: string;
 export let configPath: string;
 export let defaultConfigPath: string;
@@ -83,7 +85,7 @@ export function load() {
     pkg = readFile(openFile("/proc/self/cmdline")).split("\0")[0];
     dataDirectory = `/storage/emulated/0/Android/data/${pkg}/files`;
     packetDumpsDirectory = `${dataDirectory}/packetdumps`
-    logFile = openFile(`${dataDirectory}/log.txt`, true);
+    logFile = openFile(`${dataDirectory}/log.txt`, true, true);
     if (logFile < 0) {
         throw new Error("Failed to open log file"); // cant check if u have log to file enabled at this point sry
     }
@@ -93,8 +95,13 @@ export function load() {
     tryLoadDefaultConfig();
     config = readConfig();
     updaterConfigPath = `${dataDirectory}/updater.json`;
-    updaterConfigFile = openFile(updaterConfigPath, true);
-    if (updaterConfigFile < 0) Logger.error("Failed to open updater config file at", updaterConfigFile);
+    let updaterConfigFile = openFile(updaterConfigPath, true);
+    if (updaterConfigFile < 0) {
+        Logger.error("Failed to open updater config file at", updaterConfigFile);
+        throw new Error("Failed to open updater config file");
+    }
+    updaterConfig = readUpdaterConfig(updaterConfigFile);
+    close(updaterConfigFile);
 }
 
 export const brawlPassButtonIsDisabled = 37;

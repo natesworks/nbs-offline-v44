@@ -1,9 +1,10 @@
-import { close, malloc, mkdir, O_CREAT, O_RDONLY, O_RDWR, open, read, write } from "./definitions.js";
+import { close, malloc, mkdir, O_CREAT, O_RDONLY, O_RDWR, O_TRUNC, open, read, write } from "./definitions.js";
 import { strPtr, utf8ToBytes } from "./util.js";
 
-export function openFile(path: string, rw = false) {
+export function openFile(path: string, rw = false, trunc = false) {
     const p = Memory.allocUtf8String(path);
-    const fd = open(p, rw ? O_CREAT | O_RDWR : O_RDONLY, 0o666);
+    const flags = rw ? (O_CREAT | O_RDWR | (trunc ? O_TRUNC : 0)) : O_RDONLY;
+    const fd = open(p, flags, 0o666);
     return fd;
 }
 
@@ -73,8 +74,7 @@ export function copyFile(src: string, dst: string, overwrite = true) {
     return;
 }
 
-export function createDirectory(path : string)
-{  
+export function createDirectory(path: string) {
     let pathPtr = strPtr(path);
     return mkdir(pathPtr, 0o755);
 }

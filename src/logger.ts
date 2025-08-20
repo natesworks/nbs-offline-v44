@@ -33,7 +33,7 @@ export class Logger {
         const line = `${getTimestamp()} [INFO] ${msg}`;
         console.log(line);
         if (config.logToFile)
-            writeFile(logFile, readFile(logFile) + line + "\n");
+            writeFile(logFile, line + "\n");
         androidLog(ANDROID_LOG_INFO, msg);
     }
 
@@ -42,7 +42,7 @@ export class Logger {
         const line = `${getTimestamp()} [DEBUG] ${msg}`;
         console.log(line);
         if (config.logToFile)
-            writeFile(logFile, readFile(logFile) + line + "\n");
+            writeFile(logFile, line + "\n");
         androidLog(ANDROID_LOG_DEBUG, msg);
     }
 
@@ -51,7 +51,7 @@ export class Logger {
         const line = `${getTimestamp()} [WARN] ${msg}`;
         console.log(line);
         if (config.logToFile)
-            writeFile(logFile, readFile(logFile) + line + "\n");
+            writeFile(logFile, line + "\n");
         androidLog(ANDROID_LOG_WARN, msg);
     }
 
@@ -60,7 +60,7 @@ export class Logger {
         const line = `${getTimestamp()} [ERROR] ${msg}`;
         console.log(line);
         if (config.logToFile)
-            writeFile(logFile, readFile(logFile) + line + "\n");
+            writeFile(logFile, line + "\n");
         androidLog(ANDROID_LOG_ERROR, msg);
     }
 }

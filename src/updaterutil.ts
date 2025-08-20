@@ -1,9 +1,9 @@
-import { updaterConfigFile } from "./definitions";
-import { readFile, writeFile } from "./fs.js";
+import { updaterConfig, updaterConfigPath } from "./definitions";
+import { openFile, readFile, writeFile } from "./fs.js";
 import { Logger } from "./logger.js";
 import { UpdaterConfig } from "./updaterconfig.js";
 
-export function readUpdaterConfig()
+export function readUpdaterConfig(updaterConfigFile : number)
 {
     let config = new UpdaterConfig();
     let raw = readFile(updaterConfigFile);
@@ -20,13 +20,13 @@ export function readUpdaterConfig()
 export function writeUpdaterConfig(config : UpdaterConfig)
 {
     let str = JSON.stringify(config, null, 2);
+    let updaterConfigFile = openFile(updaterConfigPath, true, true);
     writeFile(updaterConfigFile, str);
 }
 
 export function switchBranch(branch: string)
 {
     Logger.debug("Switching branch to", branch);
-    let config = readUpdaterConfig();
-    config.branch = branch;
-    writeUpdaterConfig(config);
+    updaterConfig.branch = branch;
+    writeUpdaterConfig(updaterConfig);
 }
