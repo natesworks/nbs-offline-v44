@@ -338,4 +338,11 @@ export function installHooks() {
                 Logger.error("Debugger::error", args[0].readCString());
             },
         });
+
+    Interceptor.attach(base.add(Offsets.SettingsScreenIsSupercellIDEnabled),
+        {
+            onLeave(retval) {
+                retval.replace(ptr(0));
+            },
+        })
 }

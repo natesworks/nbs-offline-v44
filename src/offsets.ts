@@ -102,5 +102,6 @@ export enum Offsets {
     LogicLocaleDataGetLaserBoxURL = 0xa7a9dc,
     LogicLocaleDataGetLaserBoxEsportsURL = 0xc1f384,
     DebuggerWarning = 0x7b9954,
-    DebuggerError = 0x6ca3e8
+    DebuggerError = 0x6ca3e8,
+    SettingsScreenIsSupercellIDEnabled = 0x644848
 }
