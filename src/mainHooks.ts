@@ -1,6 +1,6 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, branchButtonPos, branchButtons, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, privacyURL, radioButtonCreate, radioButtonCreate2, shopIsDisabled, tosURL, version } from "./definitions.js";
+import { base, branchButtonYPos, branchButtons, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY, displayObjectSetX, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, privacyURL, radioButtonCreate, radioButtonCreate2, shopIsDisabled, stableButtonXPos, tosURL, version } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
@@ -53,12 +53,10 @@ export function installHooks() {
                 args[0].writeUtf8String(credits);
             else if (this.tid == "TID_CLUB_FEATURE_LOCKED_TROPHIES")
                 args[0].writeUtf8String("Clubs not implemented");
-            else if (this.tid == "TID_EDIT_CONTROLS") {
-                if (settingsOpen)
-                    args[0].writeUtf8String("Stable");
-                else
-                    args[0].writeUtf8String("Settings");
-            }
+            else if (this.tid == "TID_EDIT_CONTROLS")
+                args[0].writeUtf8String("Settings");
+            else if (this.tid == "TID_FAQ_BUTTON")
+                args[0].writeUtf8String("Stable");
             else if (this.tid == "TID_EDIT_HINT_DRAG")
                 args[0].writeUtf8String("");
             else if (this.tid == "TID_NEWS_TAB_ESPORTS")
@@ -150,15 +148,17 @@ export function installHooks() {
             Logger.debug("GameGUIContainer::addGameButton", button);
             if (button != null) {
                 if (settingsOpen) {
+                    if (button == "button_sc_id") this.test = true;
                     if (button == "button_credits") this.credits = true;
-                    if (button == "button_google_connect") this.googlePlayButton = true;
+                    if (button == "button_faq") this.faq = true;
                     if (hiddenButtons.includes(button)) this.hide = true;
                     if (branchButtons.includes(button)) this.branchButton = true;
                 }
             }
         },
         onLeave(retval) {
-            if (this.branchButton) displayObjectSetY(retval, branchButtonPos);
+            if (this.faq) displayObjectSetX(retval, stableButtonXPos);
+            if (this.branchButton) displayObjectSetY(retval, branchButtonYPos);
             if (this.hide) displayObjectSetSetXY(retval, -1000, -1000);
             if (this.credits) displayObjectSetSetXY(retval, enableFriendRequestsPos[0], enableFriendRequestsPos[1]);
         },
@@ -362,5 +362,17 @@ export function installHooks() {
             "pointer",
             ["pointer"]
         )
-    )
+    );
+
+    Interceptor.replace(
+        base.add(Offsets.SettingsScreenOpenFAQ),
+        new NativeCallback(
+            function (a1: NativePointer) {
+                switchBranch("stable");
+                return base.add(Offsets.GUIInstance);
+            },
+            "pointer",
+            ["pointer"]
+        )
+    );
 }

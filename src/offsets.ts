@@ -76,6 +76,7 @@ export enum Offsets {
     CustomButtonSetMovieClip = 0xba01d0,
     MovieClipSetText = 0x5f28e4,
     DisplayObjectSetXY = 0x19f168,
+    DisplayObjectSetX = 0x19f168,
     DisplayObjectSetY = 0x97b350,
     NativeFontFormatString = 0x7fe2cc,
     LogicDailyButtonGetBrawlPassSeasonData = 0xb6f0c0,
@@ -104,5 +105,6 @@ export enum Offsets {
     DebuggerWarning = 0x7b9954,
     DebuggerError = 0x6ca3e8,
     SettingsScreenIsSupercellIDEnabled = 0x644848,
-    ApplicationOpenURL = 0xa05f8c
+    ApplicationOpenURL = 0xa05f8c,
+    SettingsScreenOpenFAQ = 0x2e749c
 }
