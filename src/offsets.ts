@@ -97,5 +97,6 @@ export enum Offsets {
     LogicCharacterServerTickAI = 0xca8b70,
     PosX = 28,
     PosY = 32,
-    LogicVersionIsChinaVersion = 0x5174ac
+    LogicVersionIsChinaVersion = 0x5174ac,
+    LogicLocaleDataGetLaserBoxURL = 0xa7a9dc
 }

@@ -2,10 +2,12 @@ import { Offsets } from "./offsets.js";
 import { base, createMessageByType, messageManagerReceiveMessage, operator_new } from "./definitions.js";
 import { PiranhaMessage } from "./piranhamessage.js";
 import { getMessageManagerInstance } from "./util.js";
+import { Logger } from "./logger.js";
 
 export class Messaging {
     static sendOfflineMessage(id: number, payload: number[]): NativePointer {
         let version = id == 20104 ? 1 : 0;
+        Logger.debug("Sending offline message with packet ID", id, "payload size", payload.length, "version", version);
         const factory = Memory.alloc(256);
         factory.writePointer(base.add(Offsets.LogicLaserMessageFactory));
         let message = createMessageByType(factory.toUInt32(), id);

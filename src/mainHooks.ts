@@ -12,7 +12,7 @@ import { Logger } from "./logger.js";
 
 let botNames: string[] = [];
 let enableFriendRequestsPos: number[];
-let settingsOpen : boolean;
+let settingsOpen: boolean;
 
 export function installHooks() {
     Interceptor.attach(base.add(Offsets.ServerConnectionUpdate), {
@@ -23,6 +23,10 @@ export function installHooks() {
     });
 
     Interceptor.attach(base.add(Offsets.MessageManagerReceiveMessage), {
+        onEnter(args) {
+            let message = args[1];
+            Logger.debug("Received", PiranhaMessage.getMessageType(message), "with length", PiranhaMessage.getMessageLength(message));
+        },
         onLeave: function (retval) {
             retval.replace(ptr(1));
         }
@@ -31,6 +35,7 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.HomePageStartGame), {
         onEnter: function (args) {
             args[3] = ptr(3);
+            args[8] = ptr(0);
             botNames = getBotNames();
         }
     });
@@ -285,6 +290,14 @@ export function installHooks() {
         {
             onLeave(retval) {
                 retval.replace(ptr(Number(config.china)));
+            },
+        });
+
+    Interceptor.attach(base.add(Offsets.LogicLocaleDataGetLaserBoxURL),
+        {
+            onLeave(retval) {
+                Logger.debug("LaserBox URL:", decodeString(retval));
+                retval.replace(createStringObject("http://nbs.brawlmods.com/news"));
             },
         });
 }

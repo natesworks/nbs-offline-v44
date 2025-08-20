@@ -253,7 +253,7 @@ export class ByteStream {
         this.bitoffset = (this.bitoffset + 1) & 7;
     }
 
-    writeDataReference(high: number, low: number) {
+    writeDataReference(high: number, low = -1) {
         //console.log("writeDataReference: high:", high, "low:", low);
         this.bitoffset = 0;
         this.writeVint(high);
