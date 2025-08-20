@@ -1,10 +1,10 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, brawlPassButtonIsDisabled, config, credits, customButtonConstructor, displayObjectSetSetXY, friendlyGameLevelRequirement, getMovieClipByName, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, radioButtonCreate, radioButtonCreate2, shopIsDisabled, stringCtor, version } from "./definitions.js";
+import { base, branchButtons, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, radioButtonCreate, radioButtonCreate2, shopIsDisabled, version } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
-import { getBotNames, decodeString, sleep, createStringObject, strPtr, displayObjectGetXY } from "./util.js";
+import { getBotNames, decodeString, sleep, createStringObject, strPtr, displayObjectGetXY, displayObjectGetY } from "./util.js";
 import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 import { createDebugButton } from "./debugmenu.js";
 import { TeamMessage } from "./packets/server/TeamMessage.js";
@@ -13,6 +13,7 @@ import { Logger } from "./logger.js";
 let botNames: string[] = [];
 let enableFriendRequestsPos: number[];
 let settingsOpen: boolean;
+let SCIDButtonY: number;
 
 export function installHooks() {
     Interceptor.attach(base.add(Offsets.ServerConnectionUpdate), {
@@ -47,12 +48,16 @@ export function installHooks() {
                 let botIndex = parseInt(this.tid.slice(8), 10) - 1;
                 args[0].writeUtf8String(botNames[botIndex]);
             }
-            else if (this.tid == "TID_ABOUT") 
+            else if (this.tid == "TID_ABOUT")
                 args[0].writeUtf8String(credits);
-            else if (this.tid == "TID_CLUB_FEATURE_LOCKED_TROPHIES") 
+            else if (this.tid == "TID_CLUB_FEATURE_LOCKED_TROPHIES")
                 args[0].writeUtf8String("Clubs not implemented");
-            else if (this.tid == "TID_EDIT_CONTROLS") 
-                args[0].writeUtf8String("Settings");
+            else if (this.tid == "TID_EDIT_CONTROLS") {
+                if (settingsOpen)
+                    args[0].writeUtf8String("Stable");
+                else
+                    args[0].writeUtf8String("Settings");
+            }
             else if (this.tid == "TID_EDIT_HINT_DRAG")
                 args[0].writeUtf8String("");
             else if (this.tid == "TID_NEWS_TAB_ESPORTS")
@@ -131,26 +136,30 @@ export function installHooks() {
         onEnter(args) {
             let button = decodeString(args[2]);
             Logger.debug("DropGUIContainer::addGameButton", button)
-            if (button == "chat_button") {
-                sleep(1000);
+            if (button != null) {
+                if (button == "chat_button") sleep(1000);
             }
-            if (button != null && hiddenButtons.includes(button)) this.hide = true;
-        },
-        onLeave(retval) {
-            if (this.hide) displayObjectSetSetXY(retval, -1000, -1000);
-        },
-    })
+        }
+    });
 
     Interceptor.attach(base.add(Offsets.GameGUIContainerAddGameButton), {
         onEnter(args) {
             let button = args[1].readCString();
             Logger.debug("GameGUIContainer::addGameButton", button);
-            if (settingsOpen == true && button == "button_credits") this.credits = true;
-            if (settingsOpen == true && button != null && hiddenButtons.includes(button)) this.hide = true;
+            if (button != null) {
+                if (settingsOpen) {
+                    if (button == "button_credits") this.credits = true;
+                    if (button == "button_sc_id") this.SCIDButton = true;
+                    if (hiddenButtons.includes(button)) this.hide = true;
+                    if (branchButtons.includes(button)) this.branchButton = true;
+                }
+            }
         },
         onLeave(retval) {
+            if (this.SCIDButton) SCIDButtonY = displayObjectGetY(retval);
             if (this.hide) displayObjectSetSetXY(retval, -1000, -1000);
-            if (this.credits) displayObjectSetSetXY(retval, enableFriendRequestsPos[0], enableFriendRequestsPos[1])
+            if (this.credits) displayObjectSetSetXY(retval, enableFriendRequestsPos[0], enableFriendRequestsPos[1]);
+            if (this.branchButton) displayObjectSetY(retval, SCIDButtonY);
         },
     });
 
@@ -259,8 +268,16 @@ export function installHooks() {
             let lobbyInfo = `${info}\n${config.lobbyinfo}`
             if (text?.includes("0-1 not in Club"))
                 args[1] = createStringObject(lobbyInfo);
-            if (settingsOpen && hiddenText.some((x) => x === text)) // .some is cool
-                args[1] = createStringObject("");
+            if (settingsOpen) {
+                if (hiddenText.some((x) => x === text)) // .some is cool
+                    args[1] = createStringObject("");
+                if (text === "SUPERCELL ID")
+                    args[1] = createStringObject("Branch");
+                if (text === "Terms of Service")
+                    args[1] = createStringObject("Beta");
+                if (text === "Privacy Policy")
+                    args[1] = createStringObject("<c00ff00>Development</c>");
+            }
             if (text?.includes("input lat"))
                 args[1] = createStringObject(info);
             //Logger.debug("TextField::SetText", text);
@@ -312,6 +329,13 @@ export function installHooks() {
         {
             onEnter(args) {
                 Logger.warn("Debugger::warning", args[0].readCString());
+            },
+        });
+
+    Interceptor.attach(base.add(Offsets.DebuggerError),
+        {
+            onEnter(args) {
+                Logger.error("Debugger::error", args[0].readCString());
             },
         });
 }

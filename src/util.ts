@@ -179,3 +179,9 @@ export function displayObjectGetXY(displayobject : NativePointer) : number[]
     let y = displayobject.add(Offsets.PosY).readPointer().toInt32();
     return [x, y];
 }
+
+export function displayObjectGetY(displayobject : NativePointer) : number
+{
+    let y = displayobject.add(Offsets.PosY).readPointer().toInt32();
+    return y;
+}
