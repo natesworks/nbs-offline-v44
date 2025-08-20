@@ -98,5 +98,7 @@ export enum Offsets {
     PosX = 28,
     PosY = 32,
     LogicVersionIsChinaVersion = 0x5174ac,
-    LogicLocaleDataGetLaserBoxURL = 0xa7a9dc
+    LogicLocaleDataGetLaserBoxURL = 0xa7a9dc,
+    LogicLocaleDataGetLaserBoxEsportsURL = 0xc1f384,
+    DebuggerWarning = 0x7b9954
 }

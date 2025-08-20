@@ -47,17 +47,16 @@ export function installHooks() {
                 let botIndex = parseInt(this.tid.slice(8), 10) - 1;
                 args[0].writeUtf8String(botNames[botIndex]);
             }
-            else if (this.tid == "TID_ABOUT") {
+            else if (this.tid == "TID_ABOUT") 
                 args[0].writeUtf8String(credits);
-            }
-            else if (this.tid == "TID_CLUB_FEATURE_LOCKED_TROPHIES") {
+            else if (this.tid == "TID_CLUB_FEATURE_LOCKED_TROPHIES") 
                 args[0].writeUtf8String("Clubs not implemented");
-            }
-            else if (this.tid == "TID_EDIT_CONTROLS") {
+            else if (this.tid == "TID_EDIT_CONTROLS") 
                 args[0].writeUtf8String("Settings");
-            }
             else if (this.tid == "TID_EDIT_HINT_DRAG")
                 args[0].writeUtf8String("");
+            else if (this.tid == "TID_NEWS_TAB_ESPORTS")
+                args[0].writeUtf8String("LASER");
         }
     });
 
@@ -296,8 +295,23 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.LogicLocaleDataGetLaserBoxURL),
         {
             onLeave(retval) {
-                Logger.debug("LaserBox URL:", decodeString(retval));
-                retval.replace(createStringObject("http://nbs.brawlmods.com/news"));
+                //Logger.debug("LaserBox URL:", decodeString(retval));
+                retval.replace(createStringObject("https://nbs.brawlmods.com/news"));
+            },
+        });
+
+    Interceptor.attach(base.add(Offsets.LogicLocaleDataGetLaserBoxEsportsURL),
+        {
+            onLeave(retval) {
+                //Logger.debug("LaserBox E-sports URL:", decodeString(retval));
+                retval.replace(createStringObject("https://nbs.brawlmods.com/project-laser"));
+            },
+        });
+
+    Interceptor.attach(base.add(Offsets.DebuggerWarning),
+        {
+            onEnter(args) {
+                Logger.warn("Debugger::warning", args[0].readCString());
             },
         });
 }
