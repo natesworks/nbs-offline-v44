@@ -68,11 +68,13 @@ export let player = new Player();
 export let config: Config;
 export let pkg: string;
 export let logFile: number;
+export let updaterConfigFile : number;
 export let libPath: string;
 export let configPath: string;
 export let defaultConfigPath: string;
 export let dataDirectory: string;
 export let packetDumpsDirectory: string;
+export let updaterConfigPath: string;
 export let version = "v2.4";
 
 export function load() {
@@ -90,6 +92,9 @@ export function load() {
     configPath = `${dataDirectory}/config.json`;
     tryLoadDefaultConfig();
     config = readConfig();
+    updaterConfigPath = `${dataDirectory}/updater.json`;
+    updaterConfigFile = openFile(updaterConfigPath, true);
+    if (updaterConfigFile < 0) Logger.error("Failed to open updater config file at", updaterConfigFile);
 }
 
 export const brawlPassButtonIsDisabled = 37;

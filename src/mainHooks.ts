@@ -353,9 +353,9 @@ export function installHooks() {
             function (url: NativePointer) {
                 let urlStr = decodeString(url);
                 Logger.debug("Tried to open", urlStr);
-                if (urlStr == tosURL)
+                if (urlStr == privacyURL)
                     switchBranch("beta");
-                else if (urlStr == privacyURL)
+                else if (urlStr == tosURL)
                     switchBranch("dev");
                 return url;
             },
