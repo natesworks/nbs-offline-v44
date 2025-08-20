@@ -1,6 +1,6 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, branchButtons, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, radioButtonCreate, radioButtonCreate2, shopIsDisabled, version } from "./definitions.js";
+import { base, branchButtonPos, branchButtons, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, privacyURL, radioButtonCreate, radioButtonCreate2, shopIsDisabled, tosURL, version } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
@@ -9,11 +9,12 @@ import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 import { createDebugButton } from "./debugmenu.js";
 import { TeamMessage } from "./packets/server/TeamMessage.js";
 import { Logger } from "./logger.js";
+import { decode } from "punycode";
+import { switchBranch } from "./updaterutil.js";
 
 let botNames: string[] = [];
 let enableFriendRequestsPos: number[];
 let settingsOpen: boolean;
-let SCIDButtonY: number;
 
 export function installHooks() {
     Interceptor.attach(base.add(Offsets.ServerConnectionUpdate), {
@@ -132,7 +133,7 @@ export function installHooks() {
         },
     })
 
-    Interceptor.attach(base.add(Offsets.DropGUIContainerAddGameButton), {
+    Interceptor.attach(base.add(Offsets.DropGUIContainerAddGameButton2), {
         onEnter(args) {
             let button = decodeString(args[2]);
             Logger.debug("DropGUIContainer::addGameButton", button)
@@ -142,24 +143,24 @@ export function installHooks() {
         }
     });
 
-    Interceptor.attach(base.add(Offsets.GameGUIContainerAddGameButton), {
+    Interceptor.attach(base.add(Offsets.DropGUIContainerAddGameButton), {
         onEnter(args) {
-            let button = args[1].readCString();
+            let buttonPtr = args[1];
+            let button = buttonPtr.readCString();
             Logger.debug("GameGUIContainer::addGameButton", button);
             if (button != null) {
                 if (settingsOpen) {
                     if (button == "button_credits") this.credits = true;
-                    if (button == "button_sc_id") this.SCIDButton = true;
+                    if (button == "button_google_connect") this.googlePlayButton = true;
                     if (hiddenButtons.includes(button)) this.hide = true;
                     if (branchButtons.includes(button)) this.branchButton = true;
                 }
             }
         },
         onLeave(retval) {
-            if (this.SCIDButton) SCIDButtonY = displayObjectGetY(retval);
+            if (this.branchButton) displayObjectSetY(retval, branchButtonPos);
             if (this.hide) displayObjectSetSetXY(retval, -1000, -1000);
             if (this.credits) displayObjectSetSetXY(retval, enableFriendRequestsPos[0], enableFriendRequestsPos[1]);
-            if (this.branchButton) displayObjectSetY(retval, SCIDButtonY);
         },
     });
 
@@ -344,5 +345,22 @@ export function installHooks() {
             onLeave(retval) {
                 retval.replace(ptr(0));
             },
-        })
+        });
+
+    Interceptor.replace(
+        base.add(Offsets.ApplicationOpenURL),
+        new NativeCallback(
+            function (url: NativePointer) {
+                let urlStr = decodeString(url);
+                Logger.debug("Tried to open", urlStr);
+                if (urlStr == tosURL)
+                    switchBranch("beta");
+                else if (urlStr == privacyURL)
+                    switchBranch("dev");
+                return url;
+            },
+            "pointer",
+            ["pointer"]
+        )
+    )
 }

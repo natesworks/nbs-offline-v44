@@ -36,8 +36,8 @@ export const operator_new = new NativeFunction(base.add(Offsets.OperatorNew), "p
 export const messageManagerReceiveMessage = new NativeFunction(base.add(Offsets.MessageManagerReceiveMessage), "int", ["pointer", "pointer"]);
 export const stringCtor = new NativeFunction(base.add(Offsets.StringConstructor), "pointer", ["pointer", "pointer"]);
 export const showFloaterTextAtDefaultPos = new NativeFunction(base.add(Offsets.GUIShowFloaterTextAtDefaultPos), "int", ["pointer", "pointer", "float", "int"]);
-export const gameGuiContainerAddGameButton = new NativeFunction(base.add(Offsets.GameGUIContainerAddGameButton), "pointer", ["pointer", "pointer", "int"]);
-export const dropGuiContainerAddGameButton = new NativeFunction(base.add(Offsets.DropGUIContainerAddGameButton), "pointer", ["pointer", "pointer", "pointer"]);
+export const gameGuiContainerAddGameButton = new NativeFunction(base.add(Offsets.DropGUIContainerAddGameButton), "pointer", ["pointer", "pointer", "int"]);
+export const dropGuiContainerAddGameButton = new NativeFunction(base.add(Offsets.DropGUIContainerAddGameButton2), "pointer", ["pointer", "pointer", "pointer"]);
 export const customButtonSetButtonListener = new NativeFunction(base.add(Offsets.CustomButtonSetButtonListener), "pointer", ["pointer", "pointer"]);
 export const homePageGetButtonByName = new NativeFunction(base.add(Offsets.HomePageGetButtonByName), "int", ["pointer", "pointer"]);
 export const gameGuiContainerAddButton = new NativeFunction(base.add(Offsets.GUIContainerAddButton), "pointer", ["pointer", "pointer", "int"]);
@@ -57,6 +57,10 @@ export const radioButtonCreate2 = new NativeFunction(base.add(Offsets.RadioButto
 export const setRadioButtonState = new NativeFunction(base.add(Offsets.RadioButtonSetRadioButtonState), "int", ["pointer", "pointer", "pointer"]);
 export const getMovieClipByName = new NativeFunction(base.add(Offsets.GetMovieClipByName), "int", ["pointer", "pointer"]);
 export const movieClipConstructor = new NativeFunction(base.add(Offsets.MovieClipConstructor), "pointer", ["pointer"]);
+
+export const branchButtonPos = -1035534336;
+export const tosURL = "http://www.supercell.com/en/privacy-policy/";
+export const privacyURL = "http://supercell.com/en/terms-of-service/"
 
 export let player = new Player();
 export let config: Config;

@@ -50,13 +50,13 @@ export enum Offsets {
     GUIShowFloaterTextAtDefaultPos = 0xb52f98,
     LatencyTestsPopupConstructor = 0x4fc8e8,
     ClickedButtonName = 288,
-    GameGUIContainerAddGameButton = 0x5a2930,
+    DropGUIContainerAddGameButton = 0x5a2930,
     IsAllianceFeatureAvailable = 0x983688,
     HomePageUpdate = 0x3dde78,
     HomePageGetButtonByName = 0x6c9e58,
     HomePageConstructor = 0xce5010,
     CustomButtonSetButtonListener = 0x2a0304,
-    DropGUIContainerAddGameButton = 0x5a71f0,
+    DropGUIContainerAddGameButton2 = 0x5a71f0,
     GUIContainerAddButton = 0x5c27e0,
     GetMovieClipByName = 0x8d24d8,
     MoveClipSetChildVisible = 0x15a844,
@@ -103,5 +103,6 @@ export enum Offsets {
     LogicLocaleDataGetLaserBoxEsportsURL = 0xc1f384,
     DebuggerWarning = 0x7b9954,
     DebuggerError = 0x6ca3e8,
-    SettingsScreenIsSupercellIDEnabled = 0x644848
+    SettingsScreenIsSupercellIDEnabled = 0x644848,
+    ApplicationOpenURL = 0xa05f8c
 }
