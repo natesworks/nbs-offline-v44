@@ -1,4 +1,4 @@
-import { libPath, updaterConfig, updaterConfigPath, close, logFile, gameMainShowNativeDialog, base, messagingSend, logicCharacterServerTickAI, applicationOpenURL, settingsScreenOpenFAQ, textFieldSetText, stableTextField, betaTextField, devTextField } from "./definitions.js";
+import { libPath, updaterConfig, updaterConfigPath, close, logFile, gameMainShowNativeDialog, base, messagingSend, logicCharacterServerTickAI, applicationOpenURL, settingsScreenOpenFAQ, textFieldSetText, stableTextField, betaTextField, devTextField, showFloaterTextAtDefaultPos, guiGetInstance } from "./definitions.js";
 import { openFile, readFile, writeFile } from "./fs.js";
 import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
@@ -43,4 +43,5 @@ export function switchBranch(branch: string) {
     textFieldSetText(stableTextField, createStringObject(stableText));
     textFieldSetText(betaTextField, createStringObject(betaText));
     textFieldSetText(devTextField, createStringObject(devText));
+    showFloaterTextAtDefaultPos(guiGetInstance(), createStringObject("Please reload game to apply changes"), 0.0, -1);
 }

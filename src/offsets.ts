@@ -46,7 +46,7 @@ export enum Offsets {
     EditControlsMap = 0x12536c5,
     Difficulty = 0xb6eb58,
     LogicDailyDataGetIntValue = 0x834c5c,
-    GUIInstance = 0xbe0dcc,
+    GUIInstance = 0x167bf60,
     GUIShowFloaterTextAtDefaultPos = 0xb52f98,
     LatencyTestsPopupConstructor = 0x4fc8e8,
     ClickedButtonName = 288,
@@ -108,5 +108,10 @@ export enum Offsets {
     ApplicationOpenURL = 0xa05f8c,
     SettingsScreenOpenFAQ = 0x2e749c,
     GameMainShowNativeDialog = 0xa6d884,
-    GameMainInstance = 0x1678da0
+    GameMainInstance = 0x1678da0,
+    DisplayObjectGetScaleX = 0x57c144,
+    DisplayObjectGetScaleY = 0x8bd578,
+    DisplayObjectSetScaleX = 0x8ce96c,
+    DisplayObjectSetScaleY = 0x4899ec,
+    GUIGetInstance = 0xbe0dc4
 }

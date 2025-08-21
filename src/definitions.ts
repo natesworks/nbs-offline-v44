@@ -66,9 +66,15 @@ export const logicCharacterServerTickAI = new NativeFunction(base.add(Offsets.Lo
 export const applicationOpenURL = new NativeFunction(base.add(Offsets.ApplicationOpenURL), "pointer", ["pointer"]);
 export const settingsScreenOpenFAQ = new NativeFunction(base.add(Offsets.SettingsScreenOpenFAQ), "pointer", ["pointer"]);
 export const textFieldSetText = new NativeFunction(base.add(Offsets.TextFieldSetText), "int", ["pointer", "pointer"])
+export const displayObjectGetScaleX = new NativeFunction(base.add(Offsets.DisplayObjectGetScaleX), "float", ["pointer"]);
+export const displayObjectGetScaleY = new NativeFunction(base.add(Offsets.DisplayObjectGetScaleY), "float", ["pointer"]);
+export const displayObjectSetScaleX = new NativeFunction(base.add(Offsets.DisplayObjectSetScaleX), "pointer", ["pointer", "float"]);
+export const displayObjectSetScaleY = new NativeFunction(base.add(Offsets.DisplayObjectSetScaleY), "pointer", ["pointer", "float"]);
+export const guiGetInstance = new NativeFunction(base.add(Offsets.GUIGetInstance), "pointer", []);
 
 export const branchButtonYPos = -50;
 export const stableButtonXPos = -280;
+export const devTextFieldPos = [-88.5, -26];
 export const tosURL = "http://www.supercell.com/en/privacy-policy/";
 export const privacyURL = "http://supercell.com/en/terms-of-service/"
 
@@ -84,9 +90,9 @@ export let dataDirectory: string;
 export let packetDumpsDirectory: string;
 export let updaterConfigPath: string;
 export let version = "v2.4";
-export let stableTextField : NativePointer;
-export let betaTextField : NativePointer;
-export let devTextField : NativePointer;
+export let stableTextField: NativePointer;
+export let betaTextField: NativePointer;
+export let devTextField: NativePointer;
 
 export function load() {
     if (ISDEV)
@@ -113,23 +119,23 @@ export function load() {
     close(updaterConfigFile);
 }
 
-export function setStableTextField(ptr : NativePointer) {
+export function setStableTextField(ptr: NativePointer) {
     stableTextField = ptr;
 }
 
-export function setBetaTextField(ptr : NativePointer) {
+export function setBetaTextField(ptr: NativePointer) {
     betaTextField = ptr;
 }
 
-export function setDevTextField(ptr : NativePointer) {
+export function setDevTextField(ptr: NativePointer) {
     devTextField = ptr;
 }
 
 export const brawlPassButtonIsDisabled = 37;
 export const shopIsDisabled = 5;
 export const friendlyGameLevelRequirement = 3;
-export const hiddenButtons = ["button_country", "button_edit_controls", "button_language", "button_sc_id", "button_parentsguide", "button_thirdparty", "button_api", "button_google_connect", "button_kakao_connect", "button_line_connect", "button_privacy_settings", "button_birthday"];
-export const hiddenText = ["LANGUAGE", "LOCATION", "PLAY WITH FRIENDS", "Google Play Sign-In", "BLOCK FRIEND REQUESTS", "SOCIAL"];
+export const hiddenButtons = ["button_country", "button_edit_controls", "button_language", "button_sc_id", "button_parentsguide", "button_thirdparty", "button_api", "button_google_connect", "button_kakao_connect", "button_line_connect", "button_privacy_settings", "button_birthday", "button_privacy"];
+export const hiddenText = ["LANGUAGE", "PLAY WITH FRIENDS", "Google Play Sign-In", "BLOCK FRIEND REQUESTS", "SOCIAL", "LOCATION"];
 export const branchButtons = ["button_faq", "button_terms", "button_privacy"]
 
 export const credits = `<c62a0ea>NBS Offline ${version}</c>

@@ -276,7 +276,7 @@ export function installHooks() {
                 }
                 if (updaterConfig.branch == "beta") {
                     betaText = `<c00ff00>${betaText}</c>`;
-                } 
+                }
                 if (updaterConfig.branch == "dev") {
                     devText = `<c00ff00>${devText}</c>`;
                 }
