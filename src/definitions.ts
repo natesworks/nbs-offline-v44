@@ -44,16 +44,16 @@ export const customButtonSetButtonListener = new NativeFunction(base.add(Offsets
 export const homePageGetButtonByName = new NativeFunction(base.add(Offsets.HomePageGetButtonByName), "int", ["pointer", "pointer"]);
 export const gameGuiContainerAddButton = new NativeFunction(base.add(Offsets.GUIContainerAddButton), "pointer", ["pointer", "pointer", "int"]);
 export const stageAddChild = new NativeFunction(base.add(Offsets.StageAddChild), "pointer", ["pointer", "pointer"]);
-export const possibleBotNames = ["loky", "sahar", "oskartocwel", "mroc", "croc", "KTR", "Flickz", "Interlastic", "Mold in my balls", "tomar753", "terpy", "Hallo", "free leon", "morticlowni", "ваня кек", "smw1", "Luna", "Hyra", "Juan Carlos", "Pituś", "Blast", "JordiTheCat", "TID_BOT_69", "Switly", "Tufa", "Trypix"];
+export const possibleBotNames = ["loky", "sahar", "mroc", "croc", "KTR", "Flickz", "Interlastic", "Mold in my balls", "tomar753", "terpy", "Hallo", "free leon", "ваня кек", "smw1", "Luna", "Hyra", "Juan Carlos", "Pituś", "Blast", "JordiTheCat", "TID_BOT_69", "Switly", "Tufa", "Trypix"];
 export const addFile = new NativeFunction(base.add(Offsets.ResourceListenerAddFile), "int", ["pointer", "pointer", "int", "int", "int", "int", "int"]);
 export const customButtonConstructor = new NativeFunction(base.add(Offsets.CustomButtonConstructor), "int", []);
 export const gameButtonConstructor = new NativeFunction(base.add(Offsets.GameButtonConstructor), "pointer", ["pointer"]);
 export const resourceManagerGetMovieClip = new NativeFunction(base.add(Offsets.ResourceManagerGetMovieClip), "pointer", ["pointer", "pointer", "bool"]);
 export const customButtonSetMovieClip = new NativeFunction(base.add(Offsets.CustomButtonSetMovieClip), "pointer", ["pointer", "pointer"]);
 export const movieClipSetText = new NativeFunction(base.add(Offsets.MovieClipSetText), "pointer", ["pointer", "pointer"]);
-export const displayObjectSetSetXY = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), "pointer", ["pointer", "int", "int"]);
-export const displayObjectSetX = new NativeFunction(base.add(Offsets.DisplayObjectSetX), "pointer", ["pointer", "int"]);
-export const displayObjectSetY = new NativeFunction(base.add(Offsets.DisplayObjectSetY), "pointer", ["pointer", "int"]);
+export const displayObjectSetSetXY = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), "pointer", ["pointer", "float", "float"]);
+export const displayObjectSetX = new NativeFunction(base.add(Offsets.DisplayObjectSetX), "pointer", ["pointer", "float"]);
+export const displayObjectSetY = new NativeFunction(base.add(Offsets.DisplayObjectSetY), "pointer", ["pointer", "float"]);
 export const logicCharacterServerChargeUlti = new NativeFunction(base.add(Offsets.DisplayObjectSetXY), "int", ["int", "int", "int", "int", "int"]);
 export const radioButtonCreate = new NativeFunction(base.add(Offsets.RadioButtonCreateButton), "pointer", ["pointer", "pointer", "pointer"]);
 export const radioButtonCreate2 = new NativeFunction(base.add(Offsets.RadioButtonCreateButton), "pointer", ["pointer", "pointer", "pointer"]);
@@ -61,8 +61,8 @@ export const setRadioButtonState = new NativeFunction(base.add(Offsets.RadioButt
 export const getMovieClipByName = new NativeFunction(base.add(Offsets.GetMovieClipByName), "int", ["pointer", "pointer"]);
 export const movieClipConstructor = new NativeFunction(base.add(Offsets.MovieClipConstructor), "pointer", ["pointer"]);
 
-export const branchButtonYPos = -1035534336;
-export const stableButtonXPos = -1014190899;
+export const branchButtonYPos = -50;
+export const stableButtonXPos = -280;
 export const tosURL = "http://www.supercell.com/en/privacy-policy/";
 export const privacyURL = "http://supercell.com/en/terms-of-service/"
 
@@ -85,7 +85,7 @@ export function load() {
     pkg = readFile(openFile("/proc/self/cmdline")).split("\0")[0];
     dataDirectory = `/storage/emulated/0/Android/data/${pkg}/files`;
     packetDumpsDirectory = `${dataDirectory}/packetdumps`
-    logFile = openFile(`${dataDirectory}/log.txt`, true, true);
+    logFile = openFile(`${dataDirectory}/log.txt`, true);
     if (logFile < 0) {
         throw new Error("Failed to open log file"); // cant check if u have log to file enabled at this point sry
     }

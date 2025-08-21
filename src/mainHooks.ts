@@ -19,7 +19,7 @@ let settingsOpen: boolean;
 export function installHooks() {
     Interceptor.attach(base.add(Offsets.ServerConnectionUpdate), {
         onEnter: function (args) {
-            args[0].add(Process.pointerSize).readPointer().add(Offsets.HasConnectFailed).writeU8(0);
+            args[0].add(Process.pointerSize).readPointer().add(Offsets.HasConnectFailed).writeU8(1);
             args[0].add(Process.pointerSize).readPointer().add(Offsets.State).writeInt(5);
         }
     });
@@ -159,7 +159,7 @@ export function installHooks() {
         onLeave(retval) {
             if (this.faq) displayObjectSetX(retval, stableButtonXPos);
             if (this.branchButton) displayObjectSetY(retval, branchButtonYPos);
-            if (this.hide) displayObjectSetSetXY(retval, -1000, -1000);
+            if (this.hide) displayObjectSetSetXY(retval, NaN, NaN);
             if (this.credits) displayObjectSetSetXY(retval, enableFriendRequestsPos[0], enableFriendRequestsPos[1]);
         },
     });
@@ -343,7 +343,7 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.SettingsScreenIsSupercellIDEnabled),
         {
             onLeave(retval) {
-                retval.replace(ptr(Number(!settingsOpen)));
+                retval.replace(ptr(Number(settingsOpen)));
             },
         });
 
@@ -367,7 +367,7 @@ export function installHooks() {
     Interceptor.replace(
         base.add(Offsets.SettingsScreenOpenFAQ),
         new NativeCallback(
-            function (a1: NativePointer) {
+            function () {
                 switchBranch("stable");
                 return base.add(Offsets.GUIInstance);
             },

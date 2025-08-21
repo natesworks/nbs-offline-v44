@@ -1,10 +1,9 @@
-import { updaterConfig, updaterConfigPath } from "./definitions";
+import { libPath, updaterConfig, updaterConfigPath, close, logFile } from "./definitions";
 import { openFile, readFile, writeFile } from "./fs.js";
 import { Logger } from "./logger.js";
 import { UpdaterConfig } from "./updaterconfig.js";
 
-export function readUpdaterConfig(updaterConfigFile : number)
-{
+export function readUpdaterConfig(updaterConfigFile: number) {
     let config = new UpdaterConfig();
     let raw = readFile(updaterConfigFile);
     let json = JSON.parse(raw);
@@ -17,16 +16,32 @@ export function readUpdaterConfig(updaterConfigFile : number)
     return config;
 }
 
-export function writeUpdaterConfig(config : UpdaterConfig)
-{
+export function writeUpdaterConfig(config: UpdaterConfig) {
     let str = JSON.stringify(config, null, 2);
     let updaterConfigFile = openFile(updaterConfigPath, true, true);
     writeFile(updaterConfigFile, str);
 }
 
-export function switchBranch(branch: string)
-{
+export function switchBranch(branch: string) {
     Logger.debug("Switching branch to", branch);
     updaterConfig.branch = branch;
     writeUpdaterConfig(updaterConfig);
+}
+
+export function update() {
+    const primary = libPath + "/libNBS.l.so";
+    const fallback = libPath + "/libloader.so";
+    let fd = openFile(primary);
+    if (fd < 0) {
+        fd = openFile(fallback);
+        if (fd < 0) {
+            Logger.error("Failed to open:", primary, "or", fallback);
+            throw new Error("Failed to open updater script");
+        }
+    }
+    Interceptor.detachAll();
+    close(logFile);
+    const data = readFile(fd);
+    Script.evaluate("updater", data);
+    close(fd);
 }
