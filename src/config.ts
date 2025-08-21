@@ -91,7 +91,7 @@ export function readConfig() {
     config.enableClubs = json.enableClubs == null ? false : json.enableClubs;
     config.brawlPassPremium = json.brawlPassPremium == null ? true : json.brawlPassPremium;
     config.disableBots = json.disableBots == null ? false : json.disableBots;
-    config.logToFile = json.logToFile == null ? false : json.logToFile;
+    config.logToFile = json.logToFile == null ? true : json.logToFile;
     config.infiniteAmmo = json.infiniteAmmo == null ? false : json.infiniteAmmo;
     config.infiniteSuper = json.infiniteSuper == null ? false : json.infiniteSuper;
     config.china = json.china == null ? false : json.china;

@@ -60,6 +60,12 @@ export const radioButtonCreate2 = new NativeFunction(base.add(Offsets.RadioButto
 export const setRadioButtonState = new NativeFunction(base.add(Offsets.RadioButtonSetRadioButtonState), "int", ["pointer", "pointer", "pointer"]);
 export const getMovieClipByName = new NativeFunction(base.add(Offsets.GetMovieClipByName), "int", ["pointer", "pointer"]);
 export const movieClipConstructor = new NativeFunction(base.add(Offsets.MovieClipConstructor), "pointer", ["pointer"]);
+export const gameMainShowNativeDialog = new NativeFunction(base.add(Offsets.GameMainShowNativeDialog), "pointer", ["pointer", "uint", "uint", "pointer", "pointer", "pointer"]);
+export const messagingSend = new NativeFunction(base.add(Offsets.MessagingSend), "int", ["pointer", "pointer"]);
+export const logicCharacterServerTickAI = new NativeFunction(base.add(Offsets.LogicCharacterServerTickAI), "int", ["int"]);
+export const applicationOpenURL = new NativeFunction(base.add(Offsets.ApplicationOpenURL), "pointer", ["pointer"]);
+export const settingsScreenOpenFAQ = new NativeFunction(base.add(Offsets.SettingsScreenOpenFAQ), "pointer", ["pointer"]);
+export const textFieldSetText = new NativeFunction(base.add(Offsets.TextFieldSetText), "int", ["pointer", "pointer"])
 
 export const branchButtonYPos = -50;
 export const stableButtonXPos = -280;
@@ -78,6 +84,9 @@ export let dataDirectory: string;
 export let packetDumpsDirectory: string;
 export let updaterConfigPath: string;
 export let version = "v2.4";
+export let stableTextField : NativePointer;
+export let betaTextField : NativePointer;
+export let devTextField : NativePointer;
 
 export function load() {
     if (ISDEV)
@@ -102,6 +111,18 @@ export function load() {
     }
     updaterConfig = readUpdaterConfig(updaterConfigFile);
     close(updaterConfigFile);
+}
+
+export function setStableTextField(ptr : NativePointer) {
+    stableTextField = ptr;
+}
+
+export function setBetaTextField(ptr : NativePointer) {
+    betaTextField = ptr;
+}
+
+export function setDevTextField(ptr : NativePointer) {
+    devTextField = ptr;
 }
 
 export const brawlPassButtonIsDisabled = 37;

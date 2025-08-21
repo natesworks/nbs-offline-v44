@@ -107,5 +107,6 @@ export enum Offsets {
     SettingsScreenIsSupercellIDEnabled = 0x644848,
     ApplicationOpenURL = 0xa05f8c,
     SettingsScreenOpenFAQ = 0x2e749c,
-    GameMainShowNativeDialog = 0xa6d884
+    GameMainShowNativeDialog = 0xa6d884,
+    GameMainInstance = 0x1678da0
 }

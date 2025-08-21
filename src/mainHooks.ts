@@ -1,6 +1,6 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, branchButtonYPos, branchButtons, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY, displayObjectSetX, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, privacyURL, radioButtonCreate, radioButtonCreate2, shopIsDisabled, stableButtonXPos, tosURL, version } from "./definitions.js";
+import { base, branchButtonYPos, branchButtons, brawlPassButtonIsDisabled, config, credits, devTextField, displayObjectSetSetXY, displayObjectSetX, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, privacyURL, radioButtonCreate, radioButtonCreate2, setBetaTextField, setDevTextField, setStableTextField, shopIsDisabled, stableButtonXPos, stableTextField, textFieldSetText, tosURL, updaterConfig, version } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
@@ -55,8 +55,6 @@ export function installHooks() {
                 args[0].writeUtf8String("Clubs not implemented");
             else if (this.tid == "TID_EDIT_CONTROLS")
                 args[0].writeUtf8String("Settings");
-            else if (this.tid == "TID_FAQ_BUTTON")
-                args[0].writeUtf8String("Stable");
             else if (this.tid == "TID_EDIT_HINT_DRAG")
                 args[0].writeUtf8String("");
             else if (this.tid == "TID_NEWS_TAB_ESPORTS")
@@ -270,14 +268,34 @@ export function installHooks() {
             if (text?.includes("0-1 not in Club"))
                 args[1] = createStringObject(lobbyInfo);
             if (settingsOpen) {
+                let stableText = "Stable";
+                let betaText = "Beta";
+                let devText = "Development";
+                if (updaterConfig.branch == "stable") {
+                    stableText = `<c00ff00>${stableText}</c>`;
+                }
+                if (updaterConfig.branch == "beta") {
+                    betaText = `<c00ff00>${betaText}</c>`;
+                } 
+                if (updaterConfig.branch == "dev") {
+                    devText = `<c00ff00>${devText}</c>`;
+                }
                 if (hiddenText.some((x) => x === text)) // .some is cool
                     args[1] = createStringObject("");
                 else if (text === "SUPERCELL ID")
                     args[1] = createStringObject("Branch");
-                else if (text === "Terms of Service")
-                    args[1] = createStringObject("Beta");
-                else if (text === "Privacy Policy")
-                    args[1] = createStringObject("<c00ff00>Development</c>");
+                else if (text == "Help and Support") {
+                    setStableTextField(args[0]);
+                    args[1] = createStringObject(stableText);
+                }
+                else if (text === "Terms of Service") {
+                    setBetaTextField(args[0]);
+                    args[1] = createStringObject(betaText);
+                }
+                else if (text === "Privacy Policy") {
+                    setDevTextField(args[0]);
+                    args[1] = createStringObject(devText);
+                }
             }
             if (text?.includes("input lat"))
                 args[1] = createStringObject(info);

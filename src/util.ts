@@ -175,13 +175,13 @@ export function utf8ToBytes(s: string) {
 
 export function displayObjectGetXY(displayobject : NativePointer) : number[]
 {
-    let x = displayobject.add(Offsets.PosX).readPointer().toInt32();
-    let y = displayobject.add(Offsets.PosY).readPointer().toInt32();
+    let x = displayobject.add(Offsets.PosX).readFloat();
+    let y = displayobject.add(Offsets.PosY).readFloat();
     return [x, y];
 }
 
 export function displayObjectGetY(displayobject : NativePointer) : number
 {
-    let y = displayobject.add(Offsets.PosY).readPointer().toInt32();
+    let y = displayobject.add(Offsets.PosY).readFloat();
     return y;
 }

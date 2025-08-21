@@ -1,7 +1,9 @@
-import { libPath, updaterConfig, updaterConfigPath, close, logFile } from "./definitions";
+import { libPath, updaterConfig, updaterConfigPath, close, logFile, gameMainShowNativeDialog, base, messagingSend, logicCharacterServerTickAI, applicationOpenURL, settingsScreenOpenFAQ, textFieldSetText, stableTextField, betaTextField, devTextField } from "./definitions.js";
 import { openFile, readFile, writeFile } from "./fs.js";
 import { Logger } from "./logger.js";
+import { Offsets } from "./offsets.js";
 import { UpdaterConfig } from "./updaterconfig.js";
+import { createStringObject } from "./util";
 
 export function readUpdaterConfig(updaterConfigFile: number) {
     let config = new UpdaterConfig();
@@ -26,22 +28,19 @@ export function switchBranch(branch: string) {
     Logger.debug("Switching branch to", branch);
     updaterConfig.branch = branch;
     writeUpdaterConfig(updaterConfig);
-}
-
-export function update() {
-    const primary = libPath + "/libNBS.l.so";
-    const fallback = libPath + "/libloader.so";
-    let fd = openFile(primary);
-    if (fd < 0) {
-        fd = openFile(fallback);
-        if (fd < 0) {
-            Logger.error("Failed to open:", primary, "or", fallback);
-            throw new Error("Failed to open updater script");
-        }
+    let stableText = "Stable";
+    let betaText = "Beta";
+    let devText = "Development";
+    if (updaterConfig.branch == "stable") {
+        stableText = `<c00ff00>${stableText}</c>`;
     }
-    Interceptor.detachAll();
-    close(logFile);
-    const data = readFile(fd);
-    Script.evaluate("updater", data);
-    close(fd);
+    else if (updaterConfig.branch == "beta") {
+        betaText = `<c00ff00>${betaText}</c>`;
+    }
+    else if (updaterConfig.branch == "dev") {
+        devText = `<c00ff00>${devText}</c>`;
+    }
+    textFieldSetText(stableTextField, createStringObject(stableText));
+    textFieldSetText(betaTextField, createStringObject(betaText));
+    textFieldSetText(devTextField, createStringObject(devText));
 }
