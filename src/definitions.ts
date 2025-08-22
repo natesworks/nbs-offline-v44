@@ -138,7 +138,7 @@ export const hiddenButtons = ["button_country", "button_edit_controls", "button_
 export const hiddenText = ["LANGUAGE", "PLAY WITH FRIENDS", "Google Play Sign-In", "BLOCK FRIEND REQUESTS", "SOCIAL", "LOCATION"];
 export const branchButtons = ["button_faq", "button_terms", "button_privacy"]
 
-export const credits = `<c62a0ea>NBS Offline ${version}</c>
+export const credits = `NBS Offline ${version}
 
 Made by Natesworks 
 Discord: dsc.gg/nbsoffline

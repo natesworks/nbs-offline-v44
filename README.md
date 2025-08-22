@@ -9,19 +9,15 @@ This is an offline client for V44 (the version that added Otis).
 - Colorfull lobby
 - Disabled store and Brawl Pass
 - Random bot names
-- A lot of random stuff
-- Edit controls brawler is now Otis
-- Configuration file
-
-**Unfinished:**
-
-- Player profile
-- Debug button/menu
+- Minimal settings
+- Branch selector
+- Configuration file with many options
 
 ## Screenshots
 
 ![Menu](media/menu.png)
-![Edit controls](media/editcontrols.png)
+![Battle](media/battle.png)
+![Settings](media/settings.png)
 
 ## Client
 
