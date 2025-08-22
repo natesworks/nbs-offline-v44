@@ -11,5 +11,5 @@ Logger.info("Hooks installed");
 applyPatches();
 Logger.info("Patches applied");
 player.applyConfig(config);
-//addDebugFile();
+addDebugFile();
 Logger.info("NBS Offline loaded");

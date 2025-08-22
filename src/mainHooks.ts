@@ -146,7 +146,6 @@ export function installHooks() {
             Logger.debug("GameGUIContainer::addGameButton", button);
             if (button != null) {
                 if (settingsOpen) {
-                    if (button == "button_sc_id") this.test = true;
                     if (button == "button_credits") this.credits = true;
                     if (button == "button_faq") this.faq = true;
                     if (hiddenButtons.includes(button)) this.hide = true;
@@ -171,7 +170,7 @@ export function installHooks() {
 
     Interceptor.attach(base.add(Offsets.HomeModeEnter), {
         onLeave() {
-            //createDebugButton();
+            createDebugButton();
         }
     });
 

@@ -1,4 +1,4 @@
-import { addFile, base, customButtonSetMovieClip, displayObjectSetSetXY, gameButtonConstructor, malloc, movieClipSetText as movieClipSetText, resourceManagerGetMovieClip, stageAddChild } from "./definitions.js";
+import { addFile, base, customButtonSetMovieClip, displayObjectSetScaleX, displayObjectSetSetXY, gameButtonConstructor, gameButtonSetText, getTextFieldByName, malloc, movieClipSetText as movieClipSetText, resourceManagerGetMovieClip, stageAddChild, textFieldConstructor, textFieldSetText } from "./definitions.js";
 import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 import { createStringObject, strPtr } from "./util.js";
@@ -20,7 +20,7 @@ export function spawnItem(item: string, text: string, x: number, y: number): Nat
     let movieClip = resourceManagerGetMovieClip(strPtr("sc/debug.sc"), strPtr(item), 1);
     customButtonSetMovieClip(mem, movieClip);
     displayObjectSetSetXY(mem, x, y);
-    movieClipSetText(mem, createStringObject(text));
+    gameButtonSetText(mem, createStringObject(text), 1);
     return mem;
 }
 

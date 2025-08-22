@@ -113,5 +113,8 @@ export enum Offsets {
     DisplayObjectGetScaleY = 0x8bd578,
     DisplayObjectSetScaleX = 0x8ce96c,
     DisplayObjectSetScaleY = 0x4899ec,
-    GUIGetInstance = 0xbe0dc4
+    GUIGetInstance = 0xbe0dc4,
+    TextFieldCopyConstructor = 0x2a99a0,
+    TextFieldConstructor = 0x8a440c,
+    GameButtonSetText = 0x46a358
 }
