@@ -73,7 +73,8 @@ export const displayObjectSetScaleY = new NativeFunction(base.add(Offsets.Displa
 export const guiGetInstance = new NativeFunction(base.add(Offsets.GUIGetInstance), "pointer", []);
 export const gameButtonSetText = new NativeFunction(base.add(Offsets.GameButtonSetText), "int", ["pointer", "pointer", "bool"]);
 export const getTextFieldByName = new NativeFunction(base.add(Offsets.GetTextFieldByName), "pointer", ["pointer", "pointer"]);
-export const textFieldConstructor = new NativeFunction(base.add(Offsets.TextFieldConstructor), "pointer", ["pointer"])
+export const textFieldConstructor = new NativeFunction(base.add(Offsets.TextFieldConstructor), "pointer", ["pointer"]);
+export const stageRemoveChild = new NativeFunction(base.add(Offsets.StageRemoveChild), "pointer", ["pointer", "pointer"]);
 
 export const branchButtonYPos = -50;
 export const stableButtonXPos = -280;
