@@ -1,4 +1,4 @@
-import { addFile, base, config, customButtonSetMovieClip, displayObjectSetScale, displayObjectSetSetXY, gameButtonConstructor, gameButtonSetText, guiGetInstance, malloc, movieClipSetText, resourceManagerGetMovieClip, showFloaterTextAtDefaultPos, stageAddChild, stageRemoveChild } from "./definitions.js";
+import { addFile, base, config, customButtonSetMovieClip, displayObjectSetScale, displayObjectSetSetXY, gameButtonConstructor, gameButtonSetText, guiGetInstance, malloc, movieClipSetText, reloadGameInternal, resourceManagerGetMovieClip, showFloaterTextAtDefaultPos, stageAddChild, stageRemoveChild } from "./definitions.js";
 import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 import { createStringObject, strPtr } from "./util.js";
@@ -9,6 +9,7 @@ let debugMenuDescription: NativePointer;
 let debugMenuOpened = false;
 let debugMenuCreated = false;
 let toggleButton: NativePointer;
+let reloadGameButton: NativePointer;
 let infiniteSuperButton: NativePointer;
 let toggleBotsButton: NativePointer;
 let toggleArtTestButton: NativePointer;
@@ -44,9 +45,10 @@ export function createDebugMenu() {
     Logger.debug("Creating debug menu");
     debugMenuCreated = true;
     debugMenu = spawnItem("debug_menu", "Debug Menu", 1280, 0);
-    infiniteSuperButton = spawnItem("debug_menu_item", "Infinite super", 1131, 100);
-    toggleBotsButton = spawnItem("debug_menu_item", (config.disableBots ? "Enable" : "Disable") + " bots", 1131, 155);
-    toggleArtTestButton = spawnItem("debug_menu_item", (config.artTest ? "Disable" : "Enable") + " art test", 1131, 210);
+    reloadGameButton = spawnItem("debug_menu_item", "Reload Game", 1131, 100);
+    infiniteSuperButton = spawnItem("debug_menu_item", "Infinite Super", 1131, 155);
+    toggleBotsButton = spawnItem("debug_menu_item", (config.disableBots ? "Enable" : "Disable") + " Bots", 1131, 210);
+    toggleArtTestButton = spawnItem("debug_menu_item", (config.artTest ? "Disable" : "Enable") + " Art Test", 1131, 265);
     debugMenuTitle = spawnItem("debug_menu_text", "<c62a0ea>NBS Offline</c>", 1075, 0);
     debugMenuDescription = spawnItem("debug_menu_text", "<c62a0ea>dsc.gg/nbsoffline</c>", 1075, 20);
     displayObjectSetScale(debugMenuTitle, 1.5);
@@ -54,6 +56,7 @@ export function createDebugMenu() {
 
 export function hideDebugMenu() {
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), debugMenu);
+    stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), reloadGameButton);
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), infiniteSuperButton);
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), toggleBotsButton);
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), toggleArtTestButton);
@@ -63,6 +66,7 @@ export function hideDebugMenu() {
 
 export function showDebugMenu() {
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), debugMenu);
+    stageAddChild(base.add(Offsets.StageInstance).readPointer(), reloadGameButton);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), infiniteSuperButton);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleBotsButton);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleArtTestButton);
@@ -92,7 +96,7 @@ export function toggleBots() {
     let text = `Bots are now ${config.disableBots ? "disabled" : "enabled"}!`;
     Logger.debug(text);
     showFloaterTextAtDefaultPos(guiGetInstance(), createStringObject(text), 0.0, -1);
-    gameButtonSetText(toggleBotsButton, createStringObject((config.disableBots ? "Enable" : "Disable") + " bots"), 1);
+    gameButtonSetText(toggleBotsButton, createStringObject((config.disableBots ? "Enable" : "Disable") + " Bots"), 1);
 }
 
 export function toggleArtTest() {
@@ -100,7 +104,7 @@ export function toggleArtTest() {
     let text = `Art test is now ${config.artTest ? "enabled" : "disabled"}!`;
     Logger.debug(text);
     showFloaterTextAtDefaultPos(guiGetInstance(), createStringObject(text), 0.0, -1);
-    gameButtonSetText(toggleArtTestButton, createStringObject((config.artTest ? "Disable" : "Enable") + " art test"), 1);
+    gameButtonSetText(toggleArtTestButton, createStringObject((config.artTest ? "Disable" : "Enable") + " Art Test"), 1);
     (Memory as any).writeU8(base.add(Offsets.ArtTest), Number(config.artTest));
 }
 
@@ -111,5 +115,6 @@ Interceptor.attach(base.add(Offsets.CustomButtonButtonPressed),
             else if (args[0].toInt32() == infiniteSuperButton.toInt32()) toggleInfiniteSuper();
             else if (args[0].toInt32() == toggleBotsButton.toInt32()) toggleBots();
             else if (args[0].toInt32() == toggleArtTestButton.toInt32()) toggleArtTest();
+            else if (args[0].toInt32() == reloadGameButton.toInt32()) reloadGameInternal(base.add(Offsets.GameMainInstance));
         },
     });

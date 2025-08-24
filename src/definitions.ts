@@ -76,16 +76,18 @@ export const textFieldConstructor = new NativeFunction(base.add(Offsets.TextFiel
 export const stageRemoveChild = new NativeFunction(base.add(Offsets.StageRemoveChild), "pointer", ["pointer", "pointer"]);
 export const logicCharacterServerTickAI = new NativeFunction(base.add(Offsets.LogicCharacterServerTickAI), "pointer", ["pointer"]);
 export const displayObjectSetScale = new NativeFunction(base.add(Offsets.DisplayObjectSetScale), "pointer", ["pointer", "float"]);
+export const reloadGameInternal = new NativeFunction(base.add(Offsets.GameMainReloadGameInternal), "pointer", ["pointer"]);
 
 export const branchButtonYPos = -50;
 export const stableButtonXPos = -280;
 export const devTextFieldPos = [-88.5, -26];
+export const creditPos = [282, -156.5]
 export const tosURL = "http://www.supercell.com/en/privacy-policy/";
 export const privacyURL = "http://supercell.com/en/terms-of-service/"
 
 export let player = new Player();
 export let config: Config;
-export let updaterConfig: UpdaterConfig;
+export let updaterConfig: UpdaterConfig | null = null;
 export let pkg: string;
 export let logFile: number;
 export let libPath: string;
@@ -115,13 +117,17 @@ export function load() {
     tryLoadDefaultConfig();
     config = readConfig();
     updaterConfigPath = `${dataDirectory}/updater.json`;
-    let updaterConfigFile = openFile(updaterConfigPath, true);
+    let updaterConfigFile = openFile(updaterConfigPath);
     if (updaterConfigFile < 0) {
-        Logger.error("Failed to open updater config file at", updaterConfigFile);
-        throw new Error("Failed to open updater config file");
+        Logger.warn("Updater configuration file doesn't exist");
+
     }
-    updaterConfig = readUpdaterConfig(updaterConfigFile);
-    close(updaterConfigFile);
+    else {
+        close(updaterConfigFile);
+        updaterConfigFile = openFile(updaterConfigPath, true);
+        updaterConfig = readUpdaterConfig(updaterConfigFile);
+        close(updaterConfigFile);
+    }
 }
 
 export function setStableTextField(ptr: NativePointer) {
@@ -142,7 +148,7 @@ export const friendlyGameLevelRequirement = 3;
 
 export const hiddenButtons = ["button_country", "button_edit_controls", "button_language", "button_sc_id", "button_parentsguide", "button_thirdparty", "button_api", "button_google_connect", "button_kakao_connect", "button_line_connect", "button_privacy_settings", "button_birthday", "button_privacy"];
 export const hiddenText = ["LANGUAGE", "PLAY WITH FRIENDS", "Google Play Sign-In", "BLOCK FRIEND REQUESTS", "SOCIAL", "LOCATION"];
-export const branchButtons = ["button_faq", "button_terms", "button_privacy"]
+export const branchButtons = ["button_faq", "button_terms", "button_privacy", "button_allow_friend_requests"]
 
 export const credits = `NBS Offline ${version}
 

@@ -123,5 +123,7 @@ export enum Offsets {
     GameMainReloadGame = 0x1556e0,
     YoozooManagerIsEnabled = 0x493e60,
     TencentManagerIsFeatureEnabled = 0x4615dc,
-    ShowTencentLoginScreen = 0x997ddc // i made up the name not in v36; find by string button_timeline
+    ShowTencentLoginScreen = 0x997ddc, // i made up the name not in v36; find by string button_timeline
+    SlowMode = 0x1681e54,
+    GameMainReloadGameInternal = 0x2a9b70
 }
