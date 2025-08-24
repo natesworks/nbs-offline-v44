@@ -109,6 +109,7 @@ export enum Offsets {
     SettingsScreenOpenFAQ = 0x2e749c,
     GameMainShowNativeDialog = 0xa6d884,
     GameMainInstance = 0x1678da0,
+    DisplayObjectSetScale = 0xa0251c,
     DisplayObjectGetScaleX = 0x57c144,
     DisplayObjectGetScaleY = 0x8bd578,
     DisplayObjectSetScaleX = 0x8ce96c,
@@ -118,5 +119,9 @@ export enum Offsets {
     TextFieldConstructor = 0x8a440c,
     GameButtonSetText = 0x46a358,
     CustomButtonButtonPressed = 0x4a8e54,
-    ArtTest = 0x167b189
+    ArtTest = 0x167b189,
+    GameMainReloadGame = 0x1556e0,
+    YoozooManagerIsEnabled = 0x493e60,
+    TencentManagerIsFeatureEnabled = 0x4615dc,
+    ShowTencentLoginScreen = 0x997ddc // i made up the name not in v36; find by string button_timeline
 }

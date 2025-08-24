@@ -259,7 +259,7 @@ export function installHooks() {
     Interceptor.attach(base.add(Offsets.TextFieldSetText), {
         onEnter(args) {
             let text = decodeString(args[1]);
-            let info = `<c62a0ea>NBS Offfline ${version}</c>\nMade by Natesworks\ndsc.gg/natesworks`;
+            let info = `<c62a0ea>NBS Offfline ${version}</c>\nMade by Natesworks\ndsc.gg/nbsoffline`;
             let lobbyInfo = `${info}\n${config.lobbyinfo}`
             if (text?.includes("0-1 not in Club"))
                 args[1] = createStringObject(lobbyInfo);
@@ -389,4 +389,19 @@ export function installHooks() {
             ["pointer"]
         )
     );
+
+    Interceptor.attach(base.add(Offsets.ShowTencentLoginScreen),
+        {
+            onEnter() {
+                this.tencentHook = Interceptor.attach(base.add(Offsets.TencentManagerIsFeatureEnabled),
+                    {
+                        onLeave(retval) {
+                            retval.replace(ptr(0));
+                        },
+                    });
+            },
+            onLeave() {
+                this.tencentHook.detach();
+            }
+        });
 }
