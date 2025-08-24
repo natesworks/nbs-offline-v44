@@ -96,7 +96,7 @@ export let defaultConfigPath: string;
 export let dataDirectory: string;
 export let packetDumpsDirectory: string;
 export let updaterConfigPath: string;
-export let version = "v2.4";
+export let version = "v2.5";
 export let stableTextField: NativePointer;
 export let betaTextField: NativePointer;
 export let devTextField: NativePointer;

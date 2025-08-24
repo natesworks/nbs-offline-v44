@@ -218,9 +218,7 @@ export function toggleBots() {
     let text = `Bots are now ${config.disableBots ? "disabled" : "enabled"}!`;
     Logger.debug(text);
     showFloaterTextAtDefaultPos(guiGetInstance(), createStringObject(text), 0.0, -1);
-    if (toggleBotsButton) {
-        gameButtonSetText(toggleBotsButton, createStringObject((config.disableBots ? "Enable" : "Disable") + " Bots"), 1);
-    }
+    if (toggleBotsButton) gameButtonSetText(toggleBotsButton, createStringObject((config.disableBots ? "Enable" : "Disable") + " Bots"), 1);
 }
 
 export function toggleArtTest() {
@@ -228,9 +226,7 @@ export function toggleArtTest() {
     let text = `Art test is now ${config.artTest ? "enabled" : "disabled"}!`;
     Logger.debug(text);
     showFloaterTextAtDefaultPos(guiGetInstance(), createStringObject(text), 0.0, -1);
-    if (toggleArtTestButton) {
-        gameButtonSetText(toggleArtTestButton, createStringObject((config.artTest ? "Disable" : "Enable") + " Art Test"), 1);
-    }
+    if (toggleArtTestButton) gameButtonSetText(toggleArtTestButton, createStringObject((config.artTest ? "Disable" : "Enable") + " Art Test"), 1);
     (Memory as any).writeU8(base.add(Offsets.ArtTest), Number(config.artTest));
 }
 

@@ -1,6 +1,6 @@
 {
-  "name": "nbsoffline-agent",
-  "version": "2.4",
+  "name": "nbsoffline",
+  "version": "2.5",
   "description": "Offline V44",
   "private": true,
   "main": "agent/init.ts",
