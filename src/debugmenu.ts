@@ -3,12 +3,13 @@ import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 import { createStringObject, strPtr } from "./util.js";
 
+let debugMenu: NativePointer;
 let debugMenuOpened = false;
 let debugMenuCreated = false;
 let toggleButton: NativePointer;
 let infiniteSuperButton: NativePointer;
 let toggleBotsButton: NativePointer;
-let debugMenu: NativePointer;
+let toggleArtTestButton: NativePointer;
 
 export function addDebugFile() {
     const adder = Interceptor.attach(base.add(Offsets.ResourceListenerAddFile),
@@ -42,18 +43,21 @@ export function createDebugMenu() {
     debugMenu = spawnItem("debug_menu", "Debug Menu", 1280, 0);
     infiniteSuperButton = spawnItem("debug_menu_item", "Infinite super", 1131, 100);
     toggleBotsButton = spawnItem("debug_menu_item", (config.disableBots ? "Enable" : "Disable") + " bots", 1131, 151);
+    toggleArtTestButton = spawnItem("debug_menu_item", (config.artTest ? "Disable" : "Enable") + " art test", 1131, 201);
 }
 
 export function hideDebugMenu() {
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), debugMenu);
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), infiniteSuperButton);
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), toggleBotsButton);
+    stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), toggleArtTestButton);
 }
 
 export function showDebugMenu() {
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), debugMenu);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), infiniteSuperButton);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleBotsButton);
+    stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleArtTestButton);
 }
 
 export function toggleDebugMenu() {
@@ -81,11 +85,21 @@ export function toggleBots() {
     gameButtonSetText(toggleBotsButton, createStringObject((config.disableBots ? "Enable" : "Disable") + " bots"), 1);
 }
 
+export function toggleArtTest() {
+    config.artTest = !config.artTest;
+    let text = `Art test is now ${config.artTest ? "enabled" : "disabled"}!`;
+    Logger.debug(text);
+    showFloaterTextAtDefaultPos(guiGetInstance(), createStringObject(text), 0.0, -1);
+    gameButtonSetText(toggleArtTestButton, createStringObject((config.artTest ? "Disable" : "Enable") + " art test"), 1);
+    (Memory as any).writeU8(base.add(Offsets.ArtTest), Number(config.artTest));
+}
+
 Interceptor.attach(base.add(Offsets.CustomButtonButtonPressed),
     {
         onEnter(args) {
             if (args[0].toInt32() == toggleButton.toInt32()) toggleDebugMenu();
             else if (args[0].toInt32() == infiniteSuperButton.toInt32()) toggleInfiniteSuper();
             else if (args[0].toInt32() == toggleBotsButton.toInt32()) toggleBots();
+            else if (args[0].toInt32() == toggleArtTestButton.toInt32()) toggleArtTest();
         },
     });

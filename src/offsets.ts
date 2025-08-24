@@ -117,5 +117,6 @@ export enum Offsets {
     TextFieldCopyConstructor = 0x2a99a0,
     TextFieldConstructor = 0x8a440c,
     GameButtonSetText = 0x46a358,
-    CustomButtonButtonPressed = 0x4a8e54
+    CustomButtonButtonPressed = 0x4a8e54,
+    ArtTest = 0x167b189
 }

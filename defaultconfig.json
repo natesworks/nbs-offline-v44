@@ -29,6 +29,7 @@
   "infiniteAmmo": false,
   "infiniteSuper": false,
   "china": false,
+  "artTest": false,
   "unlockedBrawlers": {
     "0": {
       "cardID": 0,
