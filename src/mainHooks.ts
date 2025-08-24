@@ -1,6 +1,6 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, branchButtonYPos, branchButtons, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY, displayObjectSetX, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerTickAI, malloc, movieClipConstructor, player, privacyURL, setBetaTextField, setDevTextField, setStableTextField, shopIsDisabled, stableButtonXPos, tosURL, updaterConfig, version } from "./definitions.js";
+import { base, branchButtonYPos, branchButtons, brawlPassButtonIsDisabled, config, creditPos as creditsPos, credits, displayObjectSetSetXY, displayObjectSetX, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerTickAI, malloc, movieClipConstructor, player, privacyURL, setBetaTextField, setDevTextField, setStableTextField, shopIsDisabled, stableButtonXPos, tosURL, updaterConfig, version } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
@@ -11,7 +11,6 @@ import { Logger } from "./logger.js";
 import { switchBranch } from "./updaterutil.js";
 
 let botNames: string[] = [];
-let enableFriendRequestsPos: number[];
 let settingsOpen: boolean;
 
 export function installHooks() {
@@ -144,18 +143,18 @@ export function installHooks() {
             Logger.debug("GameGUIContainer::addGameButton", button);
             if (button != null) {
                 if (settingsOpen) {
-                    if (button == "button_credits") this.credits = true;
-                    if (button == "button_faq") this.faq = true;
+                    if (button === "button_credits") this.credits = true;
+                    if (button === "button_faq") this.faq = true;
                     if (hiddenButtons.includes(button)) this.hide = true;
                     if (branchButtons.includes(button)) this.branchButton = true;
                 }
             }
         },
         onLeave(retval) {
+            if (this.credits) displayObjectSetSetXY(retval, creditsPos[0], creditsPos[1]);
             if (this.faq) displayObjectSetX(retval, stableButtonXPos);
             if (this.branchButton) displayObjectSetY(retval, branchButtonYPos);
-            if (this.hide) displayObjectSetSetXY(retval, NaN, NaN);
-            if (this.credits) displayObjectSetSetXY(retval, enableFriendRequestsPos[0], enableFriendRequestsPos[1]);
+            if (this.hide || !updaterConfig && this.branchButton) displayObjectSetSetXY(retval, NaN, NaN);
         },
     });
 
@@ -239,10 +238,6 @@ export function installHooks() {
                 this.allowFriendRequests = true;
         },
         onLeave(retval) {
-            if (this.allowFriendRequests) {
-                enableFriendRequestsPos = displayObjectGetXY(retval);
-                displayObjectSetSetXY(retval, -1000, -1000);
-            }
         },
     });
 
@@ -264,34 +259,39 @@ export function installHooks() {
             if (text?.includes("0-1 not in Club"))
                 args[1] = createStringObject(lobbyInfo);
             if (settingsOpen) {
-                let stableText = "Stable";
-                let betaText = "Beta";
-                let devText = "Development";
-                if (updaterConfig.branch == "stable") {
-                    stableText = `<c00ff00>${stableText}</c>`;
+                if (updaterConfig) {
+                    let stableText = "Stable";
+                    let betaText = "Beta";
+                    let devText = "Development";
+
+                    if (updaterConfig.branch == "stable")
+                        stableText = `<c00ff00>${stableText}</c>`;
+                    else if (updaterConfig.branch == "beta")
+                        betaText = `<c00ff00>${betaText}</c>`;
+                    else if (updaterConfig.branch == "dev")
+                        devText = `<c00ff00>${devText}</c>`;
+
+                    if (text == "Help and Support") {
+                        setStableTextField(args[0]);
+                        args[1] = createStringObject(stableText);
+                    }
+                    else if (text === "Terms of Service") {
+                        setBetaTextField(args[0]);
+                        args[1] = createStringObject(betaText);
+                    }
+                    else if (text === "Privacy Policy") {
+                        setDevTextField(args[0]);
+                        args[1] = createStringObject(devText);
+                    }
+                    else if (text === "SUPERCELL ID")
+                        args[1] = createStringObject("Branch");
+                } else {
+                    if (text === "Terms of Service" || text === "Privacy Policy" || text === "SUPERCELL ID")
+                        args[1] = createStringObject("");
                 }
-                if (updaterConfig.branch == "beta") {
-                    betaText = `<c00ff00>${betaText}</c>`;
-                }
-                if (updaterConfig.branch == "dev") {
-                    devText = `<c00ff00>${devText}</c>`;
-                }
+
                 if (hiddenText.some((x) => x === text)) // .some is cool
                     args[1] = createStringObject("");
-                else if (text === "SUPERCELL ID")
-                    args[1] = createStringObject("Branch");
-                else if (text == "Help and Support") {
-                    setStableTextField(args[0]);
-                    args[1] = createStringObject(stableText);
-                }
-                else if (text === "Terms of Service") {
-                    setBetaTextField(args[0]);
-                    args[1] = createStringObject(betaText);
-                }
-                else if (text === "Privacy Policy") {
-                    setDevTextField(args[0]);
-                    args[1] = createStringObject(devText);
-                }
             }
             if (text?.includes("input lat"))
                 args[1] = createStringObject(info);
