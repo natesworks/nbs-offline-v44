@@ -1,9 +1,11 @@
-import { addFile, base, config, customButtonSetMovieClip, displayObjectSetSetXY, gameButtonConstructor, gameButtonSetText, guiGetInstance, malloc, resourceManagerGetMovieClip, showFloaterTextAtDefaultPos, stageAddChild, stageRemoveChild } from "./definitions.js";
+import { addFile, base, config, customButtonSetMovieClip, displayObjectSetScale, displayObjectSetSetXY, gameButtonConstructor, gameButtonSetText, guiGetInstance, malloc, movieClipSetText, resourceManagerGetMovieClip, showFloaterTextAtDefaultPos, stageAddChild, stageRemoveChild } from "./definitions.js";
 import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 import { createStringObject, strPtr } from "./util.js";
 
 let debugMenu: NativePointer;
+let debugMenuTitle: NativePointer;
+let debugMenuDescription: NativePointer;
 let debugMenuOpened = false;
 let debugMenuCreated = false;
 let toggleButton: NativePointer;
@@ -40,10 +42,14 @@ export function createDebugButton() {
 
 export function createDebugMenu() {
     Logger.debug("Creating debug menu");
+    debugMenuCreated = true;
     debugMenu = spawnItem("debug_menu", "Debug Menu", 1280, 0);
     infiniteSuperButton = spawnItem("debug_menu_item", "Infinite super", 1131, 100);
-    toggleBotsButton = spawnItem("debug_menu_item", (config.disableBots ? "Enable" : "Disable") + " bots", 1131, 151);
-    toggleArtTestButton = spawnItem("debug_menu_item", (config.artTest ? "Disable" : "Enable") + " art test", 1131, 201);
+    toggleBotsButton = spawnItem("debug_menu_item", (config.disableBots ? "Enable" : "Disable") + " bots", 1131, 155);
+    toggleArtTestButton = spawnItem("debug_menu_item", (config.artTest ? "Disable" : "Enable") + " art test", 1131, 210);
+    debugMenuTitle = spawnItem("debug_menu_text", "<c62a0ea>NBS Offline</c>", 1075, 0);
+    debugMenuDescription = spawnItem("debug_menu_text", "<c62a0ea>dsc.gg/nbsoffline</c>", 1075, 20);
+    displayObjectSetScale(debugMenuTitle, 1.5);
 }
 
 export function hideDebugMenu() {
@@ -51,6 +57,8 @@ export function hideDebugMenu() {
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), infiniteSuperButton);
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), toggleBotsButton);
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), toggleArtTestButton);
+    stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), debugMenuTitle);
+    stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), debugMenuDescription);
 }
 
 export function showDebugMenu() {
@@ -58,6 +66,8 @@ export function showDebugMenu() {
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), infiniteSuperButton);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleBotsButton);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleArtTestButton);
+    stageAddChild(base.add(Offsets.StageInstance).readPointer(), debugMenuTitle);
+    stageAddChild(base.add(Offsets.StageInstance).readPointer(), debugMenuDescription);
 }
 
 export function toggleDebugMenu() {

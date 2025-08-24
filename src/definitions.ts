@@ -75,6 +75,7 @@ export const getTextFieldByName = new NativeFunction(base.add(Offsets.GetTextFie
 export const textFieldConstructor = new NativeFunction(base.add(Offsets.TextFieldConstructor), "pointer", ["pointer"]);
 export const stageRemoveChild = new NativeFunction(base.add(Offsets.StageRemoveChild), "pointer", ["pointer", "pointer"]);
 export const logicCharacterServerTickAI = new NativeFunction(base.add(Offsets.LogicCharacterServerTickAI), "pointer", ["pointer"]);
+export const displayObjectSetScale = new NativeFunction(base.add(Offsets.DisplayObjectSetScale), "pointer", ["pointer", "float"]);
 
 export const branchButtonYPos = -50;
 export const stableButtonXPos = -280;
