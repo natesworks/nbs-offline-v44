@@ -1,6 +1,5 @@
 import { Player } from "../../player.js";
 import { ByteStream } from "../../bytestream.js";
-import { Config } from "../../config.js";
 import { dumpPacket } from "../../dumppacket.js";
 
 export class PlayerProfileMessage

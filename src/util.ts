@@ -1,7 +1,6 @@
 import { Brawler } from "./brawler.js";
-import { base, close, malloc, O_CREAT, O_RDONLY, O_RDWR, O_TRUNC, O_WRONLY, open, possibleBotNames, read, stringCtor, write } from "./definitions.js";
+import { base, close, malloc, possibleBotNames, stringCtor } from "./definitions.js";
 import { openFile, readFile } from "./fs.js";
-import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 
 export function getMessageManagerInstance(): NativePointer {

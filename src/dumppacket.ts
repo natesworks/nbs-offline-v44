@@ -1,5 +1,5 @@
-import { dataDirectory, EEXIST, ENOENT, errno, packetDumpsDirectory } from "./definitions.js";
-import { createDirectory, openFile, writeFile, writeFileBytes } from "./fs.js";
+import { EEXIST, errno, packetDumpsDirectory } from "./definitions.js";
+import { createDirectory, openFile, writeFileBytes } from "./fs.js";
 import { Logger } from "./logger.js";
 
 export function dumpPacket(id : number, payload : number[])

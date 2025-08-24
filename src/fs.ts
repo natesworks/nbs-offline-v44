@@ -1,4 +1,4 @@
-import { close, malloc, mkdir, O_CREAT, O_RDONLY, O_RDWR, O_TRUNC, open, read, write } from "./definitions.js";
+import { close, mkdir, O_CREAT, O_RDONLY, O_RDWR, O_TRUNC, open, read, write } from "./definitions.js";
 import { strPtr, utf8ToBytes } from "./util.js";
 
 export function openFile(path: string, rw = false, trunc = false) {

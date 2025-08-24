@@ -1,9 +1,7 @@
-import { open } from "fs";
 import { Brawler } from "./brawler.js";
-import { close, configPath, defaultConfigPath, libPath } from "./definitions.js";
+import { close, configPath, defaultConfigPath } from "./definitions.js";
 import { Logger } from "./logger.js";
 import { openFile, readFile, writeFile } from "./fs.js";
-import { config } from "process";
 
 export class Config {
     static major = 44;

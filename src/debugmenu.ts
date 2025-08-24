@@ -1,4 +1,4 @@
-import { addFile, base, config, customButtonSetButtonListener, customButtonSetMovieClip, displayObjectSetScaleX, displayObjectSetSetXY, gameButtonConstructor, gameButtonSetText, getTextFieldByName, guiGetInstance, malloc, movieClipSetText as movieClipSetText, resourceManagerGetMovieClip, showFloaterTextAtDefaultPos, stageAddChild, stageRemoveChild, textFieldConstructor, textFieldSetText } from "./definitions.js";
+import { addFile, base, config, customButtonSetMovieClip, displayObjectSetSetXY, gameButtonConstructor, gameButtonSetText, guiGetInstance, malloc, resourceManagerGetMovieClip, showFloaterTextAtDefaultPos, stageAddChild, stageRemoveChild } from "./definitions.js";
 import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 import { createStringObject, strPtr } from "./util.js";
@@ -7,6 +7,7 @@ let debugMenuOpened = false;
 let debugMenuCreated = false;
 let toggleButton: NativePointer;
 let infiniteSuperButton: NativePointer;
+let toggleBotsButton: NativePointer;
 let debugMenu: NativePointer;
 
 export function addDebugFile() {
@@ -37,18 +38,22 @@ export function createDebugButton() {
 }
 
 export function createDebugMenu() {
+    Logger.debug("Creating debug menu");
     debugMenu = spawnItem("debug_menu", "Debug Menu", 1280, 0);
     infiniteSuperButton = spawnItem("debug_menu_item", "Infinite super", 1131, 100);
+    toggleBotsButton = spawnItem("debug_menu_item", (config.disableBots ? "Enable" : "Disable") + " bots", 1131, 151);
 }
 
-export function destroyDebugMenu() {
+export function hideDebugMenu() {
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), debugMenu);
     stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), infiniteSuperButton);
+    stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), toggleBotsButton);
 }
 
 export function showDebugMenu() {
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), debugMenu);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), infiniteSuperButton);
+    stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleBotsButton);
 }
 
 export function toggleDebugMenu() {
@@ -57,7 +62,7 @@ export function toggleDebugMenu() {
         createDebugMenu();
     }
     if (!debugMenuOpened) showDebugMenu()
-    else { destroyDebugMenu() }
+    else { hideDebugMenu() }
     debugMenuOpened = !debugMenuOpened;
 }
 
@@ -68,10 +73,19 @@ export function toggleInfiniteSuper() {
     showFloaterTextAtDefaultPos(guiGetInstance(), createStringObject(text), 0.0, -1);
 }
 
+export function toggleBots() {
+    config.disableBots = !config.disableBots;
+    let text = `Bots are now ${config.disableBots ? "disabled" : "enabled"}!`;
+    Logger.debug(text);
+    showFloaterTextAtDefaultPos(guiGetInstance(), createStringObject(text), 0.0, -1);
+    gameButtonSetText(toggleBotsButton, createStringObject((config.disableBots ? "Enable" : "Disable") + " bots"), 1);
+}
+
 Interceptor.attach(base.add(Offsets.CustomButtonButtonPressed),
     {
         onEnter(args) {
             if (args[0].toInt32() == toggleButton.toInt32()) toggleDebugMenu();
             else if (args[0].toInt32() == infiniteSuperButton.toInt32()) toggleInfiniteSuper();
+            else if (args[0].toInt32() == toggleBotsButton.toInt32()) toggleBots();
         },
     });

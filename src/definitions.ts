@@ -62,7 +62,6 @@ export const getMovieClipByName = new NativeFunction(base.add(Offsets.GetMovieCl
 export const movieClipConstructor = new NativeFunction(base.add(Offsets.MovieClipConstructor), "pointer", ["pointer"]);
 export const gameMainShowNativeDialog = new NativeFunction(base.add(Offsets.GameMainShowNativeDialog), "pointer", ["pointer", "uint", "uint", "pointer", "pointer", "pointer"]);
 export const messagingSend = new NativeFunction(base.add(Offsets.MessagingSend), "int", ["pointer", "pointer"]);
-export const logicCharacterServerTickAI = new NativeFunction(base.add(Offsets.LogicCharacterServerTickAI), "int", ["int"]);
 export const applicationOpenURL = new NativeFunction(base.add(Offsets.ApplicationOpenURL), "pointer", ["pointer"]);
 export const settingsScreenOpenFAQ = new NativeFunction(base.add(Offsets.SettingsScreenOpenFAQ), "pointer", ["pointer"]);
 export const textFieldSetText = new NativeFunction(base.add(Offsets.TextFieldSetText), "int", ["pointer", "pointer"])
@@ -75,6 +74,7 @@ export const gameButtonSetText = new NativeFunction(base.add(Offsets.GameButtonS
 export const getTextFieldByName = new NativeFunction(base.add(Offsets.GetTextFieldByName), "pointer", ["pointer", "pointer"]);
 export const textFieldConstructor = new NativeFunction(base.add(Offsets.TextFieldConstructor), "pointer", ["pointer"]);
 export const stageRemoveChild = new NativeFunction(base.add(Offsets.StageRemoveChild), "pointer", ["pointer", "pointer"]);
+export const logicCharacterServerTickAI = new NativeFunction(base.add(Offsets.LogicCharacterServerTickAI), "pointer", ["pointer"]);
 
 export const branchButtonYPos = -50;
 export const stableButtonXPos = -280;
@@ -138,6 +138,7 @@ export function setDevTextField(ptr: NativePointer) {
 export const brawlPassButtonIsDisabled = 37;
 export const shopIsDisabled = 5;
 export const friendlyGameLevelRequirement = 3;
+
 export const hiddenButtons = ["button_country", "button_edit_controls", "button_language", "button_sc_id", "button_parentsguide", "button_thirdparty", "button_api", "button_google_connect", "button_kakao_connect", "button_line_connect", "button_privacy_settings", "button_birthday", "button_privacy"];
 export const hiddenText = ["LANGUAGE", "PLAY WITH FRIENDS", "Google Play Sign-In", "BLOCK FRIEND REQUESTS", "SOCIAL", "LOCATION"];
 export const branchButtons = ["button_faq", "button_terms", "button_privacy"]
@@ -146,8 +147,9 @@ export const credits = `NBS Offline ${version}
 
 Made by Natesworks 
 Discord: dsc.gg/nbsoffline
+Telegram: t.me/nbsoffline
 
-💙THANKS TO💙
+THANKS TO:
 
 S.B:
 - Making an amazing guide on reverse engineering/making Brawl Stars Offline (peterr.dev/re/brawl-stars-offline).
@@ -157,5 +159,7 @@ xXCooBloyXx:
 - Telling me how to get some of the required offsets for sendOfflineMessage.
 - Teaching me how to view unobfuscate arxan obfuscated functions.
 
-BSDS Client is used for killing arxan.
+BSDS:
+- Making a script to kill Arxan
+- OwnHomeDataMessage and PlayerProfileMessage structure
 `

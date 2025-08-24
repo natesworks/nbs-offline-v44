@@ -1,15 +1,13 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, branchButtonYPos, branchButtons, brawlPassButtonIsDisabled, config, credits, devTextField, displayObjectSetSetXY, displayObjectSetX, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerChargeUlti, malloc, movieClipConstructor, player, privacyURL, radioButtonCreate, radioButtonCreate2, setBetaTextField, setDevTextField, setStableTextField, shopIsDisabled, stableButtonXPos, stableTextField, textFieldSetText, tosURL, updaterConfig, version } from "./definitions.js";
+import { base, branchButtonYPos, branchButtons, brawlPassButtonIsDisabled, config, credits, displayObjectSetSetXY, displayObjectSetX, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerTickAI, malloc, movieClipConstructor, player, privacyURL, setBetaTextField, setDevTextField, setStableTextField, shopIsDisabled, stableButtonXPos, tosURL, updaterConfig, version } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
-import { getBotNames, decodeString, sleep, createStringObject, strPtr, displayObjectGetXY, displayObjectGetY } from "./util.js";
+import { getBotNames, decodeString, sleep, createStringObject, displayObjectGetXY } from "./util.js";
 import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 import { createDebugButton } from "./debugmenu.js";
-import { TeamMessage } from "./packets/server/TeamMessage.js";
 import { Logger } from "./logger.js";
-import { decode } from "punycode";
 import { switchBranch } from "./updaterutil.js";
 
 let botNames: string[] = [];
@@ -195,11 +193,10 @@ export function installHooks() {
         },
     });
 
-    if (config.disableBots) {
-        Interceptor.replace(base.add(Offsets.LogicCharacterServerTickAI), new NativeCallback(function (a1) {
-            return a1;
-        }, 'int', ['int']));
-    }
+    Interceptor.replace(base.add(Offsets.LogicCharacterServerTickAI), new NativeCallback(function (a1) {
+        if (config.disableBots) return a1;
+        return logicCharacterServerTickAI(a1);
+    }, "pointer", ["pointer"]));
 
     Interceptor.attach(base.add(Offsets.LogicSkillDataCanMoveAtSameTime), {
         onLeave(retval) {

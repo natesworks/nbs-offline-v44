@@ -1,4 +1,4 @@
-import { open, read, write, pkg, config, player, load } from "./definitions.js";
+import { config, player, load } from "./definitions.js";
 import { addDebugFile } from "./debugmenu.js";
 import { installHooks } from "./mainHooks.js";
 import { applyPatches } from "./patches.js";
