@@ -125,5 +125,11 @@ export enum Offsets {
     TencentManagerIsFeatureEnabled = 0x4615dc,
     ShowTencentLoginScreen = 0x997ddc, // i made up the name not in v36; find by string button_timeline
     SlowMode = 0x1681e54,
-    GameMainReloadGameInternal = 0x2a9b70
+    GameMainReloadGameInternal = 0x2a9b70,
+    LogicClientDataHasEnoughResources = 0x55e95c,
+    HomeModeGetInstance = 0x501390,
+    HomeModeGetPlayerAvatar = 0x2dc98c,
+    LogicClientAvatarUseDiamonds = 0x2c4838,
+    LogicClientAvatarCommodityCountChangeHelper = 0x55b3dc,
+    LogicDataTablesGetGoldData = 0x79b1d8
 }

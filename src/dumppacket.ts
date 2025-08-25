@@ -4,6 +4,7 @@ import { Logger } from "./logger.js";
 
 export function dumpPacket(id : number, payload : number[])
 {
+    if (!ISDEV) return;
     if(createDirectory(packetDumpsDirectory) != 0)
     {
         let error = errno().readS32();

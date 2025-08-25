@@ -1,4 +1,4 @@
-import { addFile, base, config, customButtonSetMovieClip, displayObjectSetScale, displayObjectSetSetXY, gameButtonConstructor, gameButtonSetText, guiGetInstance, malloc, movieClipSetText, reloadGameInternal, resourceManagerGetMovieClip, showFloaterTextAtDefaultPos, stageAddChild, stageRemoveChild } from "./definitions.js";
+import { addFile, base, commodityCountChangedHelper, config, customButtonSetMovieClip, displayObjectSetScale, displayObjectSetSetXY, gameButtonConstructor, gameButtonSetText, guiGetInstance, homeModeGetInstance, logicClientAvatarUseDiamonds, logicDataTablesGetGoldData, logicHomeModeGetPlayerAvatar, malloc, movieClipSetText, reloadGameInternal, resourceManagerGetMovieClip, showFloaterTextAtDefaultPos, stageAddChild, stageRemoveChild } from "./definitions.js";
 import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 import { createStringObject, strPtr } from "./util.js";
@@ -19,15 +19,19 @@ let battleCategoryOpened = false;
 
 let toggleButton: NativePointer;
 let reloadGameButton: NativePointer | null = null;
+
 let infiniteSuperButton: NativePointer | null = null;
 let toggleBotsButton: NativePointer | null = null;
 let toggleArtTestButton: NativePointer | null = null;
+
+let addGemsButton: NativePointer | null = null;
+let addCoinsButton: NativePointer | null = null;
 
 const firstButton = 100;
 const buttonOffset = 55;
 
 const generalCategoryButtonCount = 1;
-const accountCategoryButtonCount = 0;
+const accountCategoryButtonCount = 2;
 const battleCategoryButtonCount = 3;
 
 function getGeneralCategoryPosition() {
@@ -95,7 +99,10 @@ export function createDebugMenu() {
     }
 
     if (accountCategoryOpened) {
-
+        addGemsButton = spawnItem("debug_menu_item", "Add Gems", 1131, getAccountCategoryPosition() + buttonOffset);
+        stageAddChild(base.add(Offsets.StageInstance).readPointer(), addGemsButton);
+        addCoinsButton = spawnItem("debug_menu_item", "Add Coins", 1131, getAccountCategoryPosition() + 2 * buttonOffset);
+        stageAddChild(base.add(Offsets.StageInstance).readPointer(), addCoinsButton);
     }
 
     if (battleCategoryOpened) {
@@ -119,7 +126,7 @@ export function createDebugMenu() {
 
 export function updateDebugMenu() {
     Logger.debug("Updating debug menu");
-    
+
     if (generalCategory) {
         stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), generalCategory);
     }
@@ -147,6 +154,14 @@ export function updateDebugMenu() {
         stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), toggleArtTestButton);
         toggleArtTestButton = null;
     }
+    if (addGemsButton) {
+        stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), addGemsButton);
+        addGemsButton = null;
+    }
+    if (addCoinsButton) {
+        stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), addCoinsButton);
+        addCoinsButton = null;
+    }
 
     generalCategory = spawnItem("debug_menu_category", (generalCategoryOpened ? "- " : "+ ") + "General", 1131, getGeneralCategoryPosition());
     accountCategory = spawnItem("debug_menu_category", (accountCategoryOpened ? "- " : "+ ") + "Account", 1131, getAccountCategoryPosition());
@@ -158,7 +173,10 @@ export function updateDebugMenu() {
     }
 
     if (accountCategoryOpened) {
-
+        addGemsButton = spawnItem("debug_menu_item", "Add Gems", 1131, getAccountCategoryPosition() + buttonOffset);
+        stageAddChild(base.add(Offsets.StageInstance).readPointer(), addGemsButton);
+        addCoinsButton = spawnItem("debug_menu_item", "Add Coins", 1131, getAccountCategoryPosition() + 2 * buttonOffset);
+        stageAddChild(base.add(Offsets.StageInstance).readPointer(), addCoinsButton);
     }
 
     if (battleCategoryOpened) {
@@ -190,7 +208,8 @@ export function hideDebugMenu() {
     }
 
     if (accountCategoryOpened) {
-
+        if (addGemsButton) stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), addGemsButton);
+        if (addCoinsButton) stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), addCoinsButton);
     }
 
     if (battleCategoryOpened) {
@@ -230,17 +249,29 @@ export function toggleArtTest() {
     (Memory as any).writeU8(base.add(Offsets.ArtTest), Number(config.artTest));
 }
 
+export function addGems(amount : number) {
+    Logger.debug(`Adding ${amount} gems`);
+    logicClientAvatarUseDiamonds(logicHomeModeGetPlayerAvatar(homeModeGetInstance()), -amount);
+}
+
+export function addCoins(amount : number) {
+    Logger.debug(`Adding ${amount} coins`);
+    //commodityCountChangedHelper(logicHomeModeGetPlayerAvatar(homeModeGetInstance()), logicDataTablesGetGoldData(), amount, 1, 0, 3);
+}
+
 Interceptor.attach(base.add(Offsets.CustomButtonButtonPressed),
     {
         onEnter(args) {
-            if (toggleButton && args[0].toInt32() == toggleButton.toInt32()) toggleDebugMenu();
-            else if (generalCategory && args[0].toInt32() == generalCategory.toInt32()) generalCategoryOpened = !generalCategoryOpened;
-            else if (accountCategory && args[0].toInt32() == accountCategory.toInt32()) accountCategoryOpened = !accountCategoryOpened;
-            else if (battleCategory && args[0].toInt32() == battleCategory.toInt32()) battleCategoryOpened = !battleCategoryOpened;
-            else if (infiniteSuperButton && args[0].toInt32() == infiniteSuperButton.toInt32()) toggleInfiniteSuper();
-            else if (toggleBotsButton && args[0].toInt32() == toggleBotsButton.toInt32()) toggleBots();
-            else if (toggleArtTestButton && args[0].toInt32() == toggleArtTestButton.toInt32()) toggleArtTest();
-            else if (reloadGameButton && args[0].toInt32() == reloadGameButton.toInt32()) reloadGameInternal(base.add(Offsets.GameMainInstance));
+            if (toggleButton && args[0].equals(toggleButton)) toggleDebugMenu();
+            else if (generalCategory && args[0].equals(generalCategory)) generalCategoryOpened = !generalCategoryOpened;
+            else if (accountCategory && args[0].equals(accountCategory)) accountCategoryOpened = !accountCategoryOpened;
+            else if (battleCategory && args[0].equals(battleCategory)) battleCategoryOpened = !battleCategoryOpened;
+            else if (infiniteSuperButton && args[0].equals(infiniteSuperButton)) toggleInfiniteSuper();
+            else if (toggleBotsButton && args[0].equals(toggleBotsButton)) toggleBots();
+            else if (toggleArtTestButton && args[0].equals(toggleArtTestButton)) toggleArtTest();
+            else if (reloadGameButton && args[0].equals(reloadGameButton)) reloadGameInternal(base.add(Offsets.GameMainInstance));
+            else if (addGemsButton && args[0].equals(addGemsButton)) addGems(100);
+            else if (addCoinsButton && args[0].equals(addCoinsButton)) addCoins(100);
 
             if (debugMenuOpened) updateDebugMenu();
         },

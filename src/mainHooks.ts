@@ -238,6 +238,7 @@ export function installHooks() {
                 this.allowFriendRequests = true;
         },
         onLeave(retval) {
+            if (this.allowFriendRequests) displayObjectSetSetXY(retval, NaN, NaN);
         },
     });
 

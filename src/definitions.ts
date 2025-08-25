@@ -77,6 +77,11 @@ export const stageRemoveChild = new NativeFunction(base.add(Offsets.StageRemoveC
 export const logicCharacterServerTickAI = new NativeFunction(base.add(Offsets.LogicCharacterServerTickAI), "pointer", ["pointer"]);
 export const displayObjectSetScale = new NativeFunction(base.add(Offsets.DisplayObjectSetScale), "pointer", ["pointer", "float"]);
 export const reloadGameInternal = new NativeFunction(base.add(Offsets.GameMainReloadGameInternal), "pointer", ["pointer"]);
+export const homeModeGetInstance = new NativeFunction(base.add(Offsets.HomeModeGetInstance), "pointer", []);
+export const logicHomeModeGetPlayerAvatar = new NativeFunction(base.add(Offsets.HomeModeGetPlayerAvatar), "pointer", ["pointer"]);
+export const logicClientAvatarUseDiamonds = new NativeFunction(base.add(Offsets.LogicClientAvatarUseDiamonds), "pointer", ["pointer", "int"]);
+export const logicDataTablesGetGoldData = new NativeFunction(base.add(Offsets.LogicDataTablesGetGoldData), "int", []);
+export const commodityCountChangedHelper = new NativeFunction(base.add(Offsets.LogicClientAvatarCommodityCountChangeHelper), "void", ["pointer", "int", "int", "int", "bool", "int"]);
 
 export const branchButtonYPos = -50;
 export const stableButtonXPos = -280;
