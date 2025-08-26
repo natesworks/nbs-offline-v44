@@ -135,7 +135,8 @@ export function load() {
             branchesStr = Array.from(branches.values()).join(",");
         Logger.debug("Branches:", branchesStr);
     }
-    loadDebug();
+    if (config.debugMenu)
+        loadDebug();
 }
 
 export const brawlPassButtonIsDisabled = 37;

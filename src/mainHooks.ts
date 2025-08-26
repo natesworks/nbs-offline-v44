@@ -164,7 +164,8 @@ export function installHooks() {
 
     Interceptor.attach(base.add(Offsets.HomeModeEnter), {
         onLeave() {
-            createDebugButton();
+            if (config.debugMenu)
+                createDebugButton();
         }
     });
 

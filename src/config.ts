@@ -36,6 +36,7 @@ export class Config {
     china = false;
     artTest = false;
     customLoadingScreen = true;
+    debugMenu = true;
 }
 
 export function tryLoadDefaultConfig() {
@@ -98,6 +99,7 @@ export function readConfig() {
     config.name = json.name == null ? "Natesworks" : json.name;
     config.artTest = json.artTest == null ? false : json.artTest;
     config.customLoadingScreen = json.customLoadingScreen == null ? true : json.customLoadingScreen;
+    config.debugMenu = json.debugMenu == null ? true : json.debugMenu;
     for (const [id, brawler] of Object.entries(json.unlockedBrawlers as Record<string, any>)) { // why does it have to be string sob
         config.ownedBrawlers[Number(id)] = new Brawler(
             brawler.cardID,
