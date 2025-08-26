@@ -20,7 +20,8 @@ let generalCategoryOpened = false;
 let accountCategoryOpened = false;
 let battleCategoryOpened = false;
 
-let toggleButton: NativePointer;
+export let toggleButton: NativePointer;
+
 let reloadGameButton: NativePointer | null = null;
 
 let infiniteSuperButton: NativePointer | null = null;
@@ -30,6 +31,7 @@ let toggleArtTestButton: NativePointer | null = null;
 let addGemsButton: NativePointer | null = null;
 let addCoinsButton: NativePointer | null = null;
 
+let branchRow: number;
 let branchButtons: NativePointer[] = [];
 
 let debugButtonX: number;
@@ -40,7 +42,8 @@ let firstButton: number;
 let buttonOffset: number;
 let branchY: number;
 let firstBranchX: number;
-let branchOffset: number;
+let branchXOffset: number;
+let branchYOffset : number;
 let menuTitleX: number;
 let menuTitleY: number;
 let menuDescriptionX: number;
@@ -97,7 +100,6 @@ export function createDebugButton() {
     Logger.debug("Creating debug button");
     Logger.debug("Screen width: " + getScreenWidth() + ",screen height:" + getScreenHeight());
     toggleButton = createDebugItem("debug_button", "D", debugButtonX, debugButtonY);
-    Logger.debug(debugButtonX, debugButtonY);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleButton);
 }
 
@@ -105,13 +107,15 @@ export function spawnBranchButton(branch: string, prettyName: string, index: num
     let text = prettyName;
     if (updaterConfig?.branch == branch)
         text = `<c00ff00>${prettyName}</c>`;
-    let button = createDebugItem("debug_menu_item_small", text, firstBranchX + index * branchOffset, branchY);
+    if (index > 0 && index % 4 === 0) branchRow++;
+    let button = createDebugItem("debug_menu_item_small", text, firstBranchX + (index % 4) * branchXOffset, branchY + branchRow * branchYOffset);
     branchButtons.push(button);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), button);
 }
 
 export function createDebugMenu() {
     Logger.debug("Creating debug menu");
+    branchRow = 0;
     debugMenu = createDebugItem("debug_menu", "Debug Menu", debugMenuX, 0);
 
     debugMenuTitle = createDebugItem("debug_menu_text", "<c62a0ea>NBS Offline</c>", menuTitleX, menuTitleY);
@@ -130,10 +134,11 @@ export function createDebugMenu() {
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), closeButton);
 
     branchButtons = [];
-    if (branches != undefined)
+    if (branches != undefined && branches.size > 0) {
         Array.from(branches.entries()).forEach(([branch, text], index) =>
-            spawnBranchButton(branch, text, index)
+            spawnBranchButton(text, branch, index)
         );
+    }
 }
 
 export function updateDebugMenu() {
@@ -279,17 +284,20 @@ export function loadDebug() {
     debugButtonY = 575 * getScaleY();
     debugMenuX = 1280 * getScaleX();
     buttonX = 1131 * getScaleX();
-    firstButton = 150 * getScaleY();
+    firstButton = 100 * getScaleX();
     buttonOffset = 55 * getScaleY();
-    branchY = 100 * getScaleY();
-    firstBranchX = 1025 * getScaleX();
-    branchOffset = 75 * getScaleX();
+    branchY = 95 * getScaleY();
+    firstBranchX = 1022.5 * getScaleX();
+    branchXOffset = 72.5 * getScaleX();
+    branchYOffset = 40 * getScaleY();
     menuTitleX = 1075 * getScaleX();
     menuTitleY = 0 * getScaleY();
     menuDescriptionX = 1075 * getScaleX();
     menuDescriptionY = 20 * getScaleY();
     closeButtonX = 1256 * getScaleX();
     closeButtonY = 24 * getScaleY();
+    if (branches != undefined && branches.size > 0)
+        firstButton += (((branches.size + 3) / 4) * branchYOffset + 5) * getScaleY();
 
     Interceptor.attach(base.add(Offsets.CustomButtonButtonPressed),
         {
@@ -311,6 +319,7 @@ export function loadDebug() {
                         const branch = Array.from(branches.values())[idx];
                         switchBranch(branch);
                     }
+                    return;
                 }
 
                 if (debugMenuOpened) updateDebugMenu();

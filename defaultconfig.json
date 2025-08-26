@@ -30,6 +30,7 @@
   "infiniteSuper": false,
   "china": false,
   "artTest": false,
+  "debugMenu": true,
   "unlockedBrawlers": {
     "0": {
       "cardID": 0,

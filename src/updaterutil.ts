@@ -1,5 +1,5 @@
-import { debugMenuOpened, toggleDebugMenu } from "./debugmenu.js";
-import { updaterConfig, updaterConfigPath, textFieldSetText, stableTextField, betaTextField, devTextField, showFloaterTextAtDefaultPos, guiGetInstance, reloadGameInternal, base, libPath } from "./definitions.js";
+import { debugMenuOpened, toggleButton, toggleDebugMenu } from "./debugmenu.js";
+import { updaterConfig, updaterConfigPath, textFieldSetText, stableTextField, betaTextField, devTextField, showFloaterTextAtDefaultPos, guiGetInstance, reloadGameInternal, base, libPath, config, stageRemoveChild } from "./definitions.js";
 import { openFile, readFile, writeFile } from "./fs.js";
 import { Logger } from "./logger.js";
 import { closeFn, connectWithTimeout, httpBody, readAll, sendFn } from "./net.js";
@@ -29,6 +29,8 @@ export function writeUpdaterConfig(config: UpdaterConfig) {
 export function unload() {
     if (debugMenuOpened)
         toggleDebugMenu();
+    if (config.debugMenu)
+        stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), toggleButton)
     Interceptor.detachAll();
     Interceptor.revert(base.add(Offsets.MessagingSend));
     Interceptor.revert(base.add(Offsets.LogicCharacterServerTickAI));
