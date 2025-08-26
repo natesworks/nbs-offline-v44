@@ -1,10 +1,11 @@
 import { Config, readConfig, tryLoadDefaultConfig } from "./config.js";
+import { loadDebug } from "./debugmenu.js";
 import { openFile, readFile } from "./fs.js";
 import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
 import { Player } from "./player.js";
 import { UpdaterConfig } from "./updaterconfig.js";
-import { readUpdaterConfig } from "./updaterutil.js";
+import { getBranches, readUpdaterConfig } from "./updaterutil.js";
 import { getLibraryDir } from "./util.js";
 
 export const base = Module.getBaseAddress("libg.so");
@@ -25,7 +26,6 @@ export const O_TRUNC = 512;
 export const O_APPEND = 1024;
 export const ENOENT = 2;
 export const EEXIST = 17;
-// int mkdir(const char *pathname, mode_t mode)
 
 export const android_log_write = new NativeFunction(
     Module.findExportByName("liblog.so", "__android_log_write")!,
@@ -83,9 +83,6 @@ export const logicClientAvatarUseDiamonds = new NativeFunction(base.add(Offsets.
 export const logicDataTablesGetGoldData = new NativeFunction(base.add(Offsets.LogicDataTablesGetGoldData), "int", []);
 export const commodityCountChangedHelper = new NativeFunction(base.add(Offsets.LogicClientAvatarCommodityCountChangeHelper), "void", ["pointer", "int", "int", "int", "bool", "int"]);
 
-export const branchButtonYPos = -50;
-export const stableButtonXPos = -280;
-export const devTextFieldPos = [-88.5, -26];
 export const creditPos = [282, -156.5]
 export const tosURL = "http://www.supercell.com/en/privacy-policy/";
 export const privacyURL = "http://supercell.com/en/terms-of-service/"
@@ -105,6 +102,7 @@ export let version = "v2.5";
 export let stableTextField: NativePointer;
 export let betaTextField: NativePointer;
 export let devTextField: NativePointer;
+export let branches: Map<string, string> | undefined;
 
 export function load() {
     if (ISDEV)
@@ -125,35 +123,27 @@ export function load() {
     let updaterConfigFile = openFile(updaterConfigPath);
     if (updaterConfigFile < 0) {
         Logger.warn("Updater configuration file doesn't exist");
-
     }
     else {
         close(updaterConfigFile);
         updaterConfigFile = openFile(updaterConfigPath, true);
         updaterConfig = readUpdaterConfig(updaterConfigFile);
         close(updaterConfigFile);
+        branches = getBranches();
+        let branchesStr = "";
+        if (branches !== undefined)
+            branchesStr = Array.from(branches.values()).join(",");
+        Logger.debug("Branches:", branchesStr);
     }
-}
-
-export function setStableTextField(ptr: NativePointer) {
-    stableTextField = ptr;
-}
-
-export function setBetaTextField(ptr: NativePointer) {
-    betaTextField = ptr;
-}
-
-export function setDevTextField(ptr: NativePointer) {
-    devTextField = ptr;
+    loadDebug();
 }
 
 export const brawlPassButtonIsDisabled = 37;
 export const shopIsDisabled = 5;
 export const friendlyGameLevelRequirement = 3;
 
-export const hiddenButtons = ["button_country", "button_edit_controls", "button_language", "button_sc_id", "button_parentsguide", "button_thirdparty", "button_api", "button_google_connect", "button_kakao_connect", "button_line_connect", "button_privacy_settings", "button_birthday", "button_privacy"];
-export const hiddenText = ["LANGUAGE", "PLAY WITH FRIENDS", "Google Play Sign-In", "BLOCK FRIEND REQUESTS", "SOCIAL", "LOCATION"];
-export const branchButtons = ["button_faq", "button_terms", "button_privacy", "button_allow_friend_requests"]
+export const hiddenButtons = ["button_country", "button_edit_controls", "button_language", "button_sc_id", "button_parentsguide", "button_thirdparty", "button_api", "button_google_connect", "button_kakao_connect", "button_line_connect", "button_privacy_settings", "button_birthday", "button_privacy", "button_faq", "button_terms"];
+export const hiddenText = ["LANGUAGE", "PLAY WITH FRIENDS", "Google Play Sign-In", "BLOCK FRIEND REQUESTS", "SOCIAL", "LOCATION", "Terms of Service", "Privacy Policy", "SUPERCELL ID"];
 
 export const credits = `NBS Offline ${version}
 

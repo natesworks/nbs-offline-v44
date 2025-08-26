@@ -131,5 +131,13 @@ export enum Offsets {
     HomeModeGetPlayerAvatar = 0x2dc98c,
     LogicClientAvatarUseDiamonds = 0x2c4838,
     LogicClientAvatarCommodityCountChangeHelper = 0x55b3dc,
-    LogicDataTablesGetGoldData = 0x79b1d8
+    LogicDataTablesGetGoldData = 0x79b1d8,
+    LoadingScreenUpdateLoadingProgress = 0x80016c,
+    StringFormat = 0x1dc398,
+    LogicLocalizationGetLanguageCode = 0x661ffc,
+    StringTableGetCurrentLanguageCode = 0xa65ce4,
+    ApplicationConvertDeviceLanguageToGameLanguageCode = 0xd1adb4,
+    SettingsGetSelectedLanguage = 0x62b6f4,
+    ScreenGetWidth = 0x6bc3a0,
+    ScreenGetHeight = 0xab81b0
 }

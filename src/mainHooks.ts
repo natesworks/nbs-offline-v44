@@ -1,10 +1,10 @@
 import { Offsets } from "./offsets.js";
 import { PiranhaMessage } from "./piranhamessage.js";
-import { base, branchButtonYPos, branchButtons, brawlPassButtonIsDisabled, config, creditPos as creditsPos, credits, displayObjectSetSetXY, displayObjectSetX, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerTickAI, malloc, movieClipConstructor, player, privacyURL, setBetaTextField, setDevTextField, setStableTextField, shopIsDisabled, stableButtonXPos, tosURL, updaterConfig, version } from "./definitions.js";
+import { base, brawlPassButtonIsDisabled, config, creditPos as creditsPos, credits, displayObjectSetSetXY, displayObjectSetX, displayObjectSetY, friendlyGameLevelRequirement, hiddenButtons, hiddenText, logicCharacterServerTickAI, malloc, movieClipConstructor, player, privacyURL, shopIsDisabled, tosURL, updaterConfig, version, stringCtor } from "./definitions.js";
 import { Messaging } from "./messaging.js";
 import { LoginOkMessage } from "./packets/server/LoginOkMessage.js";
 import { OwnHomeDataMessage } from "./packets/server/OwnHomeDataMessage.js";
-import { getBotNames, decodeString, sleep, createStringObject, displayObjectGetXY } from "./util.js";
+import { getBotNames, decodeString, sleep, createStringObject, displayObjectGetXY, strPtr } from "./util.js";
 import { PlayerProfileMessage } from "./packets/server/PlayerProfileMessage.js";
 import { createDebugButton } from "./debugmenu.js";
 import { Logger } from "./logger.js";
@@ -146,14 +146,11 @@ export function installHooks() {
                     if (button === "button_credits") this.credits = true;
                     if (button === "button_faq") this.faq = true;
                     if (hiddenButtons.includes(button)) this.hide = true;
-                    if (branchButtons.includes(button)) this.branchButton = true;
                 }
             }
         },
         onLeave(retval) {
             if (this.credits) displayObjectSetSetXY(retval, creditsPos[0], creditsPos[1]);
-            if (this.faq) displayObjectSetX(retval, stableButtonXPos);
-            if (this.branchButton) displayObjectSetY(retval, branchButtonYPos);
             if (this.hide || !updaterConfig && this.branchButton) displayObjectSetSetXY(retval, NaN, NaN);
         },
     });
@@ -260,37 +257,6 @@ export function installHooks() {
             if (text?.includes("0-1 not in Club"))
                 args[1] = createStringObject(lobbyInfo);
             if (settingsOpen) {
-                if (updaterConfig) {
-                    let stableText = "Stable";
-                    let betaText = "Beta";
-                    let devText = "Development";
-
-                    if (updaterConfig.branch == "stable")
-                        stableText = `<c00ff00>${stableText}</c>`;
-                    else if (updaterConfig.branch == "beta")
-                        betaText = `<c00ff00>${betaText}</c>`;
-                    else if (updaterConfig.branch == "dev")
-                        devText = `<c00ff00>${devText}</c>`;
-
-                    if (text == "Help and Support") {
-                        setStableTextField(args[0]);
-                        args[1] = createStringObject(stableText);
-                    }
-                    else if (text === "Terms of Service") {
-                        setBetaTextField(args[0]);
-                        args[1] = createStringObject(betaText);
-                    }
-                    else if (text === "Privacy Policy") {
-                        setDevTextField(args[0]);
-                        args[1] = createStringObject(devText);
-                    }
-                    else if (text === "SUPERCELL ID")
-                        args[1] = createStringObject("Branch");
-                } else {
-                    if (text === "Terms of Service" || text === "Privacy Policy" || text === "SUPERCELL ID")
-                        args[1] = createStringObject("");
-                }
-
                 if (hiddenText.some((x) => x === text)) // .some is cool
                     args[1] = createStringObject("");
             }
@@ -368,23 +334,8 @@ export function installHooks() {
             function (url: NativePointer) {
                 let urlStr = decodeString(url);
                 Logger.debug("Tried to open", urlStr);
-                if (urlStr == privacyURL)
-                    switchBranch("beta");
-                else if (urlStr == tosURL)
-                    switchBranch("dev");
+                // TODO discord, telegram and website buttons
                 return url;
-            },
-            "pointer",
-            ["pointer"]
-        )
-    );
-
-    Interceptor.replace(
-        base.add(Offsets.SettingsScreenOpenFAQ),
-        new NativeCallback(
-            function () {
-                switchBranch("stable");
-                return base.add(Offsets.GUIInstance);
             },
             "pointer",
             ["pointer"]
@@ -404,5 +355,15 @@ export function installHooks() {
             onLeave() {
                 this.tencentHook.detach();
             }
+        });
+
+    Interceptor.attach(base.add(Offsets.SettingsGetSelectedLanguage),
+        {
+            onEnter(args) {
+                this.a1 = args[0];
+            },
+            onLeave(retval) {
+                retval.replace(stringCtor(this.a1, strPtr("EN")));
+            },
         });
 }

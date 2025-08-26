@@ -1,6 +1,8 @@
-import { addFile, base, commodityCountChangedHelper, config, customButtonSetMovieClip, displayObjectSetScale, displayObjectSetScaleX, displayObjectSetSetXY, gameButtonConstructor, gameButtonSetText, guiGetInstance, homeModeGetInstance, logicClientAvatarUseDiamonds, logicDataTablesGetGoldData, logicHomeModeGetPlayerAvatar, malloc, movieClipSetText, reloadGameInternal, resourceManagerGetMovieClip, showFloaterTextAtDefaultPos, stageAddChild, stageRemoveChild } from "./definitions.js";
+import { addFile, base, branches, commodityCountChangedHelper, config, customButtonSetMovieClip, displayObjectSetScale, displayObjectSetSetXY, gameButtonConstructor, gameButtonSetText, guiGetInstance, homeModeGetInstance, logicClientAvatarUseDiamonds, logicDataTablesGetGoldData, logicHomeModeGetPlayerAvatar, malloc, movieClipSetText, reloadGameInternal, resourceManagerGetMovieClip, showFloaterTextAtDefaultPos, stageAddChild, stageRemoveChild, updaterConfig } from "./definitions.js";
 import { Logger } from "./logger.js";
 import { Offsets } from "./offsets.js";
+import { getScaleX, getScaleY, getScreenHeight, getScreenWidth } from "./scaling.js";
+import { switchBranch } from "./updaterutil.js";
 import { createStringObject, strPtr } from "./util.js";
 
 let debugMenu: NativePointer;
@@ -8,7 +10,7 @@ let debugMenuTitle: NativePointer;
 let debugMenuDescription: NativePointer;
 let closeButton: NativePointer;
 
-let debugMenuOpened = false;
+export let debugMenuOpened = false;
 
 let generalCategory: NativePointer | null = null;
 let accountCategory: NativePointer | null = null;
@@ -28,8 +30,23 @@ let toggleArtTestButton: NativePointer | null = null;
 let addGemsButton: NativePointer | null = null;
 let addCoinsButton: NativePointer | null = null;
 
-const firstButton = 100;
-const buttonOffset = 55;
+let branchButtons: NativePointer[] = [];
+
+let debugButtonX: number;
+let debugButtonY: number;
+let debugMenuX: number;
+let buttonX: number;
+let firstButton: number;
+let buttonOffset: number;
+let branchY: number;
+let firstBranchX: number;
+let branchOffset: number;
+let menuTitleX: number;
+let menuTitleY: number;
+let menuDescriptionX: number;
+let menuDescriptionY: number;
+let closeButtonX: number;
+let closeButtonY: number;
 
 const generalCategoryButtonCount = 1;
 const accountCategoryButtonCount = 2;
@@ -66,7 +83,7 @@ export function addDebugFile() {
         });
 }
 
-export function spawnDebugItem(item: string, text: string, x: number, y: number): NativePointer {
+export function createDebugItem(item: string, text: string, x: number, y: number): NativePointer {
     let mem = malloc(512);
     gameButtonConstructor(mem);
     let movieClip = resourceManagerGetMovieClip(strPtr("sc/debug.sc"), strPtr(item), 1);
@@ -78,54 +95,45 @@ export function spawnDebugItem(item: string, text: string, x: number, y: number)
 
 export function createDebugButton() {
     Logger.debug("Creating debug button");
-    toggleButton = spawnDebugItem("debug_button", "D", 20, 560);
+    Logger.debug("Screen width: " + getScreenWidth() + ",screen height:" + getScreenHeight());
+    toggleButton = createDebugItem("debug_button", "D", debugButtonX, debugButtonY);
+    Logger.debug(debugButtonX, debugButtonY);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleButton);
+}
+
+export function spawnBranchButton(branch: string, prettyName: string, index: number) {
+    let text = prettyName;
+    if (updaterConfig?.branch == branch)
+        text = `<c00ff00>${prettyName}</c>`;
+    let button = createDebugItem("debug_menu_item_small", text, firstBranchX + index * branchOffset, branchY);
+    branchButtons.push(button);
+    stageAddChild(base.add(Offsets.StageInstance).readPointer(), button);
 }
 
 export function createDebugMenu() {
     Logger.debug("Creating debug menu");
-    debugMenu = spawnDebugItem("debug_menu", "Debug Menu", 1280, 0);
+    debugMenu = createDebugItem("debug_menu", "Debug Menu", debugMenuX, 0);
 
-    debugMenuTitle = spawnDebugItem("debug_menu_text", "<c62a0ea>NBS Offline</c>", 1075, 0);
+    debugMenuTitle = createDebugItem("debug_menu_text", "<c62a0ea>NBS Offline</c>", menuTitleX, menuTitleY);
     displayObjectSetScale(debugMenuTitle, 1.5);
-    debugMenuDescription = spawnDebugItem("debug_menu_text", "<c62a0ea>dsc.gg/nbsoffline</c>", 1075, 20);
-    closeButton = spawnDebugItem("nothing", "", 1256, 24)
-    displayObjectSetScale(closeButton, 0.80)
+    debugMenuDescription = createDebugItem("debug_menu_text", "<c62a0ea>dsc.gg/nbsoffline</c>", menuDescriptionX, menuDescriptionY);
+    closeButton = createDebugItem("nothing", "", closeButtonX, closeButtonY);
+    displayObjectSetScale(closeButton, 0.80);
 
-    generalCategory = spawnDebugItem("debug_menu_category", (generalCategoryOpened ? "- " : "+ ") + "General", 1131, getGeneralCategoryPosition());
-    accountCategory = spawnDebugItem("debug_menu_category", (accountCategoryOpened ? "- " : "+ ") + "Account", 1131, getAccountCategoryPosition());
-    battleCategory = spawnDebugItem("debug_menu_category", (battleCategoryOpened ? "- " : "+ ") + "Battle", 1131, getBattleCategoryPositon());
-
-    if (generalCategoryOpened) {
-        reloadGameButton = spawnDebugItem("debug_menu_item", "Reload Game", 1131, getGeneralCategoryPosition() + buttonOffset);
-        stageAddChild(base.add(Offsets.StageInstance).readPointer(), reloadGameButton);
-    }
-
-    if (accountCategoryOpened) {
-        addGemsButton = spawnDebugItem("debug_menu_item", "Add Gems", 1131, getAccountCategoryPosition() + buttonOffset);
-        stageAddChild(base.add(Offsets.StageInstance).readPointer(), addGemsButton);
-        addCoinsButton = spawnDebugItem("debug_menu_item", "Add Coins", 1131, getAccountCategoryPosition() + 2 * buttonOffset);
-        stageAddChild(base.add(Offsets.StageInstance).readPointer(), addCoinsButton);
-    }
-
-    if (battleCategoryOpened) {
-        infiniteSuperButton = spawnDebugItem("debug_menu_item", "Infinite Super", 1131, getBattleCategoryPositon() + buttonOffset);
-        toggleBotsButton = spawnDebugItem("debug_menu_item", (config.disableBots ? "Enable" : "Disable") + " Bots", 1131, getBattleCategoryPositon() + 2 * buttonOffset);
-        toggleArtTestButton = spawnDebugItem("debug_menu_item", (config.artTest ? "Disable" : "Enable") + " Art Test", 1131, getBattleCategoryPositon() + 3 * buttonOffset);
-        stageAddChild(base.add(Offsets.StageInstance).readPointer(), infiniteSuperButton);
-        stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleBotsButton);
-        stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleArtTestButton);
-    }
+    generalCategory = createDebugItem("debug_menu_category", (generalCategoryOpened ? "- " : "+ ") + "General", buttonX, getGeneralCategoryPosition());
+    accountCategory = createDebugItem("debug_menu_category", (accountCategoryOpened ? "- " : "+ ") + "Account", buttonX, getAccountCategoryPosition());
+    battleCategory = createDebugItem("debug_menu_category", (battleCategoryOpened ? "- " : "+ ") + "Battle", buttonX, getBattleCategoryPositon());
 
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), debugMenu);
-
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), debugMenuTitle);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), debugMenuDescription);
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), closeButton);
 
-    stageAddChild(base.add(Offsets.StageInstance).readPointer(), generalCategory);
-    stageAddChild(base.add(Offsets.StageInstance).readPointer(), battleCategory);
-    stageAddChild(base.add(Offsets.StageInstance).readPointer(), accountCategory);
+    branchButtons = [];
+    if (branches != undefined)
+        Array.from(branches.entries()).forEach(([branch, text], index) =>
+            spawnBranchButton(branch, text, index)
+        );
 }
 
 export function updateDebugMenu() {
@@ -167,26 +175,26 @@ export function updateDebugMenu() {
         addCoinsButton = null;
     }
 
-    generalCategory = spawnDebugItem("debug_menu_category", (generalCategoryOpened ? "- " : "+ ") + "General", 1131, getGeneralCategoryPosition());
-    accountCategory = spawnDebugItem("debug_menu_category", (accountCategoryOpened ? "- " : "+ ") + "Account", 1131, getAccountCategoryPosition());
-    battleCategory = spawnDebugItem("debug_menu_category", (battleCategoryOpened ? "- " : "+ ") + "Battle", 1131, getBattleCategoryPositon());
+    generalCategory = createDebugItem("debug_menu_category", (generalCategoryOpened ? "- " : "+ ") + "General", buttonX, getGeneralCategoryPosition());
+    accountCategory = createDebugItem("debug_menu_category", (accountCategoryOpened ? "- " : "+ ") + "Account", buttonX, getAccountCategoryPosition());
+    battleCategory = createDebugItem("debug_menu_category", (battleCategoryOpened ? "- " : "+ ") + "Battle", buttonX, getBattleCategoryPositon());
 
     if (generalCategoryOpened) {
-        reloadGameButton = spawnDebugItem("debug_menu_item", "Reload Game", 1131, getGeneralCategoryPosition() + buttonOffset);
+        reloadGameButton = createDebugItem("debug_menu_item", "Reload Game", buttonX, getGeneralCategoryPosition() + buttonOffset);
         stageAddChild(base.add(Offsets.StageInstance).readPointer(), reloadGameButton);
     }
 
     if (accountCategoryOpened) {
-        addGemsButton = spawnDebugItem("debug_menu_item", "Add Gems", 1131, getAccountCategoryPosition() + buttonOffset);
+        addGemsButton = createDebugItem("debug_menu_item", "Add Gems", buttonX, getAccountCategoryPosition() + buttonOffset);
         stageAddChild(base.add(Offsets.StageInstance).readPointer(), addGemsButton);
-        addCoinsButton = spawnDebugItem("debug_menu_item", "Add Coins", 1131, getAccountCategoryPosition() + 2 * buttonOffset);
+        addCoinsButton = createDebugItem("debug_menu_item", "Add Coins", buttonX, getAccountCategoryPosition() + 2 * buttonOffset);
         stageAddChild(base.add(Offsets.StageInstance).readPointer(), addCoinsButton);
     }
 
     if (battleCategoryOpened) {
-        infiniteSuperButton = spawnDebugItem("debug_menu_item", "Infinite Super", 1131, getBattleCategoryPositon() + buttonOffset);
-        toggleBotsButton = spawnDebugItem("debug_menu_item", (config.disableBots ? "Enable" : "Disable") + " Bots", 1131, getBattleCategoryPositon() + 2 * buttonOffset);
-        toggleArtTestButton = spawnDebugItem("debug_menu_item", (config.artTest ? "Disable" : "Enable") + " Art Test", 1131, getBattleCategoryPositon() + 3 * buttonOffset);
+        infiniteSuperButton = createDebugItem("debug_menu_item", "Infinite Super", buttonX, getBattleCategoryPositon() + buttonOffset);
+        toggleBotsButton = createDebugItem("debug_menu_item", (config.disableBots ? "Enable" : "Disable") + " Bots", buttonX, getBattleCategoryPositon() + 2 * buttonOffset);
+        toggleArtTestButton = createDebugItem("debug_menu_item", (config.artTest ? "Disable" : "Enable") + " Art Test", buttonX, getBattleCategoryPositon() + 3 * buttonOffset);
         stageAddChild(base.add(Offsets.StageInstance).readPointer(), infiniteSuperButton);
         stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleBotsButton);
         stageAddChild(base.add(Offsets.StageInstance).readPointer(), toggleArtTestButton);
@@ -222,6 +230,8 @@ export function hideDebugMenu() {
         if (toggleBotsButton) stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), toggleBotsButton);
         if (toggleArtTestButton) stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), toggleArtTestButton);
     }
+
+    branchButtons.forEach((button) => stageRemoveChild(base.add(Offsets.StageInstance).readPointer(), button));
 }
 
 export function toggleDebugMenu() {
@@ -264,20 +274,46 @@ export function addCoins(amount: number) {
     //commodityCountChangedHelper(logicHomeModeGetPlayerAvatar(homeModeGetInstance()), logicDataTablesGetGoldData(), amount, 1, 0, 3);
 }
 
-Interceptor.attach(base.add(Offsets.CustomButtonButtonPressed),
-    {
-        onEnter(args) {
-            if (args[0].equals(toggleButton) || args[0].equals(closeButton)) toggleDebugMenu();
-            else if (generalCategory && args[0].equals(generalCategory)) generalCategoryOpened = !generalCategoryOpened;
-            else if (accountCategory && args[0].equals(accountCategory)) accountCategoryOpened = !accountCategoryOpened;
-            else if (battleCategory && args[0].equals(battleCategory)) battleCategoryOpened = !battleCategoryOpened;
-            else if (infiniteSuperButton && args[0].equals(infiniteSuperButton)) toggleInfiniteSuper();
-            else if (toggleBotsButton && args[0].equals(toggleBotsButton)) toggleBots();
-            else if (toggleArtTestButton && args[0].equals(toggleArtTestButton)) toggleArtTest();
-            else if (reloadGameButton && args[0].equals(reloadGameButton)) reloadGameInternal(base.add(Offsets.GameMainInstance));
-            else if (addGemsButton && args[0].equals(addGemsButton)) addGems(100);
-            else if (addCoinsButton && args[0].equals(addCoinsButton)) addCoins(100);
+export function loadDebug() {
+    debugButtonX = 1.4 * getScaleX();
+    debugButtonY = 575 * getScaleY();
+    debugMenuX = 1280 * getScaleX();
+    buttonX = 1131 * getScaleX();
+    firstButton = 150 * getScaleY();
+    buttonOffset = 55 * getScaleY();
+    branchY = 100 * getScaleY();
+    firstBranchX = 1025 * getScaleX();
+    branchOffset = 75 * getScaleX();
+    menuTitleX = 1075 * getScaleX();
+    menuTitleY = 0 * getScaleY();
+    menuDescriptionX = 1075 * getScaleX();
+    menuDescriptionY = 20 * getScaleY();
+    closeButtonX = 1256 * getScaleX();
+    closeButtonY = 24 * getScaleY();
 
-            if (debugMenuOpened) updateDebugMenu();
-        },
-    });
+    Interceptor.attach(base.add(Offsets.CustomButtonButtonPressed),
+        {
+            onEnter(args) {
+                if (args[0].equals(toggleButton) || args[0].equals(closeButton)) toggleDebugMenu();
+                else if (generalCategory && args[0].equals(generalCategory)) generalCategoryOpened = !generalCategoryOpened;
+                else if (accountCategory && args[0].equals(accountCategory)) accountCategoryOpened = !accountCategoryOpened;
+                else if (battleCategory && args[0].equals(battleCategory)) battleCategoryOpened = !battleCategoryOpened;
+                else if (infiniteSuperButton && args[0].equals(infiniteSuperButton)) toggleInfiniteSuper();
+                else if (toggleBotsButton && args[0].equals(toggleBotsButton)) toggleBots();
+                else if (toggleArtTestButton && args[0].equals(toggleArtTestButton)) toggleArtTest();
+                else if (reloadGameButton && args[0].equals(reloadGameButton)) reloadGameInternal(base.add(Offsets.GameMainInstance));
+                else if (addGemsButton && args[0].equals(addGemsButton)) addGems(100);
+                else if (addCoinsButton && args[0].equals(addCoinsButton)) addCoins(100);
+                else {
+                    if (branches == undefined || updaterConfig == undefined) return;
+                    const idx = branchButtons.findIndex(b => args[0].equals(b));
+                    if (idx !== -1) {
+                        const branch = Array.from(branches.values())[idx];
+                        switchBranch(branch);
+                    }
+                }
+
+                if (debugMenuOpened) updateDebugMenu();
+            },
+        });
+}
