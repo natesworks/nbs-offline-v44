@@ -134,7 +134,7 @@ export function createDebugMenu() {
     stageAddChild(base.add(Offsets.StageInstance).readPointer(), closeButton);
 
     branchButtons = [];
-    if (branches != undefined && branches.size > 0) {
+    if (branches != undefined && branches.size > 0 && config.legacyBranchSwitcher) {
         Array.from(branches.entries()).forEach(([branch, text], index) =>
             spawnBranchButton(text, branch, index)
         );

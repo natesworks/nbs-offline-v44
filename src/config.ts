@@ -37,6 +37,7 @@ export class Config {
     artTest = false;
     customLoadingScreen = true;
     debugMenu = true;
+    legacyBranchSwitcher = false;
 }
 
 export function tryLoadDefaultConfig() {
@@ -100,6 +101,7 @@ export function readConfig() {
     config.artTest = json.artTest == null ? false : json.artTest;
     config.customLoadingScreen = json.customLoadingScreen == null ? true : json.customLoadingScreen;
     config.debugMenu = json.debugMenu == null ? true : json.debugMenu;
+    config.legacyBranchSwitcher = json.legacyBranchSwitcher == null ? true : json.legacyBranchSwitcher;
     for (const [id, brawler] of Object.entries(json.unlockedBrawlers as Record<string, any>)) { // why does it have to be string sob
         config.ownedBrawlers[Number(id)] = new Brawler(
             brawler.cardID,
